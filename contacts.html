@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>ЮНИКАР | Контакты в Ярославле</title>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Manrope', sans-serif;
+            background-color: #F8F9FA;
+            color: #1F2937;
+        }
+        :root {
+            --primary-blue: #07aed9;
+            --gray-graphite: #3c3c3b;
+        }
+        .main-header {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .header-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0.8rem 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .logo-area img {
+            height: 62.5px;
+            width: auto;
+        }
+        .logo-text {
+            font-size: 1.2rem;
+            font-weight: 500;
+            color: #6c757d;
+        }
+        .nav-menu ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+        .nav-menu a {
+            text-decoration: none;
+            font-weight: 600;
+            color: var(--gray-graphite);
+            transition: 0.2s;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+        }
+        .nav-menu a:hover,
+        .nav-menu a.active {
+            color: black;
+            font-weight: 800;
+            text-shadow: 0 1px 1px rgba(0,0,0,0.05);
+            background: transparent;
+        }
+        .burger-menu {
+            display: none;
+            font-size: 1.8rem;
+            cursor: pointer;
+            background: none;
+            border: none;
+            color: var(--gray-graphite);
+        }
+        .mobile-nav {
+            display: none;
+            position: fixed;
+            top: 70px;
+            left: 0;
+            width: 100%;
+            background: white;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            z-index: 199;
+            flex-direction: column;
+            padding: 1rem 0;
+        }
+        .mobile-nav a {
+            padding: 0.8rem 1.5rem;
+            text-decoration: none;
+            color: var(--gray-graphite);
+            font-weight: 600;
+            border-bottom: 1px solid #eee;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+        }
+        .page-title {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            border-left: 5px solid var(--primary-blue);
+            padding-left: 1rem;
+        }
+        .contacts-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+        .contact-info {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+        .contact-info h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--gray-graphite);
+        }
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            padding: 0.8rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        .contact-item i {
+            width: 40px;
+            height: 40px;
+            background: var(--primary-blue);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            font-size: 1.2rem;
+        }
+        .contact-item div strong {
+            display: block;
+            margin-bottom: 0.2rem;
+        }
+        .contact-item a {
+            color: var(--gray-graphite);
+            text-decoration: none;
+        }
+        .contact-item a:hover {
+            color: var(--primary-blue);
+        }
+        .work-hours {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #eee;
+        }
+        .work-hours p {
+            margin: 0.5rem 0;
+        }
+        .map-container {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            height: 450px;
+        }
+        .map-container iframe {
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+        .callback-form {
+            margin-top: 2rem;
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+        .callback-form h3 {
+            margin-bottom: 1rem;
+        }
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        .callback-form input, .callback-form textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-family: 'Manrope', sans-serif;
+        }
+        .checkbox-group {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin: 1rem 0;
+        }
+        .checkbox-group input {
+            width: 20px;
+            margin-top: 3px;
+        }
+        .checkbox-group label {
+            font-weight: normal;
+            font-size: 0.9rem;
+        }
+        .submit-btn {
+            background: var(--primary-blue);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+        }
+        footer {
+            background: var(--gray-graphite);
+            color: #ccc;
+            text-align: center;
+            padding: 1.8rem;
+            margin-top: 2rem;
+        }
+        footer a {
+            color: #ccc;
+            text-decoration: none;
+        }
+        @media (max-width: 800px) {
+            .contacts-grid { grid-template-columns: 1fr; }
+            .form-row { grid-template-columns: 1fr; }
+            .header-container { flex-direction: column; }
+            .nav-menu { display: none; }
+            .burger-menu { display: block; }
+            .mobile-nav { display: flex; flex-direction: column; }
+            .mobile-nav a { display: block; }
+        }
+        @media (min-width: 801px) {
+            .mobile-nav { display: none !important; }
+        }
+    </style>
+</head>
+<body>
+
+<header class="main-header">
+    <div class="header-container">
+        <div class="logo-area">
+            <img src="logo.png" alt="ЮНИКАР" onerror="this.src='https://fakeimg.pl/200x60/3c3c3b/07aed9?text=ЮНИКАР'">
+            <div class="logo-text">Авто с пробегом в Ярославле</div>
+        </div>
+        <nav class="nav-menu">
+            <ul>
+                <li><a href="index.html">Авто в наличии</a></li>
+                <li><a href="#">Выкупим</a></li>
+                <li><a href="#">У нас не откажут</a></li>
+                <li><a href="contacts.html" class="active">Контакты</a></li>
+                <li><a href="privacy.html">Политика</a></li>
+            </ul>
+        </nav>
+        <button class="burger-menu" id="burgerBtn"><i class="fas fa-bars"></i></button>
+    </div>
+    <div class="mobile-nav" id="mobileNav">
+        <a href="index.html">Авто в наличии</a>
+        <a href="#">Выкупим</a>
+        <a href="#">У нас не откажут</a>
+        <a href="contacts.html">Контакты</a>
+        <a href="privacy.html">Политика</a>
+    </div>
+</header>
+
+<div class="container">
+    <h1 class="page-title"><i class="fas fa-map-marker-alt"></i> Контакты</h1>
+    
+    <div class="contacts-grid">
+        <div class="contact-info">
+            <h3><i class="fas fa-phone-alt"></i> Свяжитесь с нами</h3>
+            <div class="contact-item">
+                <i class="fas fa-phone"></i>
+                <div><strong>Телефон</strong><a href="tel:+74852999999">+7 (4852) 99-99-99</a></div>
+            </div>
+            <div class="contact-item">
+                <i class="fab fa-whatsapp"></i>
+                <div><strong>WhatsApp</strong><a href="https://wa.me/79000000000">+7 (900) 000-00-00</a></div>
+            </div>
+            <div class="contact-item">
+                <i class="fas fa-envelope"></i>
+                <div><strong>E-mail</strong><a href="mailto:unikal@yandex.ru">unikal@yandex.ru</a></div>
+            </div>
+            <div class="contact-item">
+                <i class="fas fa-map-marker-alt"></i>
+                <div><strong>Адрес</strong>г. Ярославль, ул. Полушкина Роща, 16Г</div>
+            </div>
+            <div class="work-hours">
+                <strong><i class="far fa-clock"></i> Режим работы:</strong>
+                <p>Пн-Пт: 10:00 — 20:00</p>
+                <p>Сб: 11:00 — 18:00</p>
+                <p>Вс: по предварительной записи</p>
+            </div>
+        </div>
+        
+        <div class="map-container">
+            <!-- ========== КЛЮЧЕВОЙ КОД ДЛЯ ВСТАВКИ КАРТЫ (пункт 8) ========== -->
+            <!-- Вставьте свой API-ключ или используйте готовую карту Ярославля -->
+            <iframe 
+                src="https://yandex.ru/map-widget/v1/?um=constructor%3Afa9c7b1c2d3e4f5a6b7c8d9e0f1a2b3c&source=constructor&scroll=false&mode=search&ol=geo&ouri=ymapsbm1%3A%2F%2Fgeo%3Fdata%3DCgg1NjUwMDUzMhJQ0L7RgNC-0YHQuiDQs9C-0YDQvtC0INCv0YDQvtGB0LvQsNCy0LvRjCwg0YPQu9C40YbQsCDQn9C-0LvRg9GI0LrQuNC90LAg0KDQvtGJ0LAsIDE20JM&text=Ярославль%2C%20ул.%20Полушкина%20Роща%2C%2016Г" 
+                allowfullscreen="true">
+            </iframe>
+        </div>
+    </div>
+    
+    <div class="callback-form">
+        <h3><i class="fas fa-paper-plane"></i> Напишите нам</h3>
+        <form id="contactForm" method="POST">
+            <input type="hidden" name="_captcha" value="false">
+            <input type="hidden" name="_subject" value="Сообщение с сайта ЮНИКАР">
+            <input type="hidden" name="_template" value="table">
+            <div class="form-row">
+                <input type="text" name="Имя" placeholder="Ваше имя" required>
+                <input type="tel" name="Телефон" placeholder="Телефон" required>
+            </div>
+            <input type="email" name="Email" placeholder="E-mail (для ответа)" required style="margin-bottom:1rem;">
+            <textarea name="Сообщение" rows="4" placeholder="Ваше сообщение..." required></textarea>
+            
+            <div class="checkbox-group">
+                <input type="checkbox" name="Согласие" id="contactConsent" required>
+                <label for="contactConsent">
+                    Я принимаю <a href="privacy.html" target="_blank">условия обработки персональных данных</a> и даю согласие на их обработку
+                </label>
+            </div>
+            
+            <button type="submit" class="submit-btn">Отправить сообщение</button>
+            <p style="font-size:12px; color:#888; margin-top:12px;">Нажимая кнопку, вы соглашаетесь с обработкой данных</p>
+        </form>
+    </div>
+</div>
+
+<footer>
+    <p>© ЮНИКАР — понятные авто в Ярославле. ул. Полушкина Роща, 16Г</p>
+    <p><a href="privacy.html">Политика конфиденциальности</a></p>
+</footer>
+
+<script>
+    // Настройка отправки на почту через FormSubmit
+    const YOUR_EMAIL = "unikal@yandex.ru";   // замените на свой email
+    const contactForm = document.getElementById("contactForm");
+    if (contactForm) {
+        contactForm.action = `https://formsubmit.co/${YOUR_EMAIL}`;
+    }
+
+    // Бургер-меню
+    const burgerBtn = document.getElementById("burgerBtn");
+    const mobileNav = document.getElementById("mobileNav");
+    burgerBtn.addEventListener("click", () => {
+        if (mobileNav.style.display === "flex") mobileNav.style.display = "none";
+        else mobileNav.style.display = "flex";
+    });
+    document.addEventListener("click", (e) => {
+        if (!burgerBtn.contains(e.target) && !mobileNav.contains(e.target)) mobileNav.style.display = "none";
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>ЮНИКАР | Понятные авто в Ярославле</title>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Manrope', sans-serif; background-color: #F8F9FA; color: #1F2937; }
+        :root { --primary-blue: #07aed9; --primary-blue-dark: #0596bb; --gray-graphite: #3c3c3b; --gray-light: #F3F4F6; --white: #FFFFFF; }
+        .section-title i { color: var(--primary-blue); }
+
+        .main-header { background: var(--white); box-shadow: 0 2px 10px rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 200; }
+        .header-container { max-width: 1400px; margin: 0 auto; padding: 0.8rem 1.5rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+        .logo-area { display: flex; align-items: center; gap: 12px; }
+        .logo-area img { height: 62.5px; width: auto; }
+        .logo-text { font-size: 1.2rem; font-weight: 500; color: #6c757d; }
+        .nav-menu ul { display: flex; list-style: none; gap: 2rem; }
+        .nav-menu a { text-decoration: none; font-weight: 600; color: var(--gray-graphite); transition: 0.2s; padding: 0.5rem 1rem; border-radius: 6px; }
+        .nav-menu a:hover, .nav-menu a.active { color: black; font-weight: 800; text-shadow: 0 1px 1px rgba(0,0,0,0.05); background: transparent; }
+        .burger-menu { display: none; font-size: 1.8rem; cursor: pointer; background: none; border: none; color: var(--gray-graphite); }
+        .mobile-nav { display: none; position: fixed; top: 70px; left: 0; width: 100%; background: white; box-shadow: 0 4px 12px rgba(0,0,0,0.1); z-index: 199; flex-direction: column; padding: 1rem 0; }
+        .mobile-nav a { padding: 0.8rem 1.5rem; text-decoration: none; color: var(--gray-graphite); font-weight: 600; border-bottom: 1px solid #eee; }
+        .mobile-nav a:hover { background: rgba(7,174,217,0.1); color: var(--primary-blue); }
+        .banners-carousel { max-width: 1400px; margin: 1.5rem auto 0; padding: 0 1.5rem; position: relative; }
+        .banner-slide { border-radius: 12px; overflow: hidden; cursor: pointer; transition: transform 0.3s; }
+        .banner-slide img { width: 100%; height: auto; display: block; object-fit: cover; max-height: 384px; }
+        @media (max-width: 768px) { .banner-slide img { max-height: 600px; object-fit: contain; background-color: #f0f0f0; } }
+        .banners-carousel .swiper-pagination { position: relative; margin-top: 15px; bottom: auto; }
+        .banners-loading { text-align: center; padding: 2rem; background: #f0f0f0; border-radius: 12px; color: var(--gray-graphite); }
+        .container { max-width: 1400px; margin: 0 auto; padding: 2rem 1.5rem; }
+        .section-title { font-size: 1.26rem; font-weight: 700; margin-bottom: 1.5rem; border-left: 5px solid var(--primary-blue); padding-left: 1rem; }
+        .popular-section { display: block; }
+        @media (max-width: 768px) { .popular-section { display: none; } }
+        .popular-section .swiper-slide { background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 8px 20px rgba(0,0,0,0.05); }
+        .popular-section .car-card-img { height: 228px; background-size: cover; background-position: center; }
+        .popular-section .car-card-info { padding: 1rem; }
+        .popularSwiper { padding-bottom: 30px; }
+        .popularSwiper .swiper-pagination { position: relative; margin-top: 20px; bottom: auto; }
+        .btn-detail, .btn-order, .reset-filters, .update-btn, .submit-btn { border-radius: 6px !important; padding: 0.6rem 1.2rem; font-weight: 600; border: none; cursor: pointer; transition: 0.2s; }
+        .btn-detail { background: #eef2ff; color: var(--gray-graphite); }
+        .btn-order, .update-btn, .submit-btn { background: var(--primary-blue); color: white; }
+        .btn-order:hover, .update-btn:hover, .submit-btn:hover { background: var(--primary-blue-dark); }
+        .reset-filters { background: var(--gray-light); color: var(--gray-graphite); }
+        .catalog-layout { display: flex; flex-wrap: wrap; gap: 2rem; }
+        .filters-sidebar { flex: 1; min-width: 260px; background: white; border-radius: 12px; padding: 1.5rem; box-shadow: 0 4px 12px rgba(0,0,0,0.05); height: fit-content; position: sticky; top: 100px; max-height: 80vh; overflow-y: auto; }
+        .filter-group { margin-bottom: 1.2rem; }
+        .filter-group label { font-weight: 600; display: block; margin-bottom: 0.4rem; color: var(--gray-graphite); }
+        .filter-group select, .filter-group input { width: 100%; padding: 0.6rem; border-radius: 6px; border: 1px solid #e2e8f0; font-family: 'Manrope', sans-serif; }
+        .products-grid { flex: 3; display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.8rem; }
+        .product-card { background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 6px 14px rgba(0,0,0,0.05); transition: 0.2s; }
+        .product-img { height: 216px; background-size: cover; background-position: center; }
+        .product-details { padding: 1rem; }
+        .product-title { font-weight: 800; font-size: 1.2rem; }
+        .product-price { font-weight: 800; color: var(--primary-blue); font-size: 1.3rem; margin: 0.5rem 0; }
+        .product-specs { font-size: 0.8rem; color: #6c757d; margin: 0.3rem 0; }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 1000; justify-content: center; align-items: center; }
+        .modal-content { background: white; max-width: 800px; width: 90%; border-radius: 12px; padding: 1.5rem; max-height: 90vh; overflow-y: auto; }
+        .modal-close { float: right; font-size: 28px; background: none; border: none; cursor: pointer; }
+        .modal-gallery { display: flex; gap: 8px; margin: 12px 0; overflow-x: auto; }
+        .modal-gallery img { width: 100px; height: 70px; object-fit: cover; border-radius: 6px; cursor: pointer; }
+        .modal-main-img { width: 100%; max-height: 500px; object-fit: cover; border-radius: 8px; }
+        .order-modal .modal-content { max-width: 500px; }
+        .order-modal .form-group { margin-bottom: 1rem; }
+        .order-modal .form-group label { display: block; font-weight: 600; margin-bottom: 0.3rem; }
+        .order-modal input, .order-modal textarea { width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 6px; font-family: 'Manrope', sans-serif; }
+        .checkbox-group { display: flex; align-items: flex-start; gap: 10px; margin: 1rem 0; }
+        .checkbox-group input { width: 20px; margin-top: 3px; }
+        .checkbox-group label { font-weight: normal; font-size: 0.9rem; }
+        footer { background: var(--gray-graphite); color: #ccc; text-align: center; padding: 1.8rem; }
+        footer a { color: #ccc; text-decoration: none; }
+        @media (max-width: 768px) {
+            .header-container { padding: 0.8rem 1rem; }
+            .nav-menu { display: none; }
+            .burger-menu { display: block; }
+            .filters-sidebar { position: static; max-height: 300px; overflow-y: auto; }
+            .modal-main-img { max-height: 300px; }
+            .popular-section { display: none; }
+        }
+        @media (min-width: 769px) { .mobile-nav { display: none !important; } }
+        .popular-section .car-card-info .btn-detail,
+        .popular-section .car-card-info .btn-order { margin-top: 12px; }
+    </style>
+</head>
+<body>
+<header class="main-header">
+    <div class="header-container">
+        <div class="logo-area">
+            <img src="logo.png" alt="ЮНИКАР" onerror="this.src='https://fakeimg.pl/200x60/3c3c3b/07aed9?text=ЮНИКАР'">
+            <div class="logo-text">Авто с пробегом в Ярославле</div>
+        </div>
+        <nav class="nav-menu">
+            <ul>
+                <li><a href="index.html" class="active">Авто в наличии</a></li>
+                <li><a href="buyout.html">Выкупим</a></li>
+                <li><a href="guarantee.html">У нас не откажут</a></li>
+                <li><a href="contacts.html">Контакты</a></li>
+                <li><a href="privacy.html">Политика</a></li>
+            </ul>
+        </nav>
+        <button class="burger-menu" id="burgerBtn"><i class="fas fa-bars"></i></button>
+    </div>
+    <div class="mobile-nav" id="mobileNav">
+        <a href="index.html">Авто в наличии</a>
+        <a href="buyout.html">Выкупим</a>
+        <a href="guarantee.html">У нас не откажут</a>
+        <a href="contacts.html">Контакты</a>
+        <a href="privacy.html">Политика</a>
+    </div>
+</header>
+
+<div class="banners-carousel">
+    <div class="swiper bannerSwiper">
+        <div class="swiper-wrapper" id="bannersWrapper">
+            <div class="swiper-slide banners-loading"><i class="fas fa-spinner fa-pulse"></i> Загрузка баннеров...</div>
+        </div>
+        <div class="swiper-pagination"></div>
+    </div>
+</div>
+
+<div class="container">
+    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+        <h2 class="section-title"><i class="fas fa-bolt"></i> Популярные автомобили</h2>
+        <button id="forceUpdateBtn" class="update-btn"><i class="fas fa-sync-alt"></i> Обновить каталог</button>
+    </div>
+    <div class="popular-section">
+        <div class="swiper popularSwiper">
+            <div class="swiper-wrapper" id="popularCarsWrapper"></div>
+            <div class="swiper-pagination"></div>
+        </div>
+    </div>
+    <h2 class="section-title"><i class="fas fa-list-ul"></i> Каталог автомобилей</h2>
+    <div class="catalog-layout">
+        <aside class="filters-sidebar">
+            <h3>Фильтры</h3>
+            <div class="filter-group"><label>Бренд</label><select id="filterBrand"></select></div>
+            <div class="filter-group"><label>Модель</label><select id="filterModel"></select></div>
+            <div class="filter-group"><label>Цена (₽)</label><div style="display:flex; gap:6px;"><input type="number" id="priceMin" placeholder="от" value="0"><input type="number" id="priceMax" placeholder="до" value="10000000"></div></div>
+            <div class="filter-group"><label>Год выпуска</label><select id="filterYear"></select></div>
+            <div class="filter-group"><label>Пробег (км)</label><div style="display:flex; gap:6px;"><input type="number" id="mileageMin" placeholder="от" value="0"><input type="number" id="mileageMax" placeholder="до" value="500000"></div></div>
+            <div class="filter-group"><label>КПП</label><select id="filterTransmission"><option value="all">Все</option><option value="Механика">Механика</option><option value="Автомат">Автомат</option><option value="Робот">Робот</option><option value="Вариатор">Вариатор</option></select></div>
+            <button class="reset-filters" id="resetFiltersBtn">Сбросить фильтры</button>
+        </aside>
+        <div class="products-grid" id="productsGrid"></div>
+    </div>
+</div>
+
+<footer><p>© ЮНИКАР — понятные авто в Ярославле. ул. Полушкина Роща, 16Г</p><p><a href="privacy.html">Политика конфиденциальности</a></p></footer>
+
+<div id="detailModal" class="modal"><div class="modal-content"><button class="modal-close">&times;</button><img id="modalMainImg" class="modal-main-img"><div id="modalGallery" class="modal-gallery"></div><h3 id="modalTitle"></h3><div id="modalSpecs" class="product-specs"></div><div id="modalPrice" class="product-price"></div><p id="modalFullDesc"></p><button id="modalOrderBtn" class="btn-order" style="margin-top:12px;">Заказать этот автомобиль</button></div></div>
+<div id="orderModal" class="modal order-modal"><div class="modal-content"><button class="modal-close" id="closeOrderModal">&times;</button><h3><i class="fas fa-shopping-cart"></i> Оформить заявку</h3><form id="orderForm" method="POST"><input type="hidden" name="_captcha" value="false"><input type="hidden" name="_subject" value="Новая заявка с сайта ЮНИКАР"><input type="hidden" name="_template" value="table"><div class="form-group"><label>Автомобиль</label><input type="text" name="Автомобиль" id="orderCarName" readonly style="background:#f0f0f0;"></div><div class="form-group"><label>Ваше имя *</label><input type="text" name="Имя" id="orderName" required placeholder="Как к вам обращаться?"></div><div class="form-group"><label>Телефон *</label><input type="tel" name="Телефон" id="orderPhone" required placeholder="+7 (___) ___-__-__"></div><div class="form-group"><label>Комментарий</label><textarea name="Комментарий" rows="2" placeholder="Удобное время для звонка..."></textarea></div><div class="checkbox-group"><input type="checkbox" name="Согласие" id="consentCheckbox" required><label for="consentCheckbox">Я принимаю <a href="privacy.html" target="_blank">условия обработки персональных данных</a> и даю согласие на их обработку</label></div><button type="submit" class="submit-btn">Отправить заявку</button></form></div></div>
+
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script src="cars-data.js"></script>
+<script>
+    const YOUR_EMAIL = "unikal@yandex.ru";
+    let currentCarsArray = typeof cars !== 'undefined' ? [...cars] : [];
+    if (currentCarsArray.length === 0) {
+        currentCarsArray = [
+            { id:1, brand:"Toyota", model:"Camry", year:2021, price:2850000, mileage:28000, transmission:"Автомат", imageMain:"https://fakeimg.pl/600x400/3c3c3b/07aed9?text=Toyota+Camry", images:[], description:"Надёжный седан" }
+        ];
+    }
+
+    // Баннеры
+    const bannerFiles = ["banner-01.jpg", "banner-02.jpg", "banner-03.jpg", "banner-04.jpg", "banner-05.jpg"];
+    const bannerLinks = ["#", "#", "#", "#", "#"];
+
+    function loadBannersFromFolder() {
+        const wrapper = document.getElementById("bannersWrapper");
+        if (!wrapper) return;
+        const existingBanners = [];
+        let loadedCount = 0;
+        wrapper.innerHTML = '<div class="swiper-slide banners-loading"><i class="fas fa-spinner fa-pulse"></i> Загрузка баннеров...</div>';
+        bannerFiles.forEach((file, index) => {
+            const imgPath = `banners/${file}`;
+            const img = new Image();
+            img.onload = () => {
+                existingBanners.push({ path: imgPath, link: bannerLinks[index] || "#" });
+                loadedCount++;
+                if (loadedCount === bannerFiles.length) renderBannerCarousel(existingBanners);
+            };
+            img.onerror = () => {
+                loadedCount++;
+                if (loadedCount === bannerFiles.length) renderBannerCarousel(existingBanners);
+            };
+            img.src = imgPath;
+        });
+    }
+    
+    function renderBannerCarousel(banners) {
+        const wrapper = document.getElementById("bannersWrapper");
+        if (banners.length === 0) {
+            wrapper.innerHTML = '<div class="swiper-slide banners-loading">⚠️ Нет баннеров. Добавьте файлы в папку /banners/</div>';
+            return;
+        }
+        wrapper.innerHTML = banners.map(b => `<div class="swiper-slide banner-slide" data-link="${b.link}"><img src="${b.path}" alt="Баннер ЮНИКАР"></div>`).join('');
+        new Swiper('.bannerSwiper', {
+            loop: true,
+            autoplay: { delay: 5000, disableOnInteraction: false },
+            pagination: { el: '.swiper-pagination', clickable: true }
+        });
+        document.querySelectorAll('.banner-slide').forEach(slide => {
+            slide.addEventListener('click', () => {
+                const link = slide.dataset.link;
+                if (link && link !== '#') window.location.href = link;
+                else alert("🚗 ЮНИКАР — понятные авто!");
+            });
+        });
+    }
+
+    // Каскадное обновление списка моделей в зависимости от выбранного бренда
+    function updateModelsByBrand() {
+        const brandSelect = document.getElementById("filterBrand");
+        const modelSelect = document.getElementById("filterModel");
+        const selectedBrand = brandSelect.value;
+        let models = [];
+        if (selectedBrand === "all") {
+            models = [...new Set(currentCarsArray.map(c => c.model))];
+        } else {
+            models = [...new Set(currentCarsArray.filter(c => c.brand === selectedBrand).map(c => c.model))];
+        }
+        modelSelect.innerHTML = '<option value="all">Все модели</option>';
+        models.forEach(m => {
+            modelSelect.innerHTML += `<option value="${m}">${m}</option>`;
+        });
+        // Если текущий выбранный модели нет в новом списке, сбрасываем на "all"
+        if (currentFilter.model !== "all" && !models.includes(currentFilter.model)) {
+            currentFilter.model = "all";
+            modelSelect.value = "all";
+        }
+    }
+
+    function populateFiltersFromData() {
+        const brands = [...new Set(currentCarsArray.map(c=>c.brand))];
+        const brandSel = document.getElementById("filterBrand");
+        brandSel.innerHTML = '<option value="all">Все бренды</option>';
+        brands.forEach(b=>{ brandSel.innerHTML+=`<option value="${b}">${b}</option>`; });
+        
+        // Модели обновляем после бренда
+        updateModelsByBrand();
+        
+        const years = [...new Set(currentCarsArray.map(c=>c.year))].sort((a,b)=>b-a);
+        const yearSel = document.getElementById("filterYear");
+        yearSel.innerHTML = '<option value="all">Любой</option>';
+        years.forEach(y=>{ yearSel.innerHTML+=`<option value="${y}">${y}</option>`; });
+        
+        // Заполняем возможные значения КПП из данных (опционально, но оставим)
+        const transmissions = [...new Set(currentCarsArray.map(c=>c.transmission).filter(t=>t))];
+        const transSel = document.getElementById("filterTransmission");
+        const currentTransVal = currentFilter.transmission;
+        transSel.innerHTML = '<option value="all">Все</option>';
+        transmissions.forEach(t=>{
+            transSel.innerHTML += `<option value="${t}">${t}</option>`;
+        });
+        if (currentTransVal !== "all" && transmissions.includes(currentTransVal)) {
+            transSel.value = currentTransVal;
+        } else {
+            transSel.value = "all";
+            currentFilter.transmission = "all";
+        }
+    }
+
+    let currentFilter = { brand:"all", model:"all", priceMin:0, priceMax:10000000, year:"all", mileageMin:0, mileageMax:500000, transmission:"all" };
+    
+    function getFilteredCars() {
+        return currentCarsArray.filter(c=>{
+            if(currentFilter.brand!="all" && c.brand!=currentFilter.brand) return false;
+            if(currentFilter.model!="all" && c.model!=currentFilter.model) return false;
+            if(c.price<currentFilter.priceMin || c.price>currentFilter.priceMax) return false;
+            if(currentFilter.year!="all" && c.year!=currentFilter.year) return false;
+            if(c.mileage<currentFilter.mileageMin || c.mileage>currentFilter.mileageMax) return false;
+            if(currentFilter.transmission!="all" && (c.transmission || "")!=currentFilter.transmission) return false;
+            return true;
+        });
+    }
+
+    function renderProducts() {
+        const filtered = getFilteredCars();
+        const grid = document.getElementById("productsGrid");
+        if(!filtered.length){ grid.innerHTML='<div style="grid-column:1/-1; text-align:center; padding:2rem;">Нет автомобилей по фильтрам</div>'; return; }
+        grid.innerHTML = filtered.map(c=>`
+            <div class="product-card">
+                <div class="product-img" style="background-image:url('${c.images?.[0] || c.imageMain || "https://fakeimg.pl/600x400/3c3c3b/07aed9?text=Auto"}');"></div>
+                <div class="product-details">
+                    <div class="product-title">${c.brand} ${c.model}</div>
+                    <div class="product-specs">${c.year} г. • ${c.mileage.toLocaleString()} км ${c.transmission ? '• '+c.transmission : ''}</div>
+                    <div class="product-price">${c.price.toLocaleString()} ₽</div>
+                    <div style="display:flex; gap:8px; margin-top:8px;">
+                        <button class="btn-detail" data-id="${c.id}">Узнать подробнее</button>
+                        <button class="btn-order" data-id="${c.id}">Заказать</button>
+                    </div>
+                </div>
+            </div>
+        `).join('');
+        attachCardEvents();
+    }
+
+    function openOrderModal(car) {
+        const orderModal = document.getElementById("orderModal");
+        document.getElementById("orderCarName").value = `${car.brand} ${car.model}, ${car.year} г., ${car.price.toLocaleString()} ₽`;
+        const form = document.getElementById("orderForm");
+        form.action = `https://formsubmit.co/${YOUR_EMAIL}`;
+        orderModal.style.display = "flex";
+    }
+
+    function attachCardEvents() {
+        document.querySelectorAll('.btn-detail').forEach(btn=>btn.addEventListener('click',(e)=>{ openDetailModal(parseInt(btn.dataset.id)); }));
+        document.querySelectorAll('.btn-order').forEach(btn=>{ btn.addEventListener('click',(e)=>{ const id = parseInt(btn.dataset.id); const car = currentCarsArray.find(c=>c.id===id); if(car) openOrderModal(car); }); });
+    }
+
+    function openDetailModal(id) {
+        const car = currentCarsArray.find(c=>c.id===id);
+        if(!car) return;
+        const modal = document.getElementById("detailModal");
+        const mainImg = car.images?.[0] || car.imageMain || "https://fakeimg.pl/600x400/3c3c3b/07aed9?text=Auto";
+        document.getElementById("modalMainImg").src = mainImg;
+        document.getElementById("modalTitle").innerText = `${car.brand} ${car.model}, ${car.year}`;
+        document.getElementById("modalSpecs").innerHTML = `Пробег: ${car.mileage.toLocaleString()} км ${car.transmission ? '• КПП: '+car.transmission : ''}`;
+        document.getElementById("modalPrice").innerText = `${car.price.toLocaleString()} ₽`;
+        document.getElementById("modalFullDesc").innerHTML = (car.description || "Полное описание уточняйте у менеджера.").replace(/\n/g,'<br>');
+        const galleryDiv = document.getElementById("modalGallery");
+        if(car.images && car.images.length) { galleryDiv.innerHTML = car.images.map(img => `<img src="${img}" alt="фото">`).join(''); }
+        else { galleryDiv.innerHTML = `<img src="${mainImg}" alt="фото">`; }
+        document.querySelectorAll('#modalGallery img').forEach(img=>{ img.addEventListener('click',()=>{ document.getElementById("modalMainImg").src = img.src; }); });
+        const modalOrderBtn = document.getElementById("modalOrderBtn");
+        const newOrderBtn = modalOrderBtn.cloneNode(true);
+        modalOrderBtn.parentNode.replaceChild(newOrderBtn, modalOrderBtn);
+        newOrderBtn.addEventListener('click', () => { modal.style.display = "none"; openOrderModal(car); });
+        modal.style.display = "flex";
+        document.querySelector('#detailModal .modal-close').onclick = () => modal.style.display = "none";
+    }
+
+    function renderPopularSwiper() {
+        const wrap = document.getElementById("popularCarsWrapper");
+        const popular = currentCarsArray.slice(0, 12);
+        if (!wrap) return;
+        wrap.innerHTML = popular.map(c=>`
+            <div class="swiper-slide">
+                <div class="car-card-img" style="background-image:url('${c.images?.[0] || "https://fakeimg.pl/600x400/3c3c3b/07aed9?text=Auto"}');"></div>
+                <div class="car-card-info">
+                    <h3>${c.brand} ${c.model}</h3>
+                    <div class="product-price">${c.price.toLocaleString()} ₽</div>
+                    <div class="product-specs">${c.year} г. • ${c.mileage.toLocaleString()} км ${c.transmission ? '• '+c.transmission : ''}</div>
+                    <div style="display:flex; gap:8px; margin-top:12px;">
+                        <button class="btn-detail" data-id="${c.id}">Подробнее</button>
+                        <button class="btn-order" data-id="${c.id}">Заказать</button>
+                    </div>
+                </div>
+            </div>
+        `).join('');
+        if (window.popularSwiperInstance) window.popularSwiperInstance.destroy(true, true);
+        window.popularSwiperInstance = new Swiper('.popularSwiper', {
+            loop: true,
+            autoplay: { delay: 4000, disableOnInteraction: false },
+            slidesPerView: 2,
+            spaceBetween: 20,
+            pagination: { el: '.swiper-pagination', clickable: true },
+            breakpoints: { 640: { slidesPerView: 3 }, 1024: { slidesPerView: 4 } }
+        });
+        document.querySelectorAll('#popularCarsWrapper .btn-detail').forEach(btn=>btn.addEventListener('click',()=>openDetailModal(parseInt(btn.dataset.id))));
+        document.querySelectorAll('#popularCarsWrapper .btn-order').forEach(btn=>btn.addEventListener('click',()=>{ const car = currentCarsArray.find(c=>c.id===parseInt(btn.dataset.id)); if(car) openOrderModal(car); }));
+    }
+
+    function bindFiltersUI() {
+        const brandSelect = document.getElementById("filterBrand");
+        const modelSelect = document.getElementById("filterModel");
+        const priceMin = document.getElementById("priceMin");
+        const priceMax = document.getElementById("priceMax");
+        const yearSelect = document.getElementById("filterYear");
+        const mileageMin = document.getElementById("mileageMin");
+        const mileageMax = document.getElementById("mileageMax");
+        const transmissionSelect = document.getElementById("filterTransmission");
+
+        brandSelect.onchange = () => {
+            currentFilter.brand = brandSelect.value;
+            currentFilter.model = "all";
+            updateModelsByBrand();
+            modelSelect.value = "all";
+            renderProducts();
+        };
+        modelSelect.onchange = () => {
+            currentFilter.model = modelSelect.value;
+            renderProducts();
+        };
+        priceMin.oninput = () => { currentFilter.priceMin = +priceMin.value || 0; renderProducts(); };
+        priceMax.oninput = () => { currentFilter.priceMax = +priceMax.value || 1e7; renderProducts(); };
+        yearSelect.onchange = () => { currentFilter.year = yearSelect.value; renderProducts(); };
+        mileageMin.oninput = () => { currentFilter.mileageMin = +mileageMin.value || 0; renderProducts(); };
+        mileageMax.oninput = () => { currentFilter.mileageMax = +mileageMax.value || 500000; renderProducts(); };
+        transmissionSelect.onchange = () => { currentFilter.transmission = transmissionSelect.value; renderProducts(); };
+
+        document.getElementById("resetFiltersBtn").onclick = () => {
+            currentFilter = { brand:"all", model:"all", priceMin:0, priceMax:1e7, year:"all", mileageMin:0, mileageMax:500000, transmission:"all" };
+            brandSelect.value = "all";
+            updateModelsByBrand();
+            modelSelect.value = "all";
+            priceMin.value = 0;
+            priceMax.value = 1e7;
+            yearSelect.value = "all";
+            mileageMin.value = 0;
+            mileageMax.value = 500000;
+            transmissionSelect.value = "all";
+            renderProducts();
+        };
+    }
+
+    function refreshCatalog() {
+        const script = document.createElement('script');
+        script.src = 'cars-data.js?t=' + Date.now();
+        script.onload = () => {
+            if (typeof cars !== 'undefined') { 
+                currentCarsArray = [...cars]; 
+                populateFiltersFromData(); 
+                renderPopularSwiper(); 
+                renderProducts(); 
+                alert("Каталог обновлён! Загружено " + currentCarsArray.length + " автомобилей."); 
+            }
+        };
+        script.onerror = () => { alert("Ошибка загрузки cars-data.js"); };
+        document.head.appendChild(script);
+        setTimeout(() => document.head.removeChild(script), 100);
+    }
+
+    // Бургер-меню
+    const burgerBtn = document.getElementById("burgerBtn");
+    const mobileNav = document.getElementById("mobileNav");
+    burgerBtn.addEventListener("click", () => { if (mobileNav.style.display === "flex") mobileNav.style.display = "none"; else mobileNav.style.display = "flex"; });
+    document.addEventListener("click", (e) => { if (!burgerBtn.contains(e.target) && !mobileNav.contains(e.target)) mobileNav.style.display = "none"; });
+    window.onclick = (e) => { if (e.target.classList.contains('modal')) e.target.style.display = "none"; };
+    document.getElementById("closeOrderModal")?.addEventListener('click', () => document.getElementById("orderModal").style.display = "none");
+    document.getElementById("forceUpdateBtn").addEventListener("click", refreshCatalog);
+    
+    loadBannersFromFolder();
+    populateFiltersFromData();
+    renderPopularSwiper();
+    renderProducts();
+    bindFiltersUI();
+</script>
+</body>
+</html>
