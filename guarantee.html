@@ -3,7 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <meta name="description" content="Автомобили с пробегом в Ярославле. Автосалон Юникар на Полушкина Роща, 16Г.">
+    <meta name="keywords" content="авто с пробегом, купить авто в Ярославле, автосалон Юникар, выкуп авто, кредит на авто, Полушкина Роща 16Г">
     <title>ЮНИКАР | У нас не откажут — кредит и рассрочка</title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
@@ -42,7 +45,7 @@
             width: auto;
         }
         .logo-text {
-            font-size: 1.2rem;
+            font-size: 1.08rem;
             font-weight: 500;
             color: #6c757d;
         }
@@ -58,6 +61,18 @@
             transition: 0.2s;
             padding: 0.5rem 1rem;
             border-radius: 6px;
+            position: relative;
+            display: inline-block;
+        }
+        .nav-menu a::before {
+            content: attr(data-text);
+            font-weight: 800;
+            display: block;
+            height: 0;
+            visibility: hidden;
+            overflow: hidden;
+            user-select: none;
+            pointer-events: none;
         }
         .nav-menu a:hover, .nav-menu a.active {
             color: black;
@@ -98,7 +113,7 @@
             padding: 2rem 1.5rem;
         }
         .page-hero {
-            background: linear-gradient(135deg, #1e2a3a 0%, #0f172a 100%);
+            background: linear-gradient(135deg, var(--primary-blue) 0%, #055a70 100%);
             border-radius: 12px;
             padding: 2rem;
             color: white;
@@ -211,13 +226,19 @@
             text-align: center;
             padding: 1.8rem;
         }
+        footer p { font-size: 0.7rem; margin-bottom: 0.3rem; }
         footer a { color: #ccc; text-decoration: none; }
         @media (max-width: 768px) {
-            .header-container { flex-direction: column; }
+            .header-container { flex-direction: row; justify-content: space-between; gap: 0.5rem; }
+            .burger-menu { order: 2; display: block; }
+            .logo-area { order: 1; }
             .nav-menu { display: none; }
-            .burger-menu { display: block; }
+            .mobile-nav { display: none; }
+            .mobile-nav.open { display: flex; }
         }
-        @media (min-width: 769px) { .mobile-nav { display: none !important; } }
+        @media (min-width: 769px) {
+            .mobile-nav { display: none !important; }
+        }
     </style>
 </head>
 <body>
@@ -225,18 +246,18 @@
     <div class="header-container">
         <div class="logo-area">
             <img src="logo.png" alt="ЮНИКАР" onerror="this.src='https://fakeimg.pl/200x60/3c3c3b/07aed9?text=ЮНИКАР'">
-            <div class="logo-text">Авто с пробегом в Ярославле</div>
+            <div class="logo-text">Честные авто с пробегом в Ярославле.</div>
         </div>
+        <button class="burger-menu" id="burgerBtn"><i class="fas fa-bars"></i></button>
         <nav class="nav-menu">
             <ul>
-                <li><a href="index.html">Авто в наличии</a></li>
-                <li><a href="buyout.html">Выкупим</a></li>
-                <li><a href="guarantee.html" class="active">У нас не откажут</a></li>
-                <li><a href="contacts.html">Контакты</a></li>
-                <li><a href="privacy.html">Политика</a></li>
+                <li><a href="index.html" data-text="Авто в наличии">Авто в наличии</a></li>
+                <li><a href="buyout.html" data-text="Выкупим">Выкупим</a></li>
+                <li><a href="guarantee.html" class="active" data-text="У нас не откажут">У нас не откажут</a></li>
+                <li><a href="contacts.html" data-text="Контакты">Контакты</a></li>
+                <li><a href="privacy.html" data-text="Политика">Политика</a></li>
             </ul>
         </nav>
-        <button class="burger-menu" id="burgerBtn"><i class="fas fa-bars"></i></button>
     </div>
     <div class="mobile-nav" id="mobileNav">
         <a href="index.html">Авто в наличии</a>
@@ -270,7 +291,6 @@
             <h3>Помощь при сложной КИ</h3>
             <p>Долги ФССП, банкротство, отказы — мы найдём вариант. Без страховок и навязанных допов.</p>
         </div>
-        <!-- Удалён блок "Для бизнеса и такси" с лизингом для физлиц -->
     </div>
 
     <div style="background: white; border-radius: 12px; padding: 1.5rem; margin: 1.5rem 0;">
@@ -289,7 +309,8 @@
 </div>
 
 <footer>
-    <p>© ЮНИКАР — понятные авто в Ярославле. ул. Полушкина Роща, 16Г</p>
+    <p>© ЮНИКАР — Честные авто с пробегом в Ярославле.</p>
+    <p>г.Ярославль, ул. Полушкина Роща, 16Г</p>
     <p><a href="privacy.html">Политика конфиденциальности</a></p>
 </footer>
 
@@ -327,7 +348,7 @@
 </div>
 
 <script>
-    const YOUR_EMAIL = "unikal@yandex.ru";
+    const YOUR_EMAIL = "avto.marketolog1@yandex.ru";
     const creditForm = document.getElementById("creditForm");
     if (creditForm) {
         creditForm.action = `https://formsubmit.co/${YOUR_EMAIL}`;
@@ -342,12 +363,40 @@
 
     const burgerBtn = document.getElementById("burgerBtn");
     const mobileNav = document.getElementById("mobileNav");
-    burgerBtn.addEventListener("click", () => {
-        if (mobileNav.style.display === "flex") mobileNav.style.display = "none";
-        else mobileNav.style.display = "flex";
+
+    function toggleMenu(show) {
+        if (show === undefined) {
+            if (mobileNav.style.display === "flex") {
+                mobileNav.style.display = "none";
+                mobileNav.classList.remove("open");
+            } else {
+                mobileNav.style.display = "flex";
+                mobileNav.classList.add("open");
+            }
+        } else {
+            mobileNav.style.display = show ? "flex" : "none";
+            if (show) mobileNav.classList.add("open");
+            else mobileNav.classList.remove("open");
+        }
+    }
+
+    toggleMenu(false);
+
+    burgerBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        toggleMenu();
     });
+
     document.addEventListener("click", (e) => {
-        if (!burgerBtn.contains(e.target) && !mobileNav.contains(e.target)) mobileNav.style.display = "none";
+        if (!burgerBtn.contains(e.target) && !mobileNav.contains(e.target)) {
+            toggleMenu(false);
+        }
+    });
+
+    document.querySelectorAll('.mobile-nav a').forEach(link => {
+        link.addEventListener('click', () => {
+            toggleMenu(false);
+        });
     });
 </script>
 </body>
