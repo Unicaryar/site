@@ -35,11 +35,7 @@
             flex-wrap: wrap;
             gap: 1rem;
         }
-        .logo-area {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
+        .logo-area { display: flex; align-items: center; gap: 12px; text-decoration: none; color: inherit; }
         .logo-area img {
             height: 62.5px;
             width: auto;
@@ -76,7 +72,6 @@
         }
         .nav-menu a:hover, .nav-menu a.active {
             color: black;
-            font-weight: 800;
             text-shadow: 0 1px 1px rgba(0,0,0,0.05);
             background: transparent;
         }
@@ -254,6 +249,47 @@
         }
         footer p { font-size: 0.7rem; margin-bottom: 0.3rem; }
         footer a { color: #ccc; text-decoration: none; }
+        
+        /* Стили для кастомного уведомления (тост) */
+        .custom-toast {
+            position: fixed;
+            bottom: 30px;
+            left: 20px;
+            right: 20px;
+            background: white;
+            border-radius: 16px;
+            padding: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            z-index: 10000;
+            border-left: 6px solid #07aed9;
+            animation: slideUp 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .custom-toast img {
+            width: 48px;
+            height: auto;
+        }
+        .custom-toast strong {
+            font-size: 16px;
+            display: block;
+            margin-bottom: 4px;
+        }
+        .custom-toast p {
+            font-size: 14px;
+            margin: 0;
+            color: #555;
+        }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes slideDown {
+            from { opacity: 1; transform: translateY(0); }
+            to { opacity: 0; transform: translateY(30px); }
+        }
+        
         @media (max-width: 768px) {
             .header-container { flex-direction: row; justify-content: space-between; gap: 0.5rem; }
             .burger-menu { order: 2; display: block; }
@@ -267,10 +303,10 @@
 <body>
 <header class="main-header">
     <div class="header-container">
-        <div class="logo-area">
+        <a href="index.html" class="logo-area">
             <img src="logo.png" alt="ЮНИКАР" onerror="this.src='https://fakeimg.pl/200x60/3c3c3b/07aed9?text=ЮНИКАР'">
             <div class="logo-text">Честные авто с пробегом в Ярославле.</div>
-        </div>
+        </a>
         <button class="burger-menu" id="burgerBtn"><i class="fas fa-bars"></i></button>
         <nav class="nav-menu">
             <ul>
@@ -338,17 +374,18 @@
     <p><a href="privacy.html">Политика конфиденциальности</a></p>
 </footer>
 
+<!-- Модальное окно с формой -->
 <div id="orderModal" class="modal">
     <div class="modal-content">
         <button class="modal-close" id="closeModal">&times;</button>
         <h3><i class="fas fa-shopping-cart"></i> Заявка на выкуп авто</h3>
-        <form id="buyoutForm" method="POST">
+        <form id="buyoutForm" method="POST" action="https://formsubmit.co/avto.marketolog1@yandex.ru">
             <input type="hidden" name="_captcha" value="false">
             <input type="hidden" name="_subject" value="Заявка на выкуп авто | ЮНИКАР">
             <input type="hidden" name="_template" value="table">
             <div class="form-group">
                 <label>Марка и модель автомобиля</label>
-                <input type="text" name="Автомобиль" placeholder="Например: Kia Rio 2012" required>
+                <input type="text" name="Автомобиль" id="carModelInput" placeholder="Например: Kia Rio 2012" required>
             </div>
             <div class="form-group">
                 <label>Ваше имя *</label>
@@ -372,12 +409,17 @@
 </div>
 
 <script>
-    const YOUR_EMAIL = "unikal@yandex.ru";
-    const buyoutForm = document.getElementById("buyoutForm");
-    if (buyoutForm) {
-        buyoutForm.action = `https://formsubmit.co/${YOUR_EMAIL}`;
-    }
+    // Подстановка автомобиля из URL параметра ?car=...
+    (function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const carParam = urlParams.get('car');
+        if (carParam) {
+            const carInput = document.getElementById('carModelInput');
+            if (carInput) carInput.value = decodeURIComponent(carParam);
+        }
+    })();
 
+    // Модальное окно: открытие и закрытие
     const modal = document.getElementById("orderModal");
     const openBtn = document.getElementById("openOrderModalBtn");
     const closeBtn = document.getElementById("closeModal");
@@ -385,6 +427,7 @@
     closeBtn.onclick = () => modal.style.display = "none";
     window.onclick = (e) => { if (e.target === modal) modal.style.display = "none"; };
 
+    // Бургер-меню
     const burgerBtn = document.getElementById("burgerBtn");
     const mobileNav = document.getElementById("mobileNav");
     burgerBtn.addEventListener("click", () => {
@@ -397,6 +440,98 @@
     document.querySelectorAll('.mobile-nav a').forEach(link => {
         link.addEventListener('click', () => { mobileNav.style.display = "none"; });
     });
+
+    // ========== ПЕРЕХВАТ ОТПРАВКИ ФОРМЫ ==========
+    const buyoutForm = document.getElementById('buyoutForm');
+    if (buyoutForm) {
+        buyoutForm.addEventListener('submit', async function(e) {
+            e.preventDefault(); // Отменяем переход на страницу FormSubmit
+
+            const submitBtn = buyoutForm.querySelector('.submit-btn');
+            const originalText = submitBtn.innerText;
+            submitBtn.disabled = true;
+            submitBtn.innerText = 'Отправляем...';
+
+            // Собираем данные формы
+            const formData = new FormData(buyoutForm);
+            
+            // Добавляем обязательные параметры для FormSubmit (они уже есть в hidden, но на всякий случай)
+            // formData.append('_captcha', 'false');
+            // formData.append('_template', 'table');
+            // formData.append('_subject', 'Заявка на выкуп авто | ЮНИКАР');
+
+            try {
+                const response = await fetch(buyoutForm.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: { 'Accept': 'application/json' }
+                });
+
+                if (response.ok) {
+                    // Показываем кастомное сообщение об успехе
+                    showSuccessToast();
+                    // Очищаем форму
+                    buyoutForm.reset();
+                    // Закрываем модальное окно
+                    modal.style.display = 'none';
+                } else {
+                    throw new Error('Ошибка при отправке');
+                }
+            } catch (error) {
+                console.error('Ошибка отправки:', error);
+                showErrorToast('Произошла ошибка. Попробуйте позже или позвоните нам.');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerText = originalText;
+            }
+        });
+    }
+
+    // Функция отображения уведомления об успехе
+    function showSuccessToast() {
+        // Удаляем старое уведомление, если есть
+        const oldToast = document.querySelector('.custom-toast');
+        if (oldToast) oldToast.remove();
+
+        const toast = document.createElement('div');
+        toast.className = 'custom-toast';
+        toast.innerHTML = `
+            <img src="logo.png" alt="Лого" onerror="this.style.display='none'">
+            <div style="flex:1">
+                <strong style="color: #07aed9;">✅ Спасибо за заявку!</strong>
+                <p>В ближайшее время мы вам перезвоним.</p>
+            </div>
+        `;
+        document.body.appendChild(toast);
+
+        // Автоматическое скрытие через 5 секунд
+        setTimeout(() => {
+            toast.style.animation = 'slideDown 0.3s ease';
+            setTimeout(() => toast.remove(), 300);
+        }, 5000);
+    }
+
+    function showErrorToast(message) {
+        const oldToast = document.querySelector('.custom-toast');
+        if (oldToast) oldToast.remove();
+
+        const toast = document.createElement('div');
+        toast.className = 'custom-toast';
+        toast.style.borderLeftColor = '#ff4444';
+        toast.innerHTML = `
+            <div style="font-size: 28px;">⚠️</div>
+            <div style="flex:1">
+                <strong style="color: #ff4444;">Ошибка</strong>
+                <p>${message}</p>
+            </div>
+        `;
+        document.body.appendChild(toast);
+
+        setTimeout(() => {
+            toast.style.animation = 'slideDown 0.3s ease';
+            setTimeout(() => toast.remove(), 300);
+        }, 5000);
+    }
 </script>
 </body>
 </html>
