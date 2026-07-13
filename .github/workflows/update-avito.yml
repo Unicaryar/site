@@ -1,0 +1,58 @@
+name: Обновление автомобилей из Avito
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 */3 * * *"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: avito-cars-sync
+  cancel-in-progress: true
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Скачать репозиторий
+        uses: actions/checkout@v4
+
+      - name: Установить Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Установить зависимости
+        run: python -m pip install --upgrade requests
+
+      - name: Получить автомобили из Avito API
+        env:
+          AVITO_CLIENT_ID: ${{ secrets.AVITO_CLIENT_ID }}
+          AVITO_CLIENT_SECRET: ${{ secrets.AVITO_CLIENT_SECRET }}
+        run: python update_avito.py
+
+      - name: Проверить изменения
+        id: changes
+        shell: bash
+        run: |
+          if git diff --quiet -- cars-data.js; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "Каталог не изменился"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            echo "Каталог изменился"
+          fi
+
+      - name: Сохранить обновлённый каталог
+        if: steps.changes.outputs.changed == 'true'
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add cars-data.js
+          git commit -m "Автоматическое обновление каталога из Avito"
+          git push
