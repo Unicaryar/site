@@ -1,4 +1,4 @@
-name: Обновление автомобилей из Avito
+name: Обновление Avito и публикация на Timeweb
 
 on:
   workflow_dispatch:
@@ -9,13 +9,13 @@ permissions:
   contents: write
 
 concurrency:
-  group: avito-cars-sync
+  group: avito-timeweb-sync
   cancel-in-progress: true
 
 jobs:
-  sync:
+  sync-and-deploy:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
 
     steps:
       - name: Скачать репозиторий
@@ -27,7 +27,10 @@ jobs:
           python-version: "3.12"
 
       - name: Установить зависимости
-        run: python -m pip install --upgrade requests
+        run: |
+          python -m pip install --upgrade requests
+          sudo apt-get update
+          sudo apt-get install -y lftp
 
       - name: Получить автомобили из Avito API
         env:
@@ -35,7 +38,7 @@ jobs:
           AVITO_CLIENT_SECRET: ${{ secrets.AVITO_CLIENT_SECRET }}
         run: python update_avito.py
 
-      - name: Проверить изменения
+      - name: Проверить изменения каталога
         id: changes
         shell: bash
         run: |
@@ -47,7 +50,7 @@ jobs:
             echo "Каталог изменился"
           fi
 
-      - name: Сохранить обновлённый каталог
+      - name: Сохранить каталог в GitHub
         if: steps.changes.outputs.changed == 'true'
         shell: bash
         run: |
@@ -56,3 +59,30 @@ jobs:
           git add cars-data.js
           git commit -m "Автоматическое обновление каталога из Avito"
           git push
+
+      - name: Опубликовать cars-data.js на Timeweb
+        env:
+          FTP_SERVER: ${{ secrets.FTP_SERVER }}
+          FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
+          FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
+          FTP_TARGET_DIR: ${{ secrets.FTP_TARGET_DIR }}
+        shell: bash
+        run: |
+          if [ -z "$FTP_SERVER" ] || [ -z "$FTP_USERNAME" ] || [ -z "$FTP_PASSWORD" ]; then
+            echo "Не заданы FTP_SERVER, FTP_USERNAME или FTP_PASSWORD"
+            exit 1
+          fi
+
+          TARGET_DIR="${FTP_TARGET_DIR:-/unicar-yar.ru/public_html}"
+
+          lftp -u "$FTP_USERNAME","$FTP_PASSWORD" "$FTP_SERVER" <<EOF
+          set ftp:passive-mode true
+          set net:max-retries 3
+          set net:timeout 20
+          set ssl:verify-certificate no
+          cd "$TARGET_DIR"
+          put cars-data.js -o cars-data.js
+          bye
+          EOF
+
+          echo "cars-data.js опубликован в $TARGET_DIR"
