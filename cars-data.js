@@ -63,18 +63,6 @@ const cars = [
         "avitoUrl": "https://www.avito.ru/yaroslavl/avtomobili/volkswagen_golf_plus_1.6_mt_2011_172_604_km_8079850665"
     },
     {
-        "id": 8174880440,
-        "brand": "Hyundai",
-        "model": "Sonata",
-        "year": 2010,
-        "price": 610000,
-        "mileage": 261378,
-        "transmission": "механика",
-        "description": "",
-        "images": [],
-        "avitoUrl": "https://www.avito.ru/yaroslavl/avtomobili/hyundai_sonata_2.0_mt_2010_261_378_km_8174880440"
-    },
-    {
         "id": 8079513629,
         "brand": "Ford",
         "model": "Mondeo",
