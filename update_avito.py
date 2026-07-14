@@ -1,15 +1,4 @@
 #!/usr/bin/env python3
-"""
-Синхронизация активных объявлений Avito с cars-data.js сайта Юникар.
-
-Переменные окружения:
-  AVITO_CLIENT_ID
-  AVITO_CLIENT_SECRET
-
-Результат:
-  cars-data.js
-"""
-
 from __future__ import annotations
 
 import html
@@ -27,7 +16,6 @@ TOKEN_URL = f"{BASE_URL}/token"
 ITEMS_URL = f"{BASE_URL}/core/v1/items"
 ACCOUNT_URL = f"{BASE_URL}/core/v1/accounts/self"
 OUTPUT_FILE = "cars-data.js"
-
 TIMEOUT = 30
 PAGE_SIZE = 100
 
@@ -43,14 +31,7 @@ def require_env(name: str) -> str:
     return value
 
 
-def request_json(
-    method: str,
-    url: str,
-    *,
-    headers: dict[str, str] | None = None,
-    params: dict[str, Any] | None = None,
-    data: dict[str, Any] | None = None,
-) -> dict[str, Any]:
+def request_json(method: str, url: str, *, headers=None, params=None, data=None) -> dict[str, Any]:
     response = requests.request(
         method,
         url,
@@ -61,9 +42,9 @@ def request_json(
     )
 
     if response.status_code >= 400:
-        body = response.text[:1000]
         raise AvitoError(
-            f"Avito API вернул HTTP {response.status_code} для {url}: {body}"
+            f"Avito API вернул HTTP {response.status_code} для {url}: "
+            f"{response.text[:1000]}"
         )
 
     try:
@@ -99,7 +80,7 @@ def bearer(token: str) -> dict[str, str]:
     return {
         "Authorization": f"Bearer {token}",
         "Accept": "application/json",
-        "User-Agent": "UnicarWebsiteSync/1.0",
+        "User-Agent": "UnicarWebsiteSync/1.1",
     }
 
 
@@ -108,15 +89,12 @@ def get_account(token: str) -> dict[str, Any]:
 
 
 def extract_list(payload: dict[str, Any]) -> list[dict[str, Any]]:
-    """Поддерживает несколько вариантов обёртки ответа Avito."""
-    candidates = [
+    for value in (
         payload.get("resources"),
         payload.get("items"),
         payload.get("result"),
         payload.get("data"),
-    ]
-
-    for value in candidates:
+    ):
         if isinstance(value, list):
             return [x for x in value if isinstance(x, dict)]
 
@@ -138,11 +116,7 @@ def get_active_items(token: str) -> list[dict[str, Any]]:
             "GET",
             ITEMS_URL,
             headers=bearer(token),
-            params={
-                "status": "active",
-                "page": page,
-                "per_page": PAGE_SIZE,
-            },
+            params={"status": "active", "page": page, "per_page": PAGE_SIZE},
         )
 
         batch = extract_list(payload)
@@ -167,14 +141,17 @@ def first_value(obj: dict[str, Any], *paths: str, default: Any = "") -> Any:
     for path in paths:
         current: Any = obj
         ok = True
+
         for part in path.split("."):
             if isinstance(current, dict) and part in current:
                 current = current[part]
             else:
                 ok = False
                 break
+
         if ok and current not in (None, "", []):
             return current
+
     return default
 
 
@@ -183,6 +160,7 @@ def to_int(value: Any) -> int:
         return 0
     if isinstance(value, (int, float)):
         return int(value)
+
     digits = re.sub(r"[^\d]", "", str(value or ""))
     return int(digits) if digits else 0
 
@@ -197,20 +175,11 @@ def clean_text(value: Any) -> str:
 
 
 def extract_images(item: dict[str, Any]) -> list[str]:
-    raw = first_value(
-        item,
-        "images",
-        "photos",
-        "image_urls",
-        "media.images",
-        default=[],
-    )
-
+    raw = first_value(item, "images", "photos", "image_urls", "media.images", default=[])
     images: list[str] = []
 
     if isinstance(raw, str):
         images.append(raw)
-
     elif isinstance(raw, list):
         for image in raw:
             if isinstance(image, str):
@@ -227,7 +196,6 @@ def extract_images(item: dict[str, Any]) -> list[str]:
                 )
                 if url:
                     images.append(str(url))
-
     elif isinstance(raw, dict):
         for value in raw.values():
             if isinstance(value, str) and value.startswith("http"):
@@ -254,6 +222,7 @@ def extract_images(item: dict[str, Any]) -> list[str]:
 
     result: list[str] = []
     seen: set[str] = set()
+
     for url in images:
         url = str(url).strip()
         if url.startswith("http") and url not in seen:
@@ -276,31 +245,59 @@ def extract_param(item: dict[str, Any], names: tuple[str, ...]) -> str:
         for entry in raw:
             if not isinstance(entry, dict):
                 continue
+
             label = str(
                 first_value(entry, "name", "title", "label", "slug", default="")
             ).lower()
+
             if any(name.lower() == label for name in names):
-                return str(first_value(entry, "value", "value_title", "text", default=""))
+                return str(
+                    first_value(entry, "value", "value_title", "text", default="")
+                )
 
     return ""
 
 
-def parse_title(title: str) -> tuple[str, str, int]:
+def parse_title(title: str) -> tuple[str, str, int, int, str]:
     title = re.sub(r"\s+", " ", title).strip()
+
     year_match = re.search(r"\b(19\d{2}|20\d{2})\b", title)
     year = int(year_match.group(1)) if year_match else 0
 
-    without_year = re.sub(r"\b(19\d{2}|20\d{2})\b", "", title)
-    without_year = re.sub(r"[,|•]+", " ", without_year)
-    parts = without_year.split()
+    mileage_match = re.search(
+        r"(\d{1,3}(?:\s\d{3})+|\d+)\s*км\b",
+        title,
+        flags=re.I,
+    )
+    mileage = int(re.sub(r"\D", "", mileage_match.group(1))) if mileage_match else 0
 
+    transmission = ""
+    if re.search(r"\bMT\b", title, flags=re.I):
+        transmission = "механика"
+    elif re.search(r"\bAT\b", title, flags=re.I):
+        transmission = "автомат"
+    elif re.search(r"\bCVT\b", title, flags=re.I):
+        transmission = "вариатор"
+    elif re.search(r"\bAMT\b", title, flags=re.I):
+        transmission = "робот"
+
+    clean = title
+    clean = re.sub(r"(\d{1,3}(?:\s\d{3})+|\d+)\s*км\b", "", clean, flags=re.I)
+    clean = re.sub(r"\b(19\d{2}|20\d{2})\b", "", clean)
+    clean = re.sub(r"\b(?:MT|AT|CVT|AMT)\b", "", clean, flags=re.I)
+    clean = re.sub(r"\b\d+[.,]\d+\b", "", clean)
+    clean = re.sub(r"\s+", " ", clean).strip(" ,.-")
+
+    parts = clean.split()
     brand = parts[0] if parts else ""
     model = " ".join(parts[1:]).strip() if len(parts) > 1 else ""
-    return brand, model, year
+
+    return brand, model, year, mileage, transmission
 
 
 def normalize_transmission(value: str) -> str:
     s = value.lower().strip()
+
     if not s:
         return ""
     if any(x in s for x in ("механ", "мкпп")) or s == "mt":
@@ -311,14 +308,21 @@ def normalize_transmission(value: str) -> str:
         return "робот"
     if any(x in s for x in ("вариатор", "cvt")):
         return "вариатор"
+
     return value
 
 
 def normalize_item(item: dict[str, Any]) -> dict[str, Any]:
     item_id = to_int(first_value(item, "id", "item_id", "avito_id"))
-
     title = str(first_value(item, "title", "name", default="")).strip()
-    parsed_brand, parsed_model, parsed_year = parse_title(title)
+
+    (
+        parsed_brand,
+        parsed_model,
+        parsed_year,
+        parsed_mileage,
+        parsed_transmission,
+    ) = parse_title(title)
 
     brand = str(
         first_value(item, "make", "brand", "params.make", default="")
@@ -341,15 +345,22 @@ def normalize_item(item: dict[str, Any]) -> dict[str, Any]:
     mileage = to_int(
         first_value(item, "mileage", "kilometrage", "params.mileage", default="")
         or extract_param(item, ("Пробег", "mileage", "kilometrage"))
+        or parsed_mileage
     )
 
     transmission_raw = str(
         first_value(item, "transmission", "params.transmission", default="")
         or extract_param(item, ("Коробка передач", "КПП", "transmission"))
+        or parsed_transmission
     )
 
-    price = to_int(first_value(item, "price", "price.value", "price_amount", default=0))
-    description = clean_text(first_value(item, "description", "text", default=""))
+    price = to_int(
+        first_value(item, "price", "price.value", "price_amount", default=0)
+    )
+
+    description = clean_text(
+        first_value(item, "description", "text", default="")
+    )
 
     return {
         "id": item_id,
@@ -361,13 +372,21 @@ def normalize_item(item: dict[str, Any]) -> dict[str, Any]:
         "transmission": normalize_transmission(transmission_raw),
         "description": description,
         "images": extract_images(item),
-        "avitoUrl": str(first_value(item, "url", "item_url", "link", default="")),
+        "avitoUrl": str(
+            first_value(item, "url", "item_url", "link", default="")
+        ),
     }
 
 
 def is_car(car: dict[str, Any]) -> bool:
-    # Не публикуем полностью пустые записи.
-    return bool(car["id"] and (car["brand"] or car["model"]) and car["price"])
+    url = str(car.get("avitoUrl", "")).lower()
+
+    return (
+        bool(car.get("id"))
+        and "/avtomobili/" in url
+        and int(car.get("year", 0)) > 0
+        and int(car.get("price", 0)) > 0
+    )
 
 
 def write_cars_js(cars: list[dict[str, Any]]) -> None:
@@ -398,10 +417,17 @@ def main() -> int:
         )
 
         raw_items = get_active_items(token)
-        cars = [normalize_item(item) for item in raw_items]
-        cars = [car for car in cars if is_car(car)]
+        normalized = [normalize_item(item) for item in raw_items]
+        cars = [car for car in normalized if is_car(car)]
 
-        cars.sort(key=lambda car: (car["year"], car["price"]), reverse=True)
+        cars.sort(
+            key=lambda car: (
+                int(car.get("year", 0)),
+                int(car.get("price", 0)),
+            ),
+            reverse=True,
+        )
+
         write_cars_js(cars)
 
         print(f"Активных объявлений получено: {len(raw_items)}")
@@ -409,8 +435,7 @@ def main() -> int:
 
         if raw_items and not cars:
             raise AvitoError(
-                "API вернул объявления, но ни одно не удалось преобразовать в автомобиль. "
-                "Посмотрите структуру ответа в документации вашего приложения Avito API."
+                "API вернул объявления, но ни одно не прошло фильтр автомобилей."
             )
 
         return 0
