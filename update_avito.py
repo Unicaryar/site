@@ -36,6 +36,7 @@ ITEMS_URL = f"{BASE_URL}/core/v1/items"
 ACCOUNT_URL = f"{BASE_URL}/core/v1/accounts/self"
 
 XML_FILE = Path("12981.xml")
+MEDIA_FILE = Path("cars-media.json")
 OUTPUT_FILE = Path("cars-data.js")
 
 TIMEOUT = 30
@@ -774,6 +775,123 @@ def merge_car(api_car: dict[str, Any], xml_car: XmlCar | None) -> dict[str, Any]
     return merged
 
 
+def load_manual_media(path: Path) -> dict[str, dict[str, Any]]:
+    if not path.exists():
+        print(f"Предупреждение: {path} не найден")
+        return {}
+
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+    except (json.JSONDecodeError, OSError) as exc:
+        raise AvitoError(f"Не удалось прочитать {path}: {exc}") from exc
+
+    if not isinstance(payload, dict):
+        raise AvitoError(f"{path} должен содержать JSON-объект")
+
+    result: dict[str, dict[str, Any]] = {}
+    for item_id, media in payload.items():
+        if not isinstance(media, dict):
+            continue
+
+        normalized = dict(media)
+        raw_images = normalized.get("images", [])
+        if not isinstance(raw_images, list):
+            raw_images = []
+
+        normalized["images"] = [
+            str(url).strip()
+            for url in raw_images
+            if str(url).strip().startswith(("http://", "https://", "/"))
+        ]
+        normalized["description"] = clean_text(normalized.get("description", ""))
+        result[str(item_id)] = normalized
+
+    print(f"Ручных карточек в {path}: {len(result)}")
+    return result
+
+
+def load_previous_cars(path: Path) -> dict[str, dict[str, Any]]:
+    if not path.exists():
+        return {}
+
+    try:
+        content = path.read_text(encoding="utf-8")
+        match = re.search(r"const\s+cars\s*=\s*(\[.*\])\s*;\s*$", content, flags=re.S)
+        if not match:
+            return {}
+
+        payload = json.loads(match.group(1))
+    except (OSError, json.JSONDecodeError):
+        return {}
+
+    if not isinstance(payload, list):
+        return {}
+
+    result: dict[str, dict[str, Any]] = {}
+    for car in payload:
+        if isinstance(car, dict) and car.get("id"):
+            result[str(car["id"])] = car
+
+    print(f"Предыдущих карточек сохранено: {len(result)}")
+    return result
+
+
+def apply_media_fields(
+    car: dict[str, Any],
+    source: dict[str, Any] | None,
+    *,
+    overwrite: bool,
+) -> dict[str, Any]:
+    if not source:
+        return car
+
+    fields = (
+        "engine",
+        "drive",
+        "owners",
+        "bodyType",
+        "color",
+        "fuel",
+        "power",
+        "vin",
+        "description",
+        "images",
+        "video",
+    )
+
+    for field in fields:
+        value = source.get(field)
+        if value in (None, "", []):
+            continue
+
+        if overwrite or car.get(field) in (None, "", []):
+            car[field] = value
+
+    return car
+
+
+def merge_all_sources(
+    api_car: dict[str, Any],
+    xml_car: XmlCar | None,
+    previous: dict[str, dict[str, Any]],
+    manual: dict[str, dict[str, Any]],
+) -> dict[str, Any]:
+    merged = merge_car(api_car, xml_car)
+    item_id = str(api_car["id"])
+
+    merged = apply_media_fields(
+        merged,
+        previous.get(item_id),
+        overwrite=False,
+    )
+    merged = apply_media_fields(
+        merged,
+        manual.get(item_id),
+        overwrite=True,
+    )
+
+    return merged
+
 def write_cars_js(cars: list[dict[str, Any]]) -> None:
     content = (
         "// ========== АВТОМОБИЛИ ИЗ AVITO API + XML ==========\n"
@@ -805,12 +923,17 @@ def main() -> int:
         api_cars = [car for car in api_cars if is_car(car)]
 
         xml_cars = parse_xml_catalog(XML_FILE)
+        manual_media = load_manual_media(MEDIA_FILE)
+        previous_cars = load_previous_cars(OUTPUT_FILE)
 
         merged_cars: list[dict[str, Any]] = []
         matched_count = 0
+        manual_count = 0
 
         for api_car in api_cars:
             xml_match = find_xml_match(api_car, xml_cars)
+            item_id = str(api_car["id"])
+
             if xml_match is not None:
                 matched_count += 1
                 print(
@@ -825,7 +948,18 @@ def main() -> int:
                     f"{api_car['mileage']} км",
                 )
 
-            merged_cars.append(merge_car(api_car, xml_match))
+            if item_id in manual_media:
+                manual_count += 1
+                print("Ручные данные применены:", item_id)
+
+            merged_cars.append(
+                merge_all_sources(
+                    api_car,
+                    xml_match,
+                    previous_cars,
+                    manual_media,
+                )
+            )
 
         merged_cars.sort(
             key=lambda car: (
@@ -840,6 +974,7 @@ def main() -> int:
         print(f"Активных объявлений Avito получено: {len(raw_items)}")
         print(f"Автомобилей после фильтра: {len(api_cars)}")
         print(f"Карточек дополнено из XML: {matched_count}")
+        print(f"Карточек дополнено вручную: {manual_count}")
         print(f"Результат записан в {OUTPUT_FILE}")
 
         if raw_items and not api_cars:
