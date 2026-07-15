@@ -28,6 +28,8 @@ from pathlib import Path
 from typing import Any, Iterable
 
 import requests
+from bs4 import BeautifulSoup
+from urllib.parse import urlparse
 
 
 BASE_URL = "https://api.avito.ru"
@@ -38,6 +40,8 @@ ACCOUNT_URL = f"{BASE_URL}/core/v1/accounts/self"
 XML_FILE = Path("12981.xml")
 MEDIA_FILE = Path("cars-media.json")
 OUTPUT_FILE = Path("cars-data.js")
+IMAGE_DIR = Path("car-images")
+MAX_PAGE_IMAGES = 20
 
 TIMEOUT = 30
 PAGE_SIZE = 100
@@ -892,6 +896,202 @@ def merge_all_sources(
 
     return merged
 
+def page_headers() -> dict[str, str]:
+    return {
+        "User-Agent": (
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+            "AppleWebKit/537.36 (KHTML, like Gecko) "
+            "Chrome/131.0.0.0 Safari/537.36"
+        ),
+        "Accept": (
+            "text/html,application/xhtml+xml,application/xml;q=0.9,"
+            "image/avif,image/webp,image/apng,*/*;q=0.8"
+        ),
+        "Accept-Language": "ru-RU,ru;q=0.9,en;q=0.7",
+        "Cache-Control": "no-cache",
+        "Pragma": "no-cache",
+    }
+
+
+def normalize_image_url(url: str) -> str:
+    value = html.unescape(str(url or "")).strip()
+    value = value.replace(r"\/", "/").replace(r"\u0026", "&")
+    if value.startswith("//"):
+        value = "https:" + value
+    return value
+
+
+def image_extension(url: str, content_type: str = "") -> str:
+    content_type = content_type.lower()
+    if "png" in content_type:
+        return ".png"
+    if "webp" in content_type:
+        return ".webp"
+    if "avif" in content_type:
+        return ".avif"
+
+    suffix = Path(urlparse(url).path).suffix.lower()
+    if suffix in {".jpg", ".jpeg", ".png", ".webp", ".avif"}:
+        return ".jpg" if suffix == ".jpeg" else suffix
+    return ".jpg"
+
+
+def extract_page_data(page_html: str) -> tuple[list[str], str]:
+    soup = BeautifulSoup(page_html, "html.parser")
+    images: list[str] = []
+    description = ""
+
+    # JSON-LD: самый устойчивый источник, если Авито его отдаёт.
+    for script in soup.find_all("script", attrs={"type": "application/ld+json"}):
+        raw = script.string or script.get_text()
+        if not raw:
+            continue
+        try:
+            payload = json.loads(raw)
+        except json.JSONDecodeError:
+            continue
+
+        objects = payload if isinstance(payload, list) else [payload]
+        for obj in objects:
+            if not isinstance(obj, dict):
+                continue
+
+            raw_images = obj.get("image", [])
+            if isinstance(raw_images, str):
+                raw_images = [raw_images]
+            if isinstance(raw_images, list):
+                for image in raw_images:
+                    if isinstance(image, str):
+                        images.append(normalize_image_url(image))
+                    elif isinstance(image, dict):
+                        candidate = image.get("url") or image.get("contentUrl")
+                        if candidate:
+                            images.append(normalize_image_url(candidate))
+
+            if not description:
+                description = clean_text(obj.get("description", ""))
+
+    # Open Graph — хотя бы главное фото и краткое описание.
+    for meta in soup.find_all("meta"):
+        prop = str(meta.get("property") or meta.get("name") or "").lower()
+        content = str(meta.get("content") or "").strip()
+        if not content:
+            continue
+
+        if prop in {"og:image", "twitter:image", "twitter:image:src"}:
+            images.append(normalize_image_url(content))
+        elif not description and prop in {"og:description", "description"}:
+            description = clean_text(content)
+
+    # Дополнительный поиск CDN-фотографий в исходном HTML/JSON страницы.
+    patterns = [
+        r'https?:\\?/\\?/[^"\']+?\.(?:jpg|jpeg|webp|png)(?:\?[^"\']*)?',
+        r'https?:\\\\/\\\\/[^"\']+?\.(?:jpg|jpeg|webp|png)(?:\\u0026[^"\']*)?',
+    ]
+    for pattern in patterns:
+        for match in re.findall(pattern, page_html, flags=re.I):
+            candidate = normalize_image_url(match)
+            if "avito" in candidate.lower():
+                images.append(candidate)
+
+    result: list[str] = []
+    seen: set[str] = set()
+    for url in images:
+        url = normalize_image_url(url)
+        if (
+            url.startswith(("http://", "https://"))
+            and url not in seen
+            and not any(term in url.lower() for term in ("logo", "avatar", "icon", "favicon"))
+        ):
+            result.append(url)
+            seen.add(url)
+
+    return result[:MAX_PAGE_IMAGES], description
+
+
+def download_page_images(
+    item_id: int,
+    image_urls: list[str],
+    session: requests.Session,
+) -> list[str]:
+    if not image_urls:
+        return []
+
+    target_dir = IMAGE_DIR / str(item_id)
+    target_dir.mkdir(parents=True, exist_ok=True)
+
+    # Удаляем только старые автоматически скачанные изображения этой карточки.
+    for old_file in target_dir.iterdir():
+        if old_file.is_file():
+            old_file.unlink()
+
+    local_paths: list[str] = []
+    for index, image_url in enumerate(image_urls, start=1):
+        try:
+            response = session.get(
+                image_url,
+                headers={
+                    **page_headers(),
+                    "Referer": "https://www.avito.ru/",
+                },
+                timeout=TIMEOUT,
+            )
+            response.raise_for_status()
+
+            content_type = response.headers.get("Content-Type", "")
+            if not content_type.lower().startswith("image/"):
+                continue
+
+            extension = image_extension(image_url, content_type)
+            filename = f"{index:02d}{extension}"
+            file_path = target_dir / filename
+            file_path.write_bytes(response.content)
+            local_paths.append(f"/car-images/{item_id}/{filename}")
+
+        except requests.RequestException as exc:
+            print(f"Не удалось скачать фото {image_url}: {exc}")
+
+    return local_paths
+
+
+def scrape_avito_page(
+    car: dict[str, Any],
+    session: requests.Session,
+) -> dict[str, Any]:
+    url = str(car.get("avitoUrl", "")).strip()
+    if not url:
+        return {}
+
+    try:
+        response = session.get(
+            url,
+            headers=page_headers(),
+            timeout=TIMEOUT,
+            allow_redirects=True,
+        )
+        response.raise_for_status()
+    except requests.RequestException as exc:
+        print(f"Страница Avito недоступна для {car['id']}: {exc}")
+        return {}
+
+    lower_text = response.text.lower()
+    if any(marker in lower_text for marker in ("captcha", "доступ ограничен", "подозрительная активность")):
+        print(f"Avito показал защитную страницу для {car['id']}")
+        return {}
+
+    image_urls, description = extract_page_data(response.text)
+    local_images = download_page_images(int(car["id"]), image_urls, session)
+
+    print(
+        f"Страница Avito {car['id']}: "
+        f"найдено ссылок {len(image_urls)}, скачано фото {len(local_images)}"
+    )
+
+    return {
+        "images": local_images,
+        "description": description,
+    }
+
 def write_cars_js(cars: list[dict[str, Any]]) -> None:
     content = (
         "// ========== АВТОМОБИЛИ ИЗ AVITO API + XML ==========\n"
@@ -929,6 +1129,8 @@ def main() -> int:
         merged_cars: list[dict[str, Any]] = []
         matched_count = 0
         manual_count = 0
+        scraped_count = 0
+        page_session = requests.Session()
 
         for api_car in api_cars:
             xml_match = find_xml_match(api_car, xml_cars)
@@ -952,14 +1154,26 @@ def main() -> int:
                 manual_count += 1
                 print("Ручные данные применены:", item_id)
 
-            merged_cars.append(
-                merge_all_sources(
-                    api_car,
-                    xml_match,
-                    previous_cars,
-                    manual_media,
-                )
+            merged = merge_all_sources(
+                api_car,
+                xml_match,
+                previous_cars,
+                manual_media,
             )
+
+            # Открываем страницу только если после API, XML, ручных данных
+            # и предыдущего каталога фотографий всё ещё нет.
+            if not merged.get("images") or not merged.get("description"):
+                page_data = scrape_avito_page(api_car, page_session)
+                if page_data.get("images") or page_data.get("description"):
+                    scraped_count += 1
+                    merged = apply_media_fields(
+                        merged,
+                        page_data,
+                        overwrite=False,
+                    )
+
+            merged_cars.append(merged)
 
         merged_cars.sort(
             key=lambda car: (
@@ -975,6 +1189,7 @@ def main() -> int:
         print(f"Автомобилей после фильтра: {len(api_cars)}")
         print(f"Карточек дополнено из XML: {matched_count}")
         print(f"Карточек дополнено вручную: {manual_count}")
+        print(f"Карточек дополнено со страниц Avito: {scraped_count}")
         print(f"Результат записан в {OUTPUT_FILE}")
 
         if raw_items and not api_cars:
