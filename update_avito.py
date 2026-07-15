@@ -24,12 +24,11 @@ import sys
 import time
 import xml.etree.ElementTree as ET
 from dataclasses import dataclass
+from difflib import SequenceMatcher
 from pathlib import Path
 from typing import Any, Iterable
 
 import requests
-from bs4 import BeautifulSoup
-from urllib.parse import urlparse
 
 
 BASE_URL = "https://api.avito.ru"
@@ -40,8 +39,6 @@ ACCOUNT_URL = f"{BASE_URL}/core/v1/accounts/self"
 XML_FILE = Path("12981.xml")
 MEDIA_FILE = Path("cars-media.json")
 OUTPUT_FILE = Path("cars-data.js")
-IMAGE_DIR = Path("car-images")
-MAX_PAGE_IMAGES = 20
 
 TIMEOUT = 30
 PAGE_SIZE = 100
@@ -682,77 +679,255 @@ def parse_xml_catalog(path: Path) -> list[XmlCar]:
     return result
 
 
-def model_matches(api_model: str, xml_model: str) -> bool:
-    api_value = normalize_token(api_model)
-    xml_value_normalized = normalize_token(xml_model)
+def compact_token(value: Any) -> str:
+    """Нормализованная строка без пробелов для устойчивого сравнения."""
+    return normalize_token(value).replace(" ", "")
 
-    if not api_value or not xml_value_normalized:
+
+def normalized_words(value: Any) -> set[str]:
+    return {
+        word
+        for word in normalize_token(value).split()
+        if len(word) > 1
+    }
+
+
+def extract_engine_number(value: Any) -> float | None:
+    match = re.search(r"\b(\d+[.,]\d+)\b", str(value or ""))
+    if not match:
+        return None
+
+    try:
+        return float(match.group(1).replace(",", "."))
+    except ValueError:
+        return None
+
+
+def model_similarity(api_model: str, xml_model: str) -> float:
+    """
+    Возвращает похожесть модели от 0 до 1.
+    Учитывает варианты вроде:
+      Duster ↔ Duster 2.0 4WD
+      Golf Plus ↔ GolfPlus
+      EX25 ↔ EX 25
+    """
+    api_normalized = normalize_token(api_model)
+    xml_normalized = normalize_token(xml_model)
+
+    if not api_normalized or not xml_normalized:
+        return 0.0
+
+    api_compact = compact_token(api_model)
+    xml_compact = compact_token(xml_model)
+
+    if api_compact == xml_compact:
+        return 1.0
+
+    if api_compact in xml_compact or xml_compact in api_compact:
+        shorter = min(len(api_compact), len(xml_compact))
+        longer = max(len(api_compact), len(xml_compact))
+        return max(0.88, shorter / longer)
+
+    api_words = normalized_words(api_model)
+    xml_words = normalized_words(xml_model)
+
+    word_score = 0.0
+    if api_words and xml_words:
+        intersection = len(api_words & xml_words)
+        union = len(api_words | xml_words)
+        word_score = intersection / union if union else 0.0
+
+    sequence_score = SequenceMatcher(
+        None,
+        api_compact,
+        xml_compact,
+    ).ratio()
+
+    return max(word_score, sequence_score)
+
+
+def source_id_matches(api_car: dict[str, Any], xml_car: XmlCar) -> bool:
+    """
+    Ищет точное совпадение по Avito ID, если XML хранит ID или ссылку.
+    """
+    api_id = str(api_car.get("id", "")).strip()
+    source = str(xml_car.source_id or "").strip()
+
+    if not api_id or not source:
         return False
 
-    return (
-        api_value == xml_value_normalized
-        or api_value in xml_value_normalized
-        or xml_value_normalized in api_value
+    return api_id == source or api_id in source
+
+
+def match_score(api_car: dict[str, Any], xml_car: XmlCar) -> tuple[int, list[str]]:
+    """
+    Возвращает балл и объяснение.
+
+    Жёсткие ограничения:
+    - марка должна совпасть;
+    - модель должна быть достаточно похожа;
+    - год обычно совпадает точно, допускается ±1 только при очень близком пробеге.
+    """
+    reasons: list[str] = []
+
+    if source_id_matches(api_car, xml_car):
+        return 10_000, ["точный Avito ID"]
+
+    api_brand = compact_token(api_car.get("brand", ""))
+    xml_brand = compact_token(xml_car.brand)
+
+    if not api_brand or api_brand != xml_brand:
+        return -10_000, ["марка не совпала"]
+
+    similarity = model_similarity(
+        str(api_car.get("model", "")),
+        xml_car.model,
     )
 
+    if similarity < 0.58:
+        return -10_000, [f"модель слишком отличается: {similarity:.2f}"]
 
-def match_score(api_car: dict[str, Any], xml_car: XmlCar) -> int:
-    if normalize_token(api_car["brand"]) != normalize_token(xml_car.brand):
-        return -10_000
+    score = 200
+    reasons.append(f"марка совпала")
+    reasons.append(f"модель {similarity:.2f}")
+    score += int(similarity * 220)
 
-    if not model_matches(str(api_car["model"]), xml_car.model):
-        return -10_000
-
-    if int(api_car["year"]) != xml_car.year:
-        return -10_000
-
-    score = 100
+    api_year = int(api_car.get("year", 0))
+    year_diff = abs(api_year - int(xml_car.year))
 
     api_mileage = int(api_car.get("mileage", 0))
-    if api_mileage and xml_car.mileage:
-        mileage_diff = abs(api_mileage - xml_car.mileage)
+    xml_mileage = int(xml_car.mileage or 0)
+    mileage_diff = (
+        abs(api_mileage - xml_mileage)
+        if api_mileage and xml_mileage
+        else None
+    )
 
+    if year_diff == 0:
+        score += 220
+        reasons.append("год совпал")
+    elif year_diff == 1 and mileage_diff is not None and mileage_diff <= 3_000:
+        score += 50
+        reasons.append("год отличается на 1, пробег близкий")
+    else:
+        return -10_000, [f"год не совпал: {api_year}/{xml_car.year}"]
+
+    if mileage_diff is not None:
         if mileage_diff == 0:
-            score += 100
+            score += 300
+            reasons.append("пробег точный")
+        elif mileage_diff <= 100:
+            score += 280
+            reasons.append(f"пробег ±{mileage_diff}")
         elif mileage_diff <= 500:
-            score += 80
+            score += 250
+            reasons.append(f"пробег ±{mileage_diff}")
         elif mileage_diff <= 2_000:
-            score += 60
-        elif mileage_diff <= 10_000:
-            score += 20
+            score += 200
+            reasons.append(f"пробег ±{mileage_diff}")
+        elif mileage_diff <= 5_000:
+            score += 130
+            reasons.append(f"пробег ±{mileage_diff}")
+        elif mileage_diff <= 15_000:
+            score += 50
+            reasons.append(f"пробег ±{mileage_diff}")
         else:
-            score -= min(80, mileage_diff // 5_000)
+            score -= min(180, mileage_diff // 1_000)
+            reasons.append(f"пробег сильно отличается: {mileage_diff}")
+    else:
+        reasons.append("пробег в одном источнике отсутствует")
+
+    api_engine = extract_engine_number(api_car.get("engine", ""))
+    xml_engine = extract_engine_number(xml_car.engine)
+
+    if api_engine is not None and xml_engine is not None:
+        engine_diff = abs(api_engine - xml_engine)
+        if engine_diff < 0.05:
+            score += 100
+            reasons.append("двигатель совпал")
+        elif engine_diff <= 0.2:
+            score += 30
+            reasons.append("двигатель близкий")
+        else:
+            score -= 100
+            reasons.append("двигатель отличается")
+
+    api_transmission = normalize_transmission(
+        str(api_car.get("transmission", ""))
+    )
+    xml_transmission = normalize_transmission(xml_car.transmission)
+
+    if api_transmission and xml_transmission:
+        if api_transmission == xml_transmission:
+            score += 80
+            reasons.append("КПП совпала")
+        else:
+            score -= 160
+            reasons.append("КПП отличается")
 
     api_price = int(api_car.get("price", 0))
-    if api_price and xml_car.price:
-        price_diff = abs(api_price - xml_car.price)
+    xml_price = int(xml_car.price or 0)
+
+    if api_price and xml_price:
+        price_diff = abs(api_price - xml_price)
+        price_ratio = price_diff / max(api_price, xml_price)
 
         if price_diff == 0:
-            score += 30
-        elif price_diff <= 25_000:
+            score += 60
+            reasons.append("цена точная")
+        elif price_ratio <= 0.03:
+            score += 45
+            reasons.append("цена близкая")
+        elif price_ratio <= 0.10:
             score += 20
-        elif price_diff <= 100_000:
-            score += 5
+            reasons.append("цена отличается до 10%")
+        elif price_ratio > 0.35:
+            score -= 80
+            reasons.append("цена сильно отличается")
 
-    return score
+    # Фото и описание делают запись предпочтительнее при равных характеристиках.
+    if xml_car.images:
+        score += min(60, len(xml_car.images) * 5)
+        reasons.append(f"фото {len(xml_car.images)}")
+
+    if xml_car.description:
+        score += 20
+        reasons.append("есть описание")
+
+    return score, reasons
 
 
 def find_xml_match(
     api_car: dict[str, Any],
     xml_cars: list[XmlCar],
-) -> XmlCar | None:
-    matches = [
-        (match_score(api_car, xml_car), xml_car)
-        for xml_car in xml_cars
-    ]
+) -> tuple[XmlCar | None, int, list[str]]:
+    candidates: list[tuple[int, XmlCar, list[str]]] = []
 
-    matches = [pair for pair in matches if pair[0] >= 100]
-    if not matches:
-        return None
+    for xml_car in xml_cars:
+        score, reasons = match_score(api_car, xml_car)
+        if score > -10_000:
+            candidates.append((score, xml_car, reasons))
 
-    matches.sort(key=lambda pair: pair[0], reverse=True)
-    return matches[0][1]
+    if not candidates:
+        return None, 0, []
 
+    candidates.sort(key=lambda item: item[0], reverse=True)
+    best_score, best_car, best_reasons = candidates[0]
+
+    # Защита от сомнительных совпадений.
+    if best_score < 500:
+        return None, best_score, best_reasons
+
+    # Если два кандидата почти равны, не подставляем чужое фото.
+    if len(candidates) > 1:
+        second_score = candidates[1][0]
+        if best_score - second_score < 35 and best_score < 850:
+            return None, best_score, [
+                *best_reasons,
+                f"неоднозначно: второй кандидат {second_score}",
+            ]
+
+    return best_car, best_score, best_reasons
 
 def merge_car(api_car: dict[str, Any], xml_car: XmlCar | None) -> dict[str, Any]:
     merged = dict(api_car)
@@ -896,202 +1071,6 @@ def merge_all_sources(
 
     return merged
 
-def page_headers() -> dict[str, str]:
-    return {
-        "User-Agent": (
-            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
-            "AppleWebKit/537.36 (KHTML, like Gecko) "
-            "Chrome/131.0.0.0 Safari/537.36"
-        ),
-        "Accept": (
-            "text/html,application/xhtml+xml,application/xml;q=0.9,"
-            "image/avif,image/webp,image/apng,*/*;q=0.8"
-        ),
-        "Accept-Language": "ru-RU,ru;q=0.9,en;q=0.7",
-        "Cache-Control": "no-cache",
-        "Pragma": "no-cache",
-    }
-
-
-def normalize_image_url(url: str) -> str:
-    value = html.unescape(str(url or "")).strip()
-    value = value.replace(r"\/", "/").replace(r"\u0026", "&")
-    if value.startswith("//"):
-        value = "https:" + value
-    return value
-
-
-def image_extension(url: str, content_type: str = "") -> str:
-    content_type = content_type.lower()
-    if "png" in content_type:
-        return ".png"
-    if "webp" in content_type:
-        return ".webp"
-    if "avif" in content_type:
-        return ".avif"
-
-    suffix = Path(urlparse(url).path).suffix.lower()
-    if suffix in {".jpg", ".jpeg", ".png", ".webp", ".avif"}:
-        return ".jpg" if suffix == ".jpeg" else suffix
-    return ".jpg"
-
-
-def extract_page_data(page_html: str) -> tuple[list[str], str]:
-    soup = BeautifulSoup(page_html, "html.parser")
-    images: list[str] = []
-    description = ""
-
-    # JSON-LD: самый устойчивый источник, если Авито его отдаёт.
-    for script in soup.find_all("script", attrs={"type": "application/ld+json"}):
-        raw = script.string or script.get_text()
-        if not raw:
-            continue
-        try:
-            payload = json.loads(raw)
-        except json.JSONDecodeError:
-            continue
-
-        objects = payload if isinstance(payload, list) else [payload]
-        for obj in objects:
-            if not isinstance(obj, dict):
-                continue
-
-            raw_images = obj.get("image", [])
-            if isinstance(raw_images, str):
-                raw_images = [raw_images]
-            if isinstance(raw_images, list):
-                for image in raw_images:
-                    if isinstance(image, str):
-                        images.append(normalize_image_url(image))
-                    elif isinstance(image, dict):
-                        candidate = image.get("url") or image.get("contentUrl")
-                        if candidate:
-                            images.append(normalize_image_url(candidate))
-
-            if not description:
-                description = clean_text(obj.get("description", ""))
-
-    # Open Graph — хотя бы главное фото и краткое описание.
-    for meta in soup.find_all("meta"):
-        prop = str(meta.get("property") or meta.get("name") or "").lower()
-        content = str(meta.get("content") or "").strip()
-        if not content:
-            continue
-
-        if prop in {"og:image", "twitter:image", "twitter:image:src"}:
-            images.append(normalize_image_url(content))
-        elif not description and prop in {"og:description", "description"}:
-            description = clean_text(content)
-
-    # Дополнительный поиск CDN-фотографий в исходном HTML/JSON страницы.
-    patterns = [
-        r'https?:\\?/\\?/[^"\']+?\.(?:jpg|jpeg|webp|png)(?:\?[^"\']*)?',
-        r'https?:\\\\/\\\\/[^"\']+?\.(?:jpg|jpeg|webp|png)(?:\\u0026[^"\']*)?',
-    ]
-    for pattern in patterns:
-        for match in re.findall(pattern, page_html, flags=re.I):
-            candidate = normalize_image_url(match)
-            if "avito" in candidate.lower():
-                images.append(candidate)
-
-    result: list[str] = []
-    seen: set[str] = set()
-    for url in images:
-        url = normalize_image_url(url)
-        if (
-            url.startswith(("http://", "https://"))
-            and url not in seen
-            and not any(term in url.lower() for term in ("logo", "avatar", "icon", "favicon"))
-        ):
-            result.append(url)
-            seen.add(url)
-
-    return result[:MAX_PAGE_IMAGES], description
-
-
-def download_page_images(
-    item_id: int,
-    image_urls: list[str],
-    session: requests.Session,
-) -> list[str]:
-    if not image_urls:
-        return []
-
-    target_dir = IMAGE_DIR / str(item_id)
-    target_dir.mkdir(parents=True, exist_ok=True)
-
-    # Удаляем только старые автоматически скачанные изображения этой карточки.
-    for old_file in target_dir.iterdir():
-        if old_file.is_file():
-            old_file.unlink()
-
-    local_paths: list[str] = []
-    for index, image_url in enumerate(image_urls, start=1):
-        try:
-            response = session.get(
-                image_url,
-                headers={
-                    **page_headers(),
-                    "Referer": "https://www.avito.ru/",
-                },
-                timeout=TIMEOUT,
-            )
-            response.raise_for_status()
-
-            content_type = response.headers.get("Content-Type", "")
-            if not content_type.lower().startswith("image/"):
-                continue
-
-            extension = image_extension(image_url, content_type)
-            filename = f"{index:02d}{extension}"
-            file_path = target_dir / filename
-            file_path.write_bytes(response.content)
-            local_paths.append(f"/car-images/{item_id}/{filename}")
-
-        except requests.RequestException as exc:
-            print(f"Не удалось скачать фото {image_url}: {exc}")
-
-    return local_paths
-
-
-def scrape_avito_page(
-    car: dict[str, Any],
-    session: requests.Session,
-) -> dict[str, Any]:
-    url = str(car.get("avitoUrl", "")).strip()
-    if not url:
-        return {}
-
-    try:
-        response = session.get(
-            url,
-            headers=page_headers(),
-            timeout=TIMEOUT,
-            allow_redirects=True,
-        )
-        response.raise_for_status()
-    except requests.RequestException as exc:
-        print(f"Страница Avito недоступна для {car['id']}: {exc}")
-        return {}
-
-    lower_text = response.text.lower()
-    if any(marker in lower_text for marker in ("captcha", "доступ ограничен", "подозрительная активность")):
-        print(f"Avito показал защитную страницу для {car['id']}")
-        return {}
-
-    image_urls, description = extract_page_data(response.text)
-    local_images = download_page_images(int(car["id"]), image_urls, session)
-
-    print(
-        f"Страница Avito {car['id']}: "
-        f"найдено ссылок {len(image_urls)}, скачано фото {len(local_images)}"
-    )
-
-    return {
-        "images": local_images,
-        "description": description,
-    }
-
 def write_cars_js(cars: list[dict[str, Any]]) -> None:
     content = (
         "// ========== АВТОМОБИЛИ ИЗ AVITO API + XML ==========\n"
@@ -1129,11 +1108,12 @@ def main() -> int:
         merged_cars: list[dict[str, Any]] = []
         matched_count = 0
         manual_count = 0
-        scraped_count = 0
-        page_session = requests.Session()
 
         for api_car in api_cars:
-            xml_match = find_xml_match(api_car, xml_cars)
+            xml_match, xml_score, xml_reasons = find_xml_match(
+                api_car,
+                xml_cars,
+            )
             item_id = str(api_car["id"])
 
             if xml_match is not None:
@@ -1141,39 +1121,33 @@ def main() -> int:
                 print(
                     "XML найден:",
                     f"{api_car['brand']} {api_car['model']} {api_car['year']}",
+                    "→",
+                    f"{xml_match.brand} {xml_match.model} {xml_match.year}",
+                    f"— балл: {xml_score}",
                     f"— фото: {len(xml_match.images)}",
+                    f"— причины: {', '.join(xml_reasons)}",
                 )
             else:
                 print(
                     "XML не найден:",
                     f"{api_car['brand']} {api_car['model']} {api_car['year']}",
                     f"{api_car['mileage']} км",
+                    f"— лучший балл: {xml_score}",
+                    f"— причины: {', '.join(xml_reasons) or 'нет кандидатов'}",
                 )
 
             if item_id in manual_media:
                 manual_count += 1
                 print("Ручные данные применены:", item_id)
 
-            merged = merge_all_sources(
-                api_car,
-                xml_match,
-                previous_cars,
-                manual_media,
+            merged_cars.append(
+                merge_all_sources(
+                    api_car,
+                    xml_match,
+                    previous_cars,
+                    manual_media,
+                )
             )
-
-            # Открываем страницу только если после API, XML, ручных данных
-            # и предыдущего каталога фотографий всё ещё нет.
-            if not merged.get("images") or not merged.get("description"):
-                page_data = scrape_avito_page(api_car, page_session)
-                if page_data.get("images") or page_data.get("description"):
-                    scraped_count += 1
-                    merged = apply_media_fields(
-                        merged,
-                        page_data,
-                        overwrite=False,
-                    )
-
-            merged_cars.append(merged)
 
         merged_cars.sort(
             key=lambda car: (
@@ -1189,7 +1163,6 @@ def main() -> int:
         print(f"Автомобилей после фильтра: {len(api_cars)}")
         print(f"Карточек дополнено из XML: {matched_count}")
         print(f"Карточек дополнено вручную: {manual_count}")
-        print(f"Карточек дополнено со страниц Avito: {scraped_count}")
         print(f"Результат записан в {OUTPUT_FILE}")
 
         if raw_items and not api_cars:
