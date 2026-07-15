@@ -1,0 +1,8 @@
+RewriteEngine On
+
+# Перенаправляем index.html на index.php (главная)
+RewriteRule ^index\.html$ / [R=301,L]
+
+# Если кто-то заходит на index.html с параметрами, тоже перенаправляем
+RewriteCond %{REQUEST_URI} ^/index\.html$
+RewriteRule ^.*$ / [R=301,L]

@@ -3,23 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <meta name="description" content="Автомобили с пробегом в Ярославле. Автосалон Юникар на Полушкина Роща, 16Г.">
-    <meta name="keywords" content="авто с пробегом, купить авто в Ярославле, автосалон Юникар, выкуп авто, кредит на авто, Полушкина Роща 16Г">
+    <meta name="description" content="Выкуп автомобилей в Ярославле. Автосалон Юникар выкупает авто быстро и дорого. Оценка за 15 минут, деньги в день обращения.">
+    <meta name="keywords" content="выкуп авто, срочный выкуп, ЮНИКАР, автосалон Ярославль, продать авто">
     <title>ЮНИКАР | Выкупим ваш автомобиль</title>
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://www.google.com/recaptcha/api.js?render=6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: 'Manrope', sans-serif;
-            background-color: #F8F9FA;
-            color: #1F2937;
-            line-height: 1.5;
-        }
+        html { overflow-y: scroll; scroll-behavior: smooth; }
+        body { font-family: 'Manrope', sans-serif; background-color: #F8F9FA; color: #1F2937; line-height: 1.5; display: flex; flex-direction: column; min-height: 100vh; }
         :root { --primary-blue: #07aed9; --primary-blue-dark: #0596bb; --gray-graphite: #3c3c3b; --gray-light: #F3F4F6; --white: #FFFFFF; }
+
+        /* ========== ЕДИНАЯ УНИФИЦИРОВАННАЯ ШАПКА ========== */
         .main-header {
-            background: var(--white);
+            background: #FFFFFF;
             box-shadow: 0 2px 10px rgba(0,0,0,0.05);
             position: sticky;
             top: 0;
@@ -35,44 +34,45 @@
             flex-wrap: wrap;
             gap: 1rem;
         }
-        .logo-area { display: flex; align-items: center; gap: 12px; text-decoration: none; color: inherit; }
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: inherit;
+        }
         .logo-area img {
             height: 62.5px;
             width: auto;
+            display: block;
         }
         .logo-text {
             font-size: 1.08rem;
             font-weight: 500;
             color: #6c757d;
+            line-height: 1.2;
         }
         .nav-menu ul {
             display: flex;
             list-style: none;
             gap: 2rem;
+            align-items: center;
+            margin: 0;
+            padding: 0;
         }
         .nav-menu a {
             text-decoration: none;
             font-weight: 600;
-            color: var(--gray-graphite);
-            transition: 0.2s;
+            font-size: 1rem;
+            color: #3c3c3b;
+            transition: color 0.2s;
             padding: 0.5rem 1rem;
             border-radius: 6px;
-            position: relative;
             display: inline-block;
         }
-        .nav-menu a::before {
-            content: attr(data-text);
-            font-weight: 800;
-            display: block;
-            height: 0;
-            visibility: hidden;
-            overflow: hidden;
-            user-select: none;
-            pointer-events: none;
-        }
-        .nav-menu a:hover, .nav-menu a.active {
-            color: black;
-            text-shadow: 0 1px 1px rgba(0,0,0,0.05);
+        .nav-menu a:hover,
+        .nav-menu a.active {
+            color: #07aed9;
             background: transparent;
         }
         .burger-menu {
@@ -81,7 +81,7 @@
             cursor: pointer;
             background: none;
             border: none;
-            color: var(--gray-graphite);
+            color: #3c3c3b;
         }
         .mobile-nav {
             display: none;
@@ -98,228 +98,215 @@
         .mobile-nav a {
             padding: 0.8rem 1.5rem;
             text-decoration: none;
-            color: var(--gray-graphite);
+            color: #3c3c3b;
             font-weight: 600;
             border-bottom: 1px solid #eee;
+            transition: color 0.2s;
         }
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem 1.5rem;
+        .mobile-nav a:hover {
+            color: #07aed9;
+            background: transparent;
         }
-        .page-hero {
-            background: linear-gradient(135deg, var(--primary-blue) 0%, #055a70 100%);
-            border-radius: 12px;
-            padding: 2rem;
-            color: white;
-            margin-bottom: 2rem;
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: row;
+                justify-content: space-between;
+                gap: 0.5rem;
+            }
+            .burger-menu {
+                order: 2;
+                display: block;
+            }
+            .logo-area {
+                order: 1;
+            }
+            .nav-menu {
+                display: none;
+            }
+            .mobile-nav {
+                display: none;
+            }
+            .mobile-nav.open {
+                display: flex;
+            }
         }
-        .page-hero h1 {
-            font-size: 2rem;
-            margin-bottom: 0.5rem;
+        @media (min-width: 769px) {
+            .mobile-nav {
+                display: none !important;
+            }
         }
-        .page-hero p {
-            font-size: 1.2rem;
-            opacity: 0.9;
-        }
-        .section-title {
-            font-size: 1.6rem;
-            margin-bottom: 1.5rem;
-            border-left: 5px solid var(--primary-blue);
-            padding-left: 1rem;
-        }
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2.5rem;
-        }
-        .feature-card {
+        /* ========== КОНЕЦ ЕДИНОЙ ШАПКИ ========== */
+
+        .container { max-width: 980px; margin: 0 auto; padding: 2rem 1.5rem; flex-grow: 1; }
+        .page-hero { background: linear-gradient(135deg, var(--primary-blue) 0%, #055a70 100%); border-radius: 12px; padding: 2rem; color: white; margin-bottom: 2rem; }
+        .page-hero h1 { font-size: 2rem; margin-bottom: 0.5rem; }
+        .page-hero p { font-size: 1.2rem; opacity: 0.9; }
+        .section-title { font-size: 1.6rem; margin-bottom: 1.5rem; border-left: 5px solid var(--primary-blue); padding-left: 1rem; }
+        .features-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; margin-bottom: 2.5rem; }
+        .feature-card { background: white; border-radius: 12px; padding: 1.5rem; box-shadow: 0 4px 12px rgba(0,0,0,0.05); transition: 0.2s; }
+        .feature-card i { font-size: 2rem; color: var(--primary-blue); margin-bottom: 1rem; }
+        .feature-card h3 { margin-bottom: 0.5rem; }
+        .steps { display: flex; flex-wrap: wrap; gap: 1rem; justify-content: space-between; margin: 2rem 0; }
+        .step { flex: 1; background: white; border-radius: 12px; padding: 1.2rem; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+        .step .step-num { background: var(--primary-blue); color: white; width: 40px; height: 40px; line-height: 40px; border-radius: 20px; display: inline-block; margin-bottom: 0.8rem; font-weight: bold; }
+        
+        .trade-in-section {
+            margin: 2.5rem 0;
             background: white;
-            border-radius: 12px;
-            padding: 1.5rem;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.05);
+        }
+        .trade-in-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.8rem;
+            margin: 2rem 0 1.5rem;
+        }
+        .trade-in-card {
+            text-align: center;
+            padding: 1.2rem;
+            background: var(--gray-light);
+            border-radius: 16px;
             transition: 0.2s;
         }
-        .feature-card i {
-            font-size: 2rem;
+        .trade-in-card i {
+            font-size: 2.2rem;
             color: var(--primary-blue);
             margin-bottom: 1rem;
         }
-        .feature-card h3 {
-            margin-bottom: 0.5rem;
+        .trade-in-card h3 {
+            margin-bottom: 0.6rem;
+            font-size: 1.3rem;
         }
-        .steps {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1rem;
-            justify-content: space-between;
-            margin: 2rem 0;
+        .trade-in-card p {
+            color: #4b5563;
+            font-size: 0.95rem;
         }
-        .step {
-            flex: 1;
-            background: white;
-            border-radius: 12px;
-            padding: 1.2rem;
+        .trade-in-cta {
             text-align: center;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            margin-top: 1.5rem;
+            padding-top: 1rem;
+            border-top: 1px solid #e5e7eb;
         }
-        .step .step-num {
-            background: var(--primary-blue);
-            color: white;
-            width: 40px;
-            height: 40px;
-            line-height: 40px;
-            border-radius: 20px;
-            display: inline-block;
-            margin-bottom: 0.8rem;
-            font-weight: bold;
+        .trade-in-cta p {
+            margin-bottom: 1.2rem;
+            font-size: 1.05rem;
+            font-weight: 500;
         }
-        .btn-primary {
-            background: var(--primary-blue);
-            color: white;
-            border: none;
-            padding: 0.8rem 2rem;
-            border-radius: 6px;
-            font-weight: 600;
-            cursor: pointer;
-            font-size: 1rem;
-            transition: 0.2s;
-        }
-        .btn-primary:hover {
-            background: var(--primary-blue-dark);
-        }
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.7);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-        }
-        .modal-content {
-            background: white;
-            max-width: 500px;
-            width: 90%;
-            border-radius: 12px;
-            padding: 1.5rem;
-        }
-        .modal-close {
-            float: right;
-            font-size: 28px;
-            background: none;
-            border: none;
-            cursor: pointer;
-        }
+        
+        .btn-primary { background: var(--primary-blue); color: white; border: none; padding: 0.8rem 2rem; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 1rem; transition: 0.2s; }
+        .btn-primary:hover { background: var(--primary-blue-dark); }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 1000; justify-content: center; align-items: center; }
+        .modal-content { background: white; max-width: 500px; width: 90%; border-radius: 12px; padding: 1.5rem; position: relative; }
+        .modal-close { float: right; font-size: 28px; background: none; border: none; cursor: pointer; }
         .form-group { margin-bottom: 1rem; }
         .form-group label { display: block; font-weight: 600; margin-bottom: 0.3rem; }
-        .form-group input, .form-group textarea {
-            width: 100%;
-            padding: 0.8rem;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            font-family: 'Manrope', sans-serif;
-        }
-        .checkbox-group {
-            display: flex;
-            align-items: flex-start;
-            gap: 10px;
-            margin: 1rem 0;
-        }
+        .form-group input, .form-group textarea { width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 6px; font-family: 'Manrope', sans-serif; }
+        .checkbox-group { display: flex; align-items: flex-start; gap: 10px; margin: 1rem 0; }
         .checkbox-group input { width: 20px; margin-top: 3px; }
-        .submit-btn {
-            background: var(--primary-blue);
-            color: white;
-            width: 100%;
-            padding: 0.8rem;
-            border: none;
+        .submit-btn { background: var(--primary-blue); color: white; width: 100%; padding: 0.8rem; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; transition: 0.2s; }
+        .submit-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+        .form-status {
+            margin-top: 1rem;
+            padding: 0.75rem;
             border-radius: 6px;
-            font-weight: 600;
-            cursor: pointer;
-        }
-        footer {
-            background: var(--gray-graphite);
-            color: #ccc;
             text-align: center;
-            padding: 1.8rem;
+            font-size: 0.9rem;
+            display: none;
         }
-        footer p { font-size: 0.7rem; margin-bottom: 0.3rem; }
-        footer a { color: #ccc; text-decoration: none; }
+        .form-status.success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; display: block; }
+        .form-status.error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; display: block; }
+        .form-status.loading { background: #e2e3e5; color: #383d41; border: 1px solid #d6d8db; display: block; }
+        .honeypot { position: absolute; left: -9999px; top: -9999px; opacity: 0; pointer-events: none; height: 0; width: 0; }
+        .grecaptcha-badge { visibility: hidden !important; opacity: 0 !important; pointer-events: none !important; }
         
-        /* Стили для кастомного уведомления (тост) */
-        .custom-toast {
+        .floating-taplink {
             position: fixed;
-            bottom: 30px;
-            left: 20px;
-            right: 20px;
+            bottom: 25px;
+            right: 25px;
+            z-index: 1000;
+            width: 70px;
+            height: 70px;
             background: white;
-            border-radius: 16px;
-            padding: 16px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-            z-index: 10000;
-            border-left: 6px solid #07aed9;
-            animation: slideUp 0.3s ease;
+            border-radius: 50%;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2), 0 0 0 3px rgba(7,174,217,0.3);
             display: flex;
             align-items: center;
-            gap: 12px;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            animation: pulse 2s infinite;
         }
-        .custom-toast img {
-            width: 48px;
-            height: auto;
+        .floating-taplink:hover {
+            transform: scale(1.08);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.25), 0 0 0 4px rgba(7,174,217,0.4);
         }
-        .custom-toast strong {
-            font-size: 16px;
-            display: block;
-            margin-bottom: 4px;
+        .floating-taplink img {
+            width: 55px;
+            height: 55px;
+            object-fit: contain;
+            border-radius: 50%;
         }
-        .custom-toast p {
-            font-size: 14px;
-            margin: 0;
-            color: #555;
+        @keyframes pulse {
+            0% { box-shadow: 0 4px 15px rgba(0,0,0,0.2), 0 0 0 0 rgba(7,174,217,0.4); }
+            70% { box-shadow: 0 4px 15px rgba(0,0,0,0.2), 0 0 0 12px rgba(7,174,217,0); }
+            100% { box-shadow: 0 4px 15px rgba(0,0,0,0.2), 0 0 0 0 rgba(7,174,217,0); }
         }
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
+        @media (max-width: 480px) {
+            .floating-taplink { width: 55px; height: 55px; bottom: 15px; right: 15px; }
+            .floating-taplink img { width: 42px; height: 42px; }
         }
-        @keyframes slideDown {
-            from { opacity: 1; transform: translateY(0); }
-            to { opacity: 0; transform: translateY(30px); }
+        .floating-taplink::after {
+            content: "Все ссылки";
+            position: absolute;
+            right: 80px;
+            background: var(--gray-graphite);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.2s ease;
+            font-weight: 500;
+            pointer-events: none;
         }
+        .floating-taplink:hover::after {
+            opacity: 1;
+            visibility: visible;
+            right: 85px;
+        }
+        @media (max-width: 480px) { .floating-taplink::after { display: none; } }
         
-        @media (max-width: 768px) {
-            .header-container { flex-direction: row; justify-content: space-between; gap: 0.5rem; }
-            .burger-menu { order: 2; display: block; }
-            .logo-area { order: 1; }
-            .nav-menu { display: none; }
-            .steps { flex-direction: column; }
-        }
-        @media (min-width: 769px) { .mobile-nav { display: none !important; } }
+        footer { background: var(--gray-graphite); color: #ccc; text-align: center; padding: 1.8rem; margin-top: 2rem; }
+        footer p { font-size: 0.7rem; margin-bottom: 0.3rem; }
+        footer a { color: #ccc; text-decoration: none; }
+        @media (max-width: 768px) { .steps { flex-direction: column; } }
     </style>
 </head>
 <body>
 <header class="main-header">
     <div class="header-container">
-        <a href="index.html" class="logo-area">
+        <a href="/" class="logo-area">
             <img src="logo.png" alt="ЮНИКАР" onerror="this.src='https://fakeimg.pl/200x60/3c3c3b/07aed9?text=ЮНИКАР'">
-            <div class="logo-text">Честные авто с пробегом в Ярославле</div>
+            <div class="logo-text">Честные авто с пробегом в Ярославле.</div>
         </a>
         <button class="burger-menu" id="burgerBtn"><i class="fas fa-bars"></i></button>
         <nav class="nav-menu">
             <ul>
-                <li><a href="index.html" data-text="Авто в наличии">Авто в наличии</a></li>
-                <li><a href="buyout.html" class="active" data-text="Выкупим">Выкупим</a></li>
-                <li><a href="guarantee.html" data-text="У нас не откажут">У нас не откажут</a></li>
-                <li><a href="contacts.html" data-text="Контакты">Контакты</a></li>
-                <li><a href="privacy.html" data-text="Политика">Политика</a></li>
+                <li><a href="/">Авто в наличии</a></li>
+                <li><a href="buyout.html" class="active">Выкупим</a></li>
+                <li><a href="guarantee.html">У нас не откажут</a></li>
+                <li><a href="contacts.html">Контакты</a></li>
+                <li><a href="privacy.html">Политика</a></li>
             </ul>
         </nav>
     </div>
     <div class="mobile-nav" id="mobileNav">
-        <a href="index.html">Авто в наличии</a>
+        <a href="/">Авто в наличии</a>
         <a href="buyout.html">Выкупим</a>
         <a href="guarantee.html">У нас не откажут</a>
         <a href="contacts.html">Контакты</a>
@@ -332,206 +319,200 @@
         <h1>Выкупим ваш автомобиль</h1>
         <p>Быстро, честно и дорого — даже если авто в залоге, после ДТП или не на ходу</p>
     </div>
-
-    <div class="features-grid">
-        <div class="feature-card">
-            <i class="fas fa-rocket"></i>
-            <h3>Срочный выкуп</h3>
-            <p>Оценка за 15 минут, деньги в день обращения. Поможем решить финансовые вопросы.</p>
-        </div>
-        <div class="feature-card">
-            <i class="fas fa-chart-line"></i>
-            <h3>Цена выше рынка</h3>
-            <p>Предлагаем реальную стоимость без занижения. Не снижаем цену из-за срочности.</p>
-        </div>
-        <div class="feature-card">
-            <i class="fas fa-file-signature"></i>
-            <h3>Юридическая чистота</h3>
-            <p>Проверяем авто на ограничения, помогаем снять обременения, берём на себя оформление.</p>
-        </div>
-        <div class="feature-card">
-            <i class="fas fa-car-crash"></i>
-            <h3>Сложные случаи</h3>
-            <p>Битые, кредитные, после пожара, без ПТС — рассмотрим любой вариант.</p>
-        </div>
+    
+    <div style="text-align: center; margin: 1rem 0 2rem;">
+        <button id="openOrderModalBtn" class="btn-primary"><i class="fas fa-car"></i> Оставить заявку на выкуп</button>
     </div>
-
+    
+    <div class="features-grid">
+        <div class="feature-card"><i class="fas fa-rocket"></i><h3>Срочный выкуп</h3><p>Оценка за 15 минут, деньги в день обращения. Поможем решить финансовые вопросы.</p></div>
+        <div class="feature-card"><i class="fas fa-chart-line"></i><h3>Цена выше рынка</h3><p>Предлагаем реальную стоимость без занижения. Не снижаем цену из-за срочности.</p></div>
+        <div class="feature-card"><i class="fas fa-file-signature"></i><h3>Юридическая чистота</h3><p>Проверяем авто на ограничения, помогаем снять обременения, берём на себя оформление.</p></div>
+        <div class="feature-card"><i class="fas fa-car-crash"></i><h3>Сложные случаи</h3><p>Битые, кредитные, после пожара, без ПТС — рассмотрим любой вариант.</p></div>
+    </div>
     <h2 class="section-title">Как мы работаем</h2>
     <div class="steps">
         <div class="step"><div class="step-num">1</div><h3>Заявка</h3><p>Оставьте заявку или позвоните нам</p></div>
         <div class="step"><div class="step-num">2</div><h3>Осмотр и оценка</h3><p>Приедем в любое место или вы к нам в салон</p></div>
         <div class="step"><div class="step-num">3</div><h3>Договор и деньги</h3><p>Оформление за 30 минут, наличные или перевод</p></div>
     </div>
-
-    <div style="text-align: center; margin: 2rem 0;">
-        <button id="openOrderModalBtn" class="btn-primary"><i class="fas fa-car"></i> Оставить заявку на выкуп</button>
+    
+    <div class="trade-in-section">
+        <h2 class="section-title"><i class="fas fa-exchange-alt"></i> Трейд-ин</h2>
+        <div class="trade-in-grid">
+            <div class="trade-in-card">
+                <i class="fas fa-hand-holding-usd"></i>
+                <h3>Оценим ваш автомобиль</h3>
+                <p>Бесплатная экспресс-оценка за 15 минут. Вы получите честную рыночную стоимость.</p>
+            </div>
+            <div class="trade-in-card">
+                <i class="fas fa-car-side"></i>
+                <h3>Примем в зачёт</h3>
+                <p>Используйте сумму выкупа как часть оплаты за другой автомобиль из нашего салона.</p>
+            </div>
+            <div class="trade-in-card">
+                <i class="fas fa-thumbs-up"></i>
+                <h3>Выгода до 20%</h3>
+                <p>Экономия времени и денег: не нужно продавать авто самостоятельно, получаете сразу деньги или скидку.</p>
+            </div>
+        </div>
+        <div class="trade-in-cta">
+            <p>Оставьте заявку на трейд-ин, и мы свяжемся с вами для оценки.</p>
+            <button class="btn-primary" id="tradeInBtn"><i class="fas fa-calculator"></i> Оценить авто</button>
+        </div>
     </div>
 </div>
 
 <footer>
-    <p>© ЮНИКАР — Честные авто с пробегом в Ярославле</p>
+    <p>© ЮНИКАР — Честные авто с пробегом в Ярославле.</p>
     <p>г.Ярославль, ул. Полушкина Роща, 16Г</p>
     <p><a href="privacy.html">Политика конфиденциальности</a></p>
 </footer>
 
-<!-- Модальное окно с формой -->
+<a href="https://unicaryar.github.io/taplink_Unicar/" target="_blank" class="floating-taplink" id="taplinkFloat">
+    <img src="logo.png" alt="Наши соцсети и мессенджеры" onerror="this.src='https://fakeimg.pl/200x200/07aed9/ffffff?text=Ю'">
+</a>
+
 <div id="orderModal" class="modal">
     <div class="modal-content">
         <button class="modal-close" id="closeModal">&times;</button>
-        <h3><i class="fas fa-shopping-cart"></i> Заявка на выкуп авто</h3>
-        <form id="buyoutForm" method="POST" action="https://formsubmit.co/avto.marketolog1@yandex.ru">
-            <input type="hidden" name="_captcha" value="false">
-            <input type="hidden" name="_subject" value="Заявка на выкуп авто | ЮНИКАР">
-            <input type="hidden" name="_template" value="table">
-            <div class="form-group">
-                <label>Марка и модель автомобиля</label>
-                <input type="text" name="Автомобиль" id="carModelInput" placeholder="Например: Kia Rio 2012" required>
-            </div>
-            <div class="form-group">
-                <label>Ваше имя *</label>
-                <input type="text" name="Имя" required>
-            </div>
-            <div class="form-group">
-                <label>Телефон *</label>
-                <input type="tel" name="Телефон" required placeholder="+7 (___) ___-__-__">
-            </div>
-            <div class="form-group">
-                <label>Комментарий (пробег, состояние, срочность)</label>
-                <textarea name="Комментарий" rows="3"></textarea>
-            </div>
-            <div class="checkbox-group">
-                <input type="checkbox" name="Согласие" id="consent" required>
-                <label for="consent">Я принимаю <a href="privacy.html" target="_blank">условия обработки персональных данных</a></label>
-            </div>
-            <button type="submit" class="submit-btn">Отправить заявку</button>
+        <h3><i class="fas fa-shopping-cart"></i> Заявка на выкуп / трейд-ин</h3>
+        <form id="buyoutForm">
+            <input type="hidden" name="source" value="buyout">
+            <div class="form-group"><label>Марка и модель автомобиля</label><input type="text" name="car" id="carModel" placeholder="Например: Kia Rio 2012" required></div>
+            <div class="form-group"><label>Ваше имя *</label><input type="text" name="name" id="userName" required></div>
+            <div class="form-group"><label>Телефон *</label><input type="tel" name="phone" id="userPhone" required placeholder="+7 (___) ___-__-__"></div>
+            <div class="form-group"><label>Комментарий (пробег, состояние, срочность)</label><textarea name="comment" id="userComment" rows="3"></textarea></div>
+            <div class="checkbox-group"><input type="checkbox" name="consent" id="consent" required><label for="consent">Я принимаю <a href="privacy.html" target="_blank">условия обработки персональных данных</a></label></div>
+            <div class="honeypot"><label for="website">Не заполняйте это поле</label><input type="text" name="website" id="website" value="" autocomplete="off" tabindex="-1"></div>
+            <input type="hidden" name="recaptcha_token" id="recaptchaToken">
+            <div id="formStatus" class="form-status"></div>
+            <button type="submit" class="submit-btn" id="submitBtn">Отправить заявку</button>
         </form>
     </div>
 </div>
 
 <script>
-    // Подстановка автомобиля из URL параметра ?car=...
-    (function() {
-        const urlParams = new URLSearchParams(window.location.search);
-        const carParam = urlParams.get('car');
-        if (carParam) {
-            const carInput = document.getElementById('carModelInput');
-            if (carInput) carInput.value = decodeURIComponent(carParam);
-        }
-    })();
+    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbynwgTYX62ndQVD1pOEkuIwP3pRpWupnVwXtNqwEwFG7MhQgPZhJc7fJNOE1OS-h5y3/exec";
+    const RECIPIENT_EMAIL = "avto.marketolog1@yandex.ru";
+    const RECAPTCHA_SITE_KEY = "6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI";
 
-    // Модальное окно: открытие и закрытие
-    const modal = document.getElementById("orderModal");
-    const openBtn = document.getElementById("openOrderModalBtn");
-    const closeBtn = document.getElementById("closeModal");
-    openBtn.onclick = () => modal.style.display = "flex";
-    closeBtn.onclick = () => modal.style.display = "none";
-    window.onclick = (e) => { if (e.target === modal) modal.style.display = "none"; };
-
-    // Бургер-меню
-    const burgerBtn = document.getElementById("burgerBtn");
-    const mobileNav = document.getElementById("mobileNav");
-    burgerBtn.addEventListener("click", () => {
-        if (mobileNav.style.display === "flex") mobileNav.style.display = "none";
-        else mobileNav.style.display = "flex";
-    });
-    document.addEventListener("click", (e) => {
-        if (!burgerBtn.contains(e.target) && !mobileNav.contains(e.target)) mobileNav.style.display = "none";
-    });
-    document.querySelectorAll('.mobile-nav a').forEach(link => {
-        link.addEventListener('click', () => { mobileNav.style.display = "none"; });
-    });
-
-    // ========== ПЕРЕХВАТ ОТПРАВКИ ФОРМЫ ==========
-    const buyoutForm = document.getElementById('buyoutForm');
-    if (buyoutForm) {
-        buyoutForm.addEventListener('submit', async function(e) {
-            e.preventDefault(); // Отменяем переход на страницу FormSubmit
-
-            const submitBtn = buyoutForm.querySelector('.submit-btn');
-            const originalText = submitBtn.innerText;
-            submitBtn.disabled = true;
-            submitBtn.innerText = 'Отправляем...';
-
-            // Собираем данные формы
-            const formData = new FormData(buyoutForm);
-            
-            // Добавляем обязательные параметры для FormSubmit (они уже есть в hidden, но на всякий случай)
-            // formData.append('_captcha', 'false');
-            // formData.append('_template', 'table');
-            // formData.append('_subject', 'Заявка на выкуп авто | ЮНИКАР');
-
-            try {
-                const response = await fetch(buyoutForm.action, {
-                    method: 'POST',
-                    body: formData,
-                    headers: { 'Accept': 'application/json' }
-                });
-
-                if (response.ok) {
-                    // Показываем кастомное сообщение об успехе
-                    showSuccessToast();
-                    // Очищаем форму
-                    buyoutForm.reset();
-                    // Закрываем модальное окно
-                    modal.style.display = 'none';
-                } else {
-                    throw new Error('Ошибка при отправке');
-                }
-            } catch (error) {
-                console.error('Ошибка отправки:', error);
-                showErrorToast('Произошла ошибка. Попробуйте позже или позвоните нам.');
-            } finally {
-                submitBtn.disabled = false;
-                submitBtn.innerText = originalText;
-            }
+    async function getRecaptchaToken() {
+        return new Promise((resolve) => {
+            grecaptcha.ready(() => {
+                grecaptcha.execute(RECAPTCHA_SITE_KEY, { action: 'submit' }).then(resolve);
+            });
         });
     }
 
-    // Функция отображения уведомления об успехе
-    function showSuccessToast() {
-        // Удаляем старое уведомление, если есть
-        const oldToast = document.querySelector('.custom-toast');
-        if (oldToast) oldToast.remove();
-
-        const toast = document.createElement('div');
-        toast.className = 'custom-toast';
-        toast.innerHTML = `
-            <img src="logo.png" alt="Лого" onerror="this.style.display='none'">
-            <div style="flex:1">
-                <strong style="color: #07aed9;">✅ Спасибо за заявку!</strong>
-                <p>В ближайшее время мы вам перезвоним.</p>
-            </div>
-        `;
-        document.body.appendChild(toast);
-
-        // Автоматическое скрытие через 5 секунд
-        setTimeout(() => {
-            toast.style.animation = 'slideDown 0.3s ease';
-            setTimeout(() => toast.remove(), 300);
-        }, 5000);
+    async function sendToGoogleScript(formDataObj) {
+        const formData = new FormData();
+        for (const key in formDataObj) {
+            formData.append(key, formDataObj[key]);
+        }
+        const response = await fetch(GOOGLE_SCRIPT_URL, { method: "POST", body: formData });
+        try { return await response.json(); } catch(e) { return { result: "success" }; }
     }
 
-    function showErrorToast(message) {
-        const oldToast = document.querySelector('.custom-toast');
-        if (oldToast) oldToast.remove();
-
-        const toast = document.createElement('div');
-        toast.className = 'custom-toast';
-        toast.style.borderLeftColor = '#ff4444';
-        toast.innerHTML = `
-            <div style="font-size: 28px;">⚠️</div>
-            <div style="flex:1">
-                <strong style="color: #ff4444;">Ошибка</strong>
-                <p>${message}</p>
-            </div>
-        `;
-        document.body.appendChild(toast);
-
-        setTimeout(() => {
-            toast.style.animation = 'slideDown 0.3s ease';
-            setTimeout(() => toast.remove(), 300);
-        }, 5000);
+    async function handleSubmit(event) {
+        event.preventDefault();
+        const submitBtn = document.getElementById("submitBtn");
+        const statusDiv = document.getElementById("formStatus");
+        const consentCheckbox = document.getElementById("consent");
+        const honeypotField = document.getElementById("website");
+        if (honeypotField && honeypotField.value.trim() !== "") {
+            statusDiv.className = "form-status success";
+            statusDiv.textContent = "✅ Заявка успешно отправлена! Мы свяжемся с вами.";
+            submitBtn.disabled = true;
+            setTimeout(() => {
+                const modal = document.getElementById("orderModal");
+                if (modal) modal.style.display = "none";
+                statusDiv.className = "form-status";
+                submitBtn.disabled = false;
+            }, 2000);
+            return;
+        }
+        if (!consentCheckbox.checked) {
+            statusDiv.className = "form-status error";
+            statusDiv.textContent = "Пожалуйста, примите условия обработки персональных данных";
+            statusDiv.scrollIntoView({ behavior: "smooth", block: "nearest" });
+            return;
+        }
+        const name = document.getElementById("userName").value.trim();
+        const phone = document.getElementById("userPhone").value.trim();
+        const car = document.getElementById("carModel").value.trim();
+        const comment = document.getElementById("userComment").value;
+        if (!name || !phone) {
+            statusDiv.className = "form-status error";
+            statusDiv.textContent = "Пожалуйста, заполните имя и телефон";
+            statusDiv.scrollIntoView({ behavior: "smooth", block: "nearest" });
+            return;
+        }
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Отправка...";
+        statusDiv.className = "form-status loading";
+        statusDiv.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Отправка заявки...';
+        try {
+            let recaptchaToken = "";
+            try { recaptchaToken = await getRecaptchaToken(); } catch(e) {}
+            const formDataObj = { source: "buyout", name, phone, car, comment, consent: "yes", recipient: RECIPIENT_EMAIL, timestamp: new Date().toLocaleString("ru-RU"), recaptcha_token: recaptchaToken };
+            const result = await sendToGoogleScript(formDataObj);
+            if (result.result === "success") {
+                statusDiv.className = "form-status success";
+                statusDiv.innerHTML = "✅ Заявка успешно отправлена! Мы свяжемся с вами в ближайшее время.";
+                document.getElementById("userName").value = "";
+                document.getElementById("userPhone").value = "";
+                document.getElementById("carModel").value = "";
+                document.getElementById("userComment").value = "";
+                consentCheckbox.checked = false;
+                if (honeypotField) honeypotField.value = "";
+                setTimeout(() => {
+                    const modal = document.getElementById("orderModal");
+                    if (modal) modal.style.display = "none";
+                    statusDiv.className = "form-status";
+                }, 2500);
+            } else throw new Error();
+        } catch (error) {
+            statusDiv.className = "form-status error";
+            statusDiv.innerHTML = "❌ Ошибка при отправке. Пожалуйста, позвоните нам или попробуйте позже.";
+        } finally {
+            submitBtn.disabled = false;
+            submitBtn.textContent = "Отправить заявку";
+        }
     }
+
+    const modal = document.getElementById("orderModal");
+    const openBtn = document.getElementById("openOrderModalBtn");
+    const tradeInBtn = document.getElementById("tradeInBtn");
+    const closeBtn = document.getElementById("closeModal");
+    function openModal() {
+        const statusDiv = document.getElementById("formStatus");
+        if (statusDiv) { statusDiv.className = "form-status"; statusDiv.innerHTML = ""; }
+        modal.style.display = "flex";
+    }
+    if (openBtn) openBtn.onclick = openModal;
+    if (tradeInBtn) tradeInBtn.onclick = openModal;
+    if (closeBtn) closeBtn.onclick = () => modal.style.display = "none";
+    window.onclick = (e) => { if (e.target === modal) modal.style.display = "none"; };
+    const buyoutForm = document.getElementById("buyoutForm");
+    if (buyoutForm) buyoutForm.addEventListener("submit", handleSubmit);
+
+    // Бургер-меню + закрытие при скролле (как в index)
+    (function() {
+        const burgerBtn = document.getElementById("burgerBtn");
+        const mobileNav = document.getElementById("mobileNav");
+        if (!burgerBtn || !mobileNav) return;
+        function closeMenu() { mobileNav.classList.remove("open"); mobileNav.style.display = "none"; }
+        function toggleMenu() {
+            const isOpen = mobileNav.style.display === "flex";
+            if (isOpen) closeMenu();
+            else { mobileNav.style.display = "flex"; mobileNav.classList.add("open"); }
+        }
+        burgerBtn.addEventListener("click", (e) => { e.stopPropagation(); toggleMenu(); });
+        window.addEventListener("scroll", () => { if (mobileNav.style.display === "flex") closeMenu(); });
+        document.addEventListener("click", (e) => { if (!burgerBtn.contains(e.target) && !mobileNav.contains(e.target)) closeMenu(); });
+        document.querySelectorAll('.mobile-nav a').forEach(link => { link.addEventListener('click', closeMenu); });
+    })();
 </script>
 </body>
 </html>

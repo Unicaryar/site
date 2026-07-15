@@ -3,23 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <meta name="description" content="Автомобили с пробегом в Ярославле. Автосалон Юникар на Полушкина Роща, 16Г.">
-    <meta name="keywords" content="авто с пробегом, купить авто в Ярославле, автосалон Юникар, выкуп авто, кредит на авто, Полушкина Роща 16Г">
+    <meta name="description" content="Кредит и рассрочка на авто в Ярославле. ЮНИКАР — одобрение 95%, помощь при плохой кредитной истории, льготные ставки от 8%.">
+    <meta name="keywords" content="кредит на авто, рассрочка, плохая кредитная история, ЮНИКАР, автосалон Ярославль">
     <title>ЮНИКАР | У нас не откажут — кредит и рассрочка</title>
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://www.google.com/recaptcha/api.js?render=6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: 'Manrope', sans-serif;
-            background-color: #F8F9FA;
-            color: #1F2937;
-            line-height: 1.5;
-        }
+        html { overflow-y: scroll; scroll-behavior: smooth; }
+        body { font-family: 'Manrope', sans-serif; background-color: #F8F9FA; color: #1F2937; line-height: 1.5; display: flex; flex-direction: column; min-height: 100vh; }
         :root { --primary-blue: #07aed9; --primary-blue-dark: #0596bb; --gray-graphite: #3c3c3b; --gray-light: #F3F4F6; --white: #FFFFFF; }
+
+        /* ========== ЕДИНАЯ УНИФИЦИРОВАННАЯ ШАПКА ========== */
         .main-header {
-            background: var(--white);
+            background: #FFFFFF;
             box-shadow: 0 2px 10px rgba(0,0,0,0.05);
             position: sticky;
             top: 0;
@@ -39,45 +38,41 @@
             display: flex;
             align-items: center;
             gap: 12px;
+            text-decoration: none;
+            color: inherit;
         }
         .logo-area img {
             height: 62.5px;
             width: auto;
+            display: block;
         }
         .logo-text {
             font-size: 1.08rem;
             font-weight: 500;
             color: #6c757d;
+            line-height: 1.2;
         }
         .nav-menu ul {
             display: flex;
             list-style: none;
             gap: 2rem;
+            align-items: center;
+            margin: 0;
+            padding: 0;
         }
         .nav-menu a {
             text-decoration: none;
             font-weight: 600;
-            color: var(--gray-graphite);
-            transition: 0.2s;
+            font-size: 1rem;
+            color: #3c3c3b;
+            transition: color 0.2s;
             padding: 0.5rem 1rem;
             border-radius: 6px;
-            position: relative;
             display: inline-block;
         }
-        .nav-menu a::before {
-            content: attr(data-text);
-            font-weight: 800;
-            display: block;
-            height: 0;
-            visibility: hidden;
-            overflow: hidden;
-            user-select: none;
-            pointer-events: none;
-        }
-        .nav-menu a:hover, .nav-menu a.active {
-            color: black;
-            font-weight: 800;
-            text-shadow: 0 1px 1px rgba(0,0,0,0.05);
+        .nav-menu a:hover,
+        .nav-menu a.active {
+            color: #07aed9;
             background: transparent;
         }
         .burger-menu {
@@ -86,7 +81,7 @@
             cursor: pointer;
             background: none;
             border: none;
-            color: var(--gray-graphite);
+            color: #3c3c3b;
         }
         .mobile-nav {
             display: none;
@@ -103,164 +98,217 @@
         .mobile-nav a {
             padding: 0.8rem 1.5rem;
             text-decoration: none;
-            color: var(--gray-graphite);
+            color: #3c3c3b;
             font-weight: 600;
             border-bottom: 1px solid #eee;
+            transition: color 0.2s;
         }
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem 1.5rem;
-        }
-        .page-hero {
-            background: linear-gradient(135deg, var(--primary-blue) 0%, #055a70 100%);
-            border-radius: 12px;
-            padding: 2rem;
-            color: white;
-            margin-bottom: 2rem;
-        }
-        .page-hero h1 {
-            font-size: 2rem;
-            margin-bottom: 0.5rem;
-        }
-        .section-title {
-            font-size: 1.6rem;
-            margin-bottom: 1.5rem;
-            border-left: 5px solid var(--primary-blue);
-            padding-left: 1rem;
-        }
-        .cards-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-        .card {
-            background: white;
-            border-radius: 12px;
-            padding: 1.5rem;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-        }
-        .card i {
-            font-size: 2rem;
-            color: var(--primary-blue);
-            margin-bottom: 1rem;
-        }
-        .badge {
-            background: #e6f7ff;
+        .mobile-nav a:hover {
             color: #07aed9;
-            border-radius: 20px;
-            padding: 0.2rem 0.8rem;
-            font-size: 0.8rem;
-            display: inline-block;
-            margin-top: 0.5rem;
+            background: transparent;
         }
-        .btn-primary {
-            background: var(--primary-blue);
-            color: white;
-            border: none;
-            padding: 0.8rem 2rem;
-            border-radius: 6px;
-            font-weight: 600;
-            cursor: pointer;
-            font-size: 1rem;
-            transition: 0.2s;
-        }
-        .btn-primary:hover {
-            background: var(--primary-blue-dark);
-        }
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.7);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-        }
-        .modal-content {
-            background: white;
-            max-width: 500px;
-            width: 90%;
-            border-radius: 12px;
-            padding: 1.5rem;
-        }
-        .modal-close {
-            float: right;
-            font-size: 28px;
-            background: none;
-            border: none;
-            cursor: pointer;
-        }
-        .form-group { margin-bottom: 1rem; }
-        .form-group label { display: block; font-weight: 600; margin-bottom: 0.3rem; }
-        .form-group input, .form-group textarea {
-            width: 100%;
-            padding: 0.8rem;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            font-family: 'Manrope', sans-serif;
-        }
-        .checkbox-group {
-            display: flex;
-            align-items: flex-start;
-            gap: 10px;
-            margin: 1rem 0;
-        }
-        .submit-btn {
-            background: var(--primary-blue);
-            color: white;
-            width: 100%;
-            padding: 0.8rem;
-            border: none;
-            border-radius: 6px;
-            font-weight: 600;
-            cursor: pointer;
-        }
-        footer {
-            background: var(--gray-graphite);
-            color: #ccc;
-            text-align: center;
-            padding: 1.8rem;
-        }
-        footer p { font-size: 0.7rem; margin-bottom: 0.3rem; }
-        footer a { color: #ccc; text-decoration: none; }
         @media (max-width: 768px) {
-            .header-container { flex-direction: row; justify-content: space-between; gap: 0.5rem; }
-            .burger-menu { order: 2; display: block; }
-            .logo-area { order: 1; }
-            .nav-menu { display: none; }
-            .mobile-nav { display: none; }
-            .mobile-nav.open { display: flex; }
+            .header-container {
+                flex-direction: row;
+                justify-content: space-between;
+                gap: 0.5rem;
+            }
+            .burger-menu {
+                order: 2;
+                display: block;
+            }
+            .logo-area {
+                order: 1;
+            }
+            .nav-menu {
+                display: none;
+            }
+            .mobile-nav {
+                display: none;
+            }
+            .mobile-nav.open {
+                display: flex;
+            }
         }
         @media (min-width: 769px) {
-            .mobile-nav { display: none !important; }
+            .mobile-nav {
+                display: none !important;
+            }
+        }
+        /* ========== КОНЕЦ ЕДИНОЙ ШАПКИ ========== */
+
+        .container { max-width: 980px; margin: 0 auto; padding: 2rem 1.5rem; flex-grow: 1; }
+        .page-hero { background: linear-gradient(135deg, var(--primary-blue) 0%, #055a70 100%); border-radius: 12px; padding: 2rem; color: white; margin-bottom: 2rem; }
+        .page-hero h1 { font-size: 2rem; margin-bottom: 0.5rem; }
+        .page-hero p { font-size: 1.2rem; opacity: 0.9; }
+        .section-title { font-size: 1.6rem; margin-bottom: 1.5rem; border-left: 5px solid var(--primary-blue); padding-left: 1rem; }
+        .cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; margin-bottom: 2rem; }
+        .card { background: white; border-radius: 12px; padding: 1.5rem; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+        .card i { font-size: 2rem; color: var(--primary-blue); margin-bottom: 1rem; }
+        .badge { background: #e6f7ff; color: #07aed9; border-radius: 20px; padding: 0.2rem 0.8rem; font-size: 0.8rem; display: inline-block; margin-top: 0.5rem; }
+        .programs-block { background: white; border-radius: 12px; padding: 1.5rem; margin: 1.5rem 0; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+        .programs-block ul { margin-top: 0.8rem; list-style: none; }
+        .programs-block li { margin-bottom: 0.5rem; }
+        .programs-block i { color: var(--primary-blue); margin-right: 0.5rem; }
+        .btn-primary { background: var(--primary-blue); color: white; border: none; padding: 0.8rem 2rem; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 1rem; transition: 0.2s; }
+        .btn-primary:hover { background: var(--primary-blue-dark); }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 1000; justify-content: center; align-items: center; }
+        .modal-content { background: white; max-width: 500px; width: 90%; border-radius: 12px; padding: 1.5rem; position: relative; }
+        .modal-close { float: right; font-size: 28px; background: none; border: none; cursor: pointer; }
+        .form-group { margin-bottom: 1rem; }
+        .form-group label { display: block; font-weight: 600; margin-bottom: 0.3rem; }
+        .form-group input, .form-group textarea { width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 6px; font-family: 'Manrope', sans-serif; }
+        .checkbox-group { display: flex; align-items: flex-start; gap: 10px; margin: 1rem 0; }
+        .checkbox-group input { width: 20px; margin-top: 3px; }
+        .submit-btn { background: var(--primary-blue); color: white; width: 100%; padding: 0.8rem; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; transition: 0.2s; }
+        .submit-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+        .form-status { margin-top: 1rem; padding: 0.75rem; border-radius: 6px; text-align: center; font-size: 0.9rem; display: none; }
+        .form-status.success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; display: block; }
+        .form-status.error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; display: block; }
+        .form-status.loading { background: #e2e3e5; color: #383d41; border: 1px solid #d6d8db; display: block; }
+        .honeypot { position: absolute; left: -9999px; top: -9999px; opacity: 0; pointer-events: none; height: 0; width: 0; }
+        .grecaptcha-badge { visibility: hidden !important; opacity: 0 !important; pointer-events: none !important; }
+        
+        .floating-taplink {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            z-index: 1000;
+            width: 70px;
+            height: 70px;
+            background: white;
+            border-radius: 50%;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2), 0 0 0 3px rgba(7,174,217,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            animation: pulse 2s infinite;
+        }
+        .floating-taplink:hover {
+            transform: scale(1.08);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.25), 0 0 0 4px rgba(7,174,217,0.4);
+        }
+        .floating-taplink img {
+            width: 55px;
+            height: 55px;
+            object-fit: contain;
+            border-radius: 50%;
+        }
+        @keyframes pulse {
+            0% { box-shadow: 0 4px 15px rgba(0,0,0,0.2), 0 0 0 0 rgba(7,174,217,0.4); }
+            70% { box-shadow: 0 4px 15px rgba(0,0,0,0.2), 0 0 0 12px rgba(7,174,217,0); }
+            100% { box-shadow: 0 4px 15px rgba(0,0,0,0.2), 0 0 0 0 rgba(7,174,217,0); }
+        }
+        @media (max-width: 480px) {
+            .floating-taplink { width: 55px; height: 55px; bottom: 15px; right: 15px; }
+            .floating-taplink img { width: 42px; height: 42px; }
+        }
+        .floating-taplink::after {
+            content: "Все ссылки";
+            position: absolute;
+            right: 80px;
+            background: var(--gray-graphite);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.2s ease;
+            font-weight: 500;
+            pointer-events: none;
+        }
+        .floating-taplink:hover::after {
+            opacity: 1;
+            visibility: visible;
+            right: 85px;
+        }
+        @media (max-width: 480px) { .floating-taplink::after { display: none; } }
+        
+        footer { background: var(--gray-graphite); color: #ccc; text-align: center; padding: 1.8rem; margin-top: 2rem; }
+        footer p { font-size: 0.7rem; margin-bottom: 0.3rem; }
+        footer a { color: #ccc; text-decoration: none; }
+
+        /* Стили для дисклеймера */
+        .disclaimer-block {
+            margin: 2rem 0 1rem;
+            padding: 1.2rem 1.5rem;
+            background: #fef9e6;
+            border-left: 4px solid #e6a017;
+            border-radius: 8px;
+            font-size: 0.7rem;
+            line-height: 1.5;
+            color: #4a4a4a;
+        }
+        .disclaimer-block p {
+            margin-bottom: 0.5rem;
+        }
+        .disclaimer-block p:last-child {
+            margin-bottom: 0;
+        }
+        .disclaimer-header {
+            font-weight: 700;
+            color: #b45f06;
+            margin-bottom: 0.5rem;
+            font-size: 0.75rem;
+        }
+        .disclaimer-list {
+            padding-left: 1.2rem;
+            margin: 0.5rem 0;
+        }
+        .disclaimer-list li {
+            margin-bottom: 0.3rem;
+        }
+        .offer-marker {
+            font-size: 0.75rem;
+            color: #6c757d;
+            margin-bottom: 1rem;
+            text-align: right;
+            border-bottom: 1px dashed #ddd;
+            padding-bottom: 0.5rem;
+        }
+        .fas-warning {
+            background: #fff3cd;
+            border: 1px solid #ffeeba;
+            color: #856404;
+            padding: 0.5rem 0.8rem;
+            border-radius: 6px;
+            margin-bottom: 0.8rem;
+            font-weight: 700;
+            font-size: 0.7rem;
+        }
+        @media (max-width: 768px) {
+            .disclaimer-block {
+                font-size: 0.65rem;
+                padding: 1rem;
+            }
         }
     </style>
 </head>
 <body>
 <header class="main-header">
     <div class="header-container">
-        <div class="logo-area">
+        <a href="/" class="logo-area">
             <img src="logo.png" alt="ЮНИКАР" onerror="this.src='https://fakeimg.pl/200x60/3c3c3b/07aed9?text=ЮНИКАР'">
-            <div class="logo-text">Честные авто с пробегом в Ярославле</div>
-        </div>
+            <div class="logo-text">Честные авто с пробегом в Ярославле.</div>
+        </a>
         <button class="burger-menu" id="burgerBtn"><i class="fas fa-bars"></i></button>
         <nav class="nav-menu">
             <ul>
-                <li><a href="index.html" data-text="Авто в наличии">Авто в наличии</a></li>
-                <li><a href="buyout.html" data-text="Выкупим">Выкупим</a></li>
-                <li><a href="guarantee.html" class="active" data-text="У нас не откажут">У нас не откажут</a></li>
-                <li><a href="contacts.html" data-text="Контакты">Контакты</a></li>
-                <li><a href="privacy.html" data-text="Политика">Политика</a></li>
+                <li><a href="/">Авто в наличии</a></li>
+                <li><a href="buyout.html">Выкупим</a></li>
+                <li><a href="guarantee.html" class="active">У нас не откажут</a></li>
+                <li><a href="contacts.html">Контакты</a></li>
+                <li><a href="privacy.html">Политика</a></li>
             </ul>
         </nav>
     </div>
     <div class="mobile-nav" id="mobileNav">
-        <a href="index.html">Авто в наличии</a>
+        <a href="/">Авто в наличии</a>
         <a href="buyout.html">Выкупим</a>
         <a href="guarantee.html">У нас не откажут</a>
         <a href="contacts.html">Контакты</a>
@@ -273,29 +321,20 @@
         <h1>У нас не откажут</h1>
         <p>Кредит и рассрочка для любых ситуаций. Решение даже при плохой кредитной истории, долгах ФССП или отказах банков.</p>
     </div>
-
-    <div class="cards-grid">
-        <div class="card">
-            <i class="fas fa-check-circle"></i>
-            <h3>Собственное финансирование</h3>
-            <p>Покупаете здесь — платите здесь. Без беготни по банкам и скрытых комиссий.</p>
-            <span class="badge">Одобрение 95%</span>
-        </div>
-        <div class="card">
-            <i class="fas fa-chart-simple"></i>
-            <h3>Льготные ставки от 8%</h3>
-            <p>Работаем со Сбербанком и другими банками по специальным программам.</p>
-        </div>
-        <div class="card">
-            <i class="fas fa-user-shield"></i>
-            <h3>Помощь при сложной КИ</h3>
-            <p>Долги ФССП, банкротство, отказы — мы найдём вариант. Без страховок и навязанных допов.</p>
-        </div>
+    
+    <!-- Маркер перед УТП: условия и ограничения см. ниже -->
+    <div class="offer-marker">
+        <i class="fas fa-info-circle"></i> Условия и ограничения — см. ниже
     </div>
-
-    <div style="background: white; border-radius: 12px; padding: 1.5rem; margin: 1.5rem 0;">
+    
+    <div class="cards-grid">
+        <div class="card"><i class="fas fa-check-circle"></i><h3>Собственное финансирование</h3><p>Покупаете здесь — платите здесь. Без беготни по банкам и скрытых комиссий.</p><span class="badge">Одобрение 95%</span></div>
+        <div class="card"><i class="fas fa-chart-simple"></i><h3>Льготные ставки от 8%</h3><p>Работаем со Сбербанком и другими банками по специальным программам.</p></div>
+        <div class="card"><i class="fas fa-user-shield"></i><h3>Помощь при сложной КИ</h3><p>Долги ФССП, банкротство, отказы — мы найдём вариант. Без страховок и навязанных допов.</p></div>
+    </div>
+    <div class="programs-block">
         <h3>Программы поддержки</h3>
-        <ul style="margin-top: 0.8rem; list-style: none;">
+        <ul>
             <li><i class="fas fa-users"></i> «Большая семья» — выгода до 100 000 ₽</li>
             <li><i class="fas fa-hand-peace"></i> «Поддержка» — скидка до 20 000 ₽ пенсионерам</li>
             <li><i class="fas fa-shield-alt"></i> «Служба и долг» — участникам СВО и их семьям до 100 000 ₽</li>
@@ -303,101 +342,179 @@
         </ul>
     </div>
 
+    <!-- ========== ПОЛНЫЙ ДИСКЛЕЙМЕР (с доработками по требованиям ФАС) ========== -->
+    <div class="disclaimer-block">
+        <div class="disclaimer-header">
+            <i class="fas fa-scale-balanced"></i> Важная информация
+        </div>
+        
+        <!-- Обязательное предупреждение ФАС с 1 марта 2025 года -->
+        <div class="fas-warning">
+            <i class="fas fa-exclamation-triangle"></i> Внимание! Оценивайте свои финансовые возможности и риски.
+        </div>
+        
+        <p><strong>ООО «КРОСТУ»</strong> не является кредитной организацией, банком или МФО, не выдаёт займы и кредиты.</p>
+        
+        <ul class="disclaimer-list">
+            <li><strong>«Собственное финансирование»</strong> — предоставление услуги финансирования на условиях договора аренды с правом выкупа. Компания не выдаёт денежные средства наличными. Вы вправе оплатить товар/услугу любым законным способом.</li>
+            <li><strong>«Одобрение 95%»</strong> — доля положительных предварительных решений среди клиентов, прошедших базовый скоринг на сайте/по телефону по возможным вариантам финансирования покупки (собственное финансирование, автокредитование). Итоговое решение о выдаче автокредита принимает банк. Реальный процент одобренных договоров может отличаться.</li>
+            <li><strong>«Льготные ставки от 8%»</strong> — минимальная ставка доступна при сумме кредита от 500 000 ₽ и сроке от 3 лет с подтверждением дохода, хорошей кредитной историей и дополнительными условиями банка. Условия каждого банка индивидуальны.<br>
+            <em>Полная стоимость кредита (ПСК) будет зависеть от условий выбранного банка и параметров кредита (суммы, срока, страховок). Подробный диапазон значений ПСК и все условия вам рассчитает менеджер при оформлении заявки. Условия кредитования и ПСК уточняйте в банке.</em></li>
+            <li><strong>«Помощь при сложной КИ»</strong> — мы предлагаем собственную программу финансирования на условиях договора аренды с правом выкупа, но не гарантируем одобрение, в том числе при наличии действующих долгов ФССП, процедуре банкротства или текущих просрочках.</li>
+            <li><strong>Программы поддержки</strong> («Большая семья», «Поддержка», «Служба и долг», «Работаем вместе») — указанные суммы (до 100 000 ₽, до 20 000 ₽) являются скидками или бонусами от продавца/партнёра, а не денежными выплатами. Не являются государственными субсидиями. Условия суммирования с другими акциями уточняйте у менеджера.</li>
+        </ul>
+        <p><strong>Общие условия</strong> — все предложения не являются публичной офертой (ст. 437 ГК РФ). Точные условия кредитования, ставки и комиссии уточняйте в выбранном банке и у менеджера компании.</p>
+    </div>
+    <!-- ========== КОНЕЦ ДИСКЛЕЙМЕРА ========== -->
+
     <div style="text-align: center; margin: 2rem 0;">
         <button id="openCreditModalBtn" class="btn-primary"><i class="fas fa-credit-card"></i> Получить одобрение</button>
     </div>
 </div>
 
 <footer>
-    <p>© ЮНИКАР — Честные авто с пробегом в Ярославле</p>
+    <p>© ЮНИКАР — Честные авто с пробегом в Ярославле.</p>
     <p>г.Ярославль, ул. Полушкина Роща, 16Г</p>
     <p><a href="privacy.html">Политика конфиденциальности</a></p>
 </footer>
+
+<a href="https://unicaryar.github.io/taplink_Unicar/" target="_blank" class="floating-taplink" id="taplinkFloat">
+    <img src="logo.png" alt="Наши соцсети и мессенджеры" onerror="this.src='https://fakeimg.pl/200x200/07aed9/ffffff?text=Ю'">
+</a>
 
 <div id="creditModal" class="modal">
     <div class="modal-content">
         <button class="modal-close" id="closeModal">&times;</button>
         <h3><i class="fas fa-credit-card"></i> Заявка на финансирование</h3>
-        <form id="creditForm" method="POST">
-            <input type="hidden" name="_captcha" value="false">
-            <input type="hidden" name="_subject" value="Заявка на финансирование | ЮНИКАР">
-            <input type="hidden" name="_template" value="table">
-            <div class="form-group">
-                <label>Ваше имя *</label>
-                <input type="text" name="Имя" required>
-            </div>
-            <div class="form-group">
-                <label>Телефон *</label>
-                <input type="tel" name="Телефон" required placeholder="+7 (___) ___-__-__">
-            </div>
-            <div class="form-group">
-                <label>Желаемый автомобиль (опционально)</label>
-                <input type="text" name="Автомобиль" placeholder="Марка, модель, год">
-            </div>
-            <div class="form-group">
-                <label>Комментарий (какая ситуация с кредитной историей)</label>
-                <textarea name="Комментарий" rows="3"></textarea>
-            </div>
-            <div class="checkbox-group">
-                <input type="checkbox" name="Согласие" id="consentCredit" required>
-                <label for="consentCredit">Я принимаю <a href="privacy.html" target="_blank">условия обработки персональных данных</a></label>
-            </div>
-            <button type="submit" class="submit-btn">Отправить заявку</button>
+        <form id="creditForm">
+            <input type="hidden" name="source" value="guarantee">
+            <div class="form-group"><label>Ваше имя *</label><input type="text" name="name" id="userName" required></div>
+            <div class="form-group"><label>Телефон *</label><input type="tel" name="phone" id="userPhone" required placeholder="+7 (___) ___-__-__"></div>
+            <div class="form-group"><label>Желаемый автомобиль (опционально)</label><input type="text" name="car" id="userCar" placeholder="Марка, модель, год"></div>
+            <div class="form-group"><label>Комментарий (какая ситуация с кредитной историей)</label><textarea name="comment" id="userComment" rows="3"></textarea></div>
+            <div class="checkbox-group"><input type="checkbox" name="consent" id="consentCredit" required><label for="consentCredit">Я принимаю <a href="privacy.html" target="_blank">условия обработки персональных данных</a></label></div>
+            <div class="honeypot"><label for="website">Не заполняйте это поле</label><input type="text" name="website" id="website" value="" autocomplete="off" tabindex="-1"></div>
+            <input type="hidden" name="recaptcha_token" id="recaptchaToken">
+            <div id="formStatus" class="form-status"></div>
+            <button type="submit" class="submit-btn" id="submitBtn">Отправить заявку</button>
         </form>
     </div>
 </div>
 
 <script>
-    const YOUR_EMAIL = "avto.marketolog1@yandex.ru";
-    const creditForm = document.getElementById("creditForm");
-    if (creditForm) {
-        creditForm.action = `https://formsubmit.co/${YOUR_EMAIL}`;
+    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz9RCZtwOxuufTRhfsvh3GM4NqnIIaaTnGI2JlIYTbKPmuViR7nWYUPZ9EUPRn5oTqfQA/exec";
+    const RECIPIENT_EMAIL = "avto.marketolog1@yandex.ru";
+    const RECAPTCHA_SITE_KEY = "6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI";
+
+    async function getRecaptchaToken() {
+        return new Promise((resolve) => {
+            grecaptcha.ready(() => {
+                grecaptcha.execute(RECAPTCHA_SITE_KEY, { action: 'submit' }).then(resolve);
+            });
+        });
+    }
+
+    async function sendToGoogleScript(formDataObj) {
+        const formData = new FormData();
+        for (const key in formDataObj) formData.append(key, formDataObj[key]);
+        const response = await fetch(GOOGLE_SCRIPT_URL, { method: "POST", body: formData });
+        try { return await response.json(); } catch(e) { return { result: "success" }; }
+    }
+
+    async function handleSubmit(event) {
+        event.preventDefault();
+        const submitBtn = document.getElementById("submitBtn");
+        const statusDiv = document.getElementById("formStatus");
+        const consentCheckbox = document.getElementById("consentCredit");
+        const honeypotField = document.getElementById("website");
+        if (honeypotField && honeypotField.value.trim() !== "") {
+            statusDiv.className = "form-status success";
+            statusDiv.textContent = "✅ Заявка успешно отправлена! Мы свяжемся с вами.";
+            submitBtn.disabled = true;
+            setTimeout(() => {
+                const modal = document.getElementById("creditModal");
+                if (modal) modal.style.display = "none";
+                statusDiv.className = "form-status";
+                submitBtn.disabled = false;
+            }, 2000);
+            return;
+        }
+        if (!consentCheckbox.checked) {
+            statusDiv.className = "form-status error";
+            statusDiv.textContent = "Пожалуйста, примите условия обработки персональных данных";
+            return;
+        }
+        const name = document.getElementById("userName").value.trim();
+        const phone = document.getElementById("userPhone").value.trim();
+        const car = document.getElementById("userCar").value.trim();
+        const comment = document.getElementById("userComment").value;
+        if (!name || !phone) {
+            statusDiv.className = "form-status error";
+            statusDiv.textContent = "Пожалуйста, заполните имя и телефон";
+            return;
+        }
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Отправка...";
+        statusDiv.className = "form-status loading";
+        statusDiv.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Отправка заявки...';
+        try {
+            let recaptchaToken = "";
+            try { recaptchaToken = await getRecaptchaToken(); } catch(e) {}
+            const formDataObj = { source: "guarantee", name, phone, car, comment, consent: "yes", recipient: RECIPIENT_EMAIL, timestamp: new Date().toLocaleString("ru-RU"), recaptcha_token: recaptchaToken };
+            const result = await sendToGoogleScript(formDataObj);
+            if (result.result === "success") {
+                statusDiv.className = "form-status success";
+                statusDiv.innerHTML = "✅ Заявка успешно отправлена! Мы свяжемся с вами в ближайшее время.";
+                document.getElementById("userName").value = "";
+                document.getElementById("userPhone").value = "";
+                document.getElementById("userCar").value = "";
+                document.getElementById("userComment").value = "";
+                consentCheckbox.checked = false;
+                if (honeypotField) honeypotField.value = "";
+                setTimeout(() => {
+                    const modal = document.getElementById("creditModal");
+                    if (modal) modal.style.display = "none";
+                    statusDiv.className = "form-status";
+                }, 2500);
+            } else throw new Error();
+        } catch (error) {
+            statusDiv.className = "form-status error";
+            statusDiv.innerHTML = "❌ Ошибка при отправке. Пожалуйста, позвоните нам или попробуйте позже.";
+        } finally {
+            submitBtn.disabled = false;
+            submitBtn.textContent = "Отправить заявку";
+        }
     }
 
     const modal = document.getElementById("creditModal");
     const openBtn = document.getElementById("openCreditModalBtn");
     const closeBtn = document.getElementById("closeModal");
-    openBtn.onclick = () => modal.style.display = "flex";
+    openBtn.onclick = () => {
+        const statusDiv = document.getElementById("formStatus");
+        if (statusDiv) { statusDiv.className = "form-status"; statusDiv.innerHTML = ""; }
+        modal.style.display = "flex";
+    };
     closeBtn.onclick = () => modal.style.display = "none";
     window.onclick = (e) => { if (e.target === modal) modal.style.display = "none"; };
+    const creditForm = document.getElementById("creditForm");
+    if (creditForm) creditForm.addEventListener("submit", handleSubmit);
 
-    const burgerBtn = document.getElementById("burgerBtn");
-    const mobileNav = document.getElementById("mobileNav");
-
-    function toggleMenu(show) {
-        if (show === undefined) {
-            if (mobileNav.style.display === "flex") {
-                mobileNav.style.display = "none";
-                mobileNav.classList.remove("open");
-            } else {
-                mobileNav.style.display = "flex";
-                mobileNav.classList.add("open");
-            }
-        } else {
-            mobileNav.style.display = show ? "flex" : "none";
-            if (show) mobileNav.classList.add("open");
-            else mobileNav.classList.remove("open");
+    // Бургер-меню + закрытие при скролле
+    (function() {
+        const burgerBtn = document.getElementById("burgerBtn");
+        const mobileNav = document.getElementById("mobileNav");
+        if (!burgerBtn || !mobileNav) return;
+        function closeMenu() { mobileNav.classList.remove("open"); mobileNav.style.display = "none"; }
+        function toggleMenu() {
+            const isOpen = mobileNav.style.display === "flex";
+            if (isOpen) closeMenu();
+            else { mobileNav.style.display = "flex"; mobileNav.classList.add("open"); }
         }
-    }
-
-    toggleMenu(false);
-
-    burgerBtn.addEventListener("click", (e) => {
-        e.stopPropagation();
-        toggleMenu();
-    });
-
-    document.addEventListener("click", (e) => {
-        if (!burgerBtn.contains(e.target) && !mobileNav.contains(e.target)) {
-            toggleMenu(false);
-        }
-    });
-
-    document.querySelectorAll('.mobile-nav a').forEach(link => {
-        link.addEventListener('click', () => {
-            toggleMenu(false);
-        });
-    });
+        burgerBtn.addEventListener("click", (e) => { e.stopPropagation(); toggleMenu(); });
+        window.addEventListener("scroll", () => { if (mobileNav.style.display === "flex") closeMenu(); });
+        document.addEventListener("click", (e) => { if (!burgerBtn.contains(e.target) && !mobileNav.contains(e.target)) closeMenu(); });
+        document.querySelectorAll('.mobile-nav a').forEach(link => { link.addEventListener('click', closeMenu); });
+    })();
 </script>
 </body>
 </html>

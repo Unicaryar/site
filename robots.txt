@@ -1,3 +1,23 @@
 User-agent: *
+Disallow: /admin/
+Disallow: /cgi-bin/
+Disallow: /tmp/
+Disallow: /includes/
+Disallow: /logs/
+Disallow: /assets/backup/
+Disallow: /ajax/
+Disallow: /bitrix/
+Disallow: /personal/
+Disallow: /*?sessid=
+Disallow: /*?login=
+Disallow: /*?logout=
+Disallow: /*?mode=
+Disallow: /*?order=
+Disallow: /*?sort=
+Disallow: /*?filter=
+
 Allow: /
-Sitemap: https://ваш-сайт.ru/sitemap.xml
+
+Host: https://unicar-yar.ru
+
+Sitemap: https://unicar-yar.ru/sitemap.xml

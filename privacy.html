@@ -2,27 +2,38 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Автомобили с пробегом в Ярославле. Автосалон Юникар на Полушкина Роща, 16Г.">
-    <meta name="keywords" content="авто с пробегом, купить авто в Ярославле, автосалон Юникар, выкуп авто, кредит на авто, Полушкина Роща 16Г">
-    <title>Политика конфиденциальности | ЮНИКАР</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <meta name="description" content="Политика конфиденциальности компании ЮНИКАР. Обработка персональных данных, цели сбора, защита информации и ваши права.">
+    <meta name="keywords" content="политика конфиденциальности, персональные данные, юникар, ярославль, защита данных">
+    <title>ЮНИКАР | Политика конфиденциальности</title>
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body {
+            overflow-x: hidden !important;
+            width: 100%;
+            max-width: 100%;
+        }
         body {
             font-family: 'Manrope', sans-serif;
-            background: #F8F9FA;
+            background-color: #F8F9FA;
             color: #1F2937;
             line-height: 1.5;
+            display: grid;
+            grid-template-rows: auto 1fr auto;
+            min-height: 100vh;
         }
+        :root { --primary-blue: #07aed9; --primary-blue-dark: #0596bb; --gray-graphite: #3c3c3b; --gray-light: #F3F4F6; --white: #FFFFFF; }
+
+        /* ========== ШАПКА ========== */
         .main-header {
-            background: white;
+            background: #FFFFFF;
             box-shadow: 0 2px 10px rgba(0,0,0,0.05);
             position: sticky;
             top: 0;
-            z-index: 100;
+            z-index: 200;
         }
         .header-container {
             max-width: 1400px;
@@ -38,41 +49,41 @@
             display: flex;
             align-items: center;
             gap: 12px;
+            text-decoration: none;
+            color: inherit;
         }
-        .logo-area img { height: 62.5px; width: auto; }
+        .logo-area img {
+            height: 62.5px;
+            width: auto;
+            display: block;
+        }
         .logo-text {
             font-size: 1.08rem;
             font-weight: 500;
             color: #6c757d;
+            line-height: 1.2;
         }
         .nav-menu ul {
             display: flex;
             list-style: none;
             gap: 2rem;
+            align-items: center;
+            margin: 0;
+            padding: 0;
         }
         .nav-menu a {
             text-decoration: none;
             font-weight: 600;
+            font-size: 1rem;
             color: #3c3c3b;
+            transition: color 0.2s;
             padding: 0.5rem 1rem;
             border-radius: 6px;
-            position: relative;
             display: inline-block;
         }
-        .nav-menu a::before {
-            content: attr(data-text);
-            font-weight: 800;
-            display: block;
-            height: 0;
-            visibility: hidden;
-            overflow: hidden;
-            user-select: none;
-            pointer-events: none;
-        }
-        .nav-menu a:hover, .nav-menu a.active {
-            color: black;
-            font-weight: 800;
-            text-shadow: 0 1px 1px rgba(0,0,0,0.05);
+        .nav-menu a:hover,
+        .nav-menu a.active {
+            color: #07aed9;
             background: transparent;
         }
         .burger-menu {
@@ -101,74 +112,170 @@
             color: #3c3c3b;
             font-weight: 600;
             border-bottom: 1px solid #eee;
+            transition: color 0.2s;
         }
+        .mobile-nav a:hover {
+            color: #07aed9;
+            background: transparent;
+        }
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: row;
+                justify-content: space-between;
+                gap: 0.5rem;
+            }
+            .burger-menu {
+                order: 2;
+                display: block;
+            }
+            .logo-area {
+                order: 1;
+            }
+            .nav-menu {
+                display: none;
+            }
+            .mobile-nav {
+                display: none;
+            }
+            .mobile-nav.open {
+                display: flex;
+            }
+        }
+        @media (min-width: 769px) {
+            .mobile-nav {
+                display: none !important;
+            }
+        }
+        /* ========== КОНЕЦ ШАПКИ ========== */
+
         .container {
-            max-width: 1000px;
-            margin: 2rem auto;
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+            overflow-x: hidden;
+            width: 100%;
+        }
+        .policy-hero {
+            background: linear-gradient(135deg, var(--primary-blue) 0%, #055a70 100%);
+            border-radius: 12px;
             padding: 2rem;
-            background: white;
-            border-radius: 14px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-        }
-        h1 {
-            font-size: 1.4rem; /* уменьшено на 30% от 2rem */
-            margin-bottom: 1rem;
-            border-left: 5px solid #07aed9;
-            padding-left: 1rem;
-        }
-        h2 { font-size: 1.4rem; margin: 1.5rem 0 0.5rem; color: #07aed9; }
-        p, li { margin-bottom: 0.8rem; color: #2c3e50; }
-        ul { margin-left: 2rem; }
-        .pdf-link {
-            display: inline-block;
-            margin-top: 1rem;
-            background: #07aed9;
             color: white;
-            padding: 0.6rem 1.2rem;
-            border-radius: 6px;
-            text-decoration: none;
+            margin-bottom: 2rem;
+            word-break: break-word;
+        }
+        .policy-hero h1 { font-size: 2rem; margin-bottom: 0.5rem; }
+        .policy-hero p { font-size: 1.1rem; opacity: 0.92; }
+        .policy-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.05);
+            margin-bottom: 2rem;
+            word-break: break-word;
+            overflow-wrap: break-word;
+        }
+        .policy-date {
+            display: inline-block;
+            background: #eef2f3;
+            padding: 0.3rem 0.9rem;
+            border-radius: 30px;
+            font-size: 0.85rem;
             font-weight: 600;
+            color: var(--primary-blue-dark);
+            margin-bottom: 1.8rem;
         }
-        footer {
-            background: #3c3c3b;
-            color: #ccc;
-            text-align: center;
+        .policy-section {
+            margin-bottom: 2rem;
+            border-bottom: 1px solid #e9ecef;
+            padding-bottom: 1.5rem;
+            word-break: break-word;
+            overflow-wrap: break-word;
+        }
+        .policy-section:last-child { border-bottom: none; padding-bottom: 0; }
+        .policy-section h2 {
+            font-size: 1.5rem;
+            margin-bottom: 0.75rem;
+            color: #1e2a3a;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .policy-section h2 i { color: var(--primary-blue); font-size: 1.4rem; }
+        .policy-section p, .policy-section ul { margin-bottom: 0.8rem; color: #2c3e44; line-height: 1.6; }
+        .policy-section ul { padding-left: 1.5rem; }
+        .policy-section li { margin-bottom: 0.4rem; }
+        .pdf-download {
+            background: #f0f7fa;
+            border-radius: 16px;
             padding: 1.5rem;
-            margin-top: 2rem;
+            text-align: center;
+            margin-top: 1.5rem;
+            border: 1px solid #d4e6ed;
         }
+        .btn-pdf {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            background: white;
+            border: 2px solid var(--primary-blue);
+            padding: 0.8rem 2rem;
+            border-radius: 50px;
+            font-weight: 700;
+            color: var(--primary-blue);
+            text-decoration: none;
+            transition: all 0.2s ease;
+            font-size: 1rem;
+            white-space: normal;
+            word-break: break-word;
+            text-align: center;
+            flex-wrap: wrap;
+            max-width: 100%;
+        }
+        .btn-pdf i { font-size: 1.2rem; }
+        .btn-pdf:hover { background: var(--primary-blue); color: white; border-color: var(--primary-blue); }
+        .contact-note {
+            background: #fff7e5;
+            border-left: 5px solid #ffb347;
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            margin: 1rem 0;
+            font-size: 0.95rem;
+            word-break: break-word;
+        }
+        .grecaptcha-badge { visibility: hidden !important; opacity: 0 !important; pointer-events: none !important; }
+        footer { background: var(--gray-graphite); color: #ccc; text-align: center; padding: 1.8rem; }
         footer p { font-size: 0.7rem; margin-bottom: 0.3rem; }
-        @media (max-width: 780px) {
-            .header-container { flex-direction: row; justify-content: space-between; gap: 0.5rem; }
-            .burger-menu { order: 2; display: block; }
-            .logo-area { order: 1; }
-            .nav-menu { display: none; }
-            .container { margin: 1rem; padding: 1.5rem; }
-        }
-        @media (min-width: 781px) {
-            .mobile-nav { display: none !important; }
+        footer a { color: #ccc; text-decoration: none; word-break: break-word; }
+        footer a:hover { color: var(--primary-blue); }
+        @media (max-width: 768px) {
+            .policy-card { padding: 1.2rem; }
+            .policy-section h2 { font-size: 1.3rem; }
+            .btn-pdf { padding: 0.6rem 1rem; font-size: 0.9rem; gap: 8px; }
         }
     </style>
 </head>
 <body>
 <header class="main-header">
     <div class="header-container">
-        <div class="logo-area">
+        <a href="/" class="logo-area">
             <img src="logo.png" alt="ЮНИКАР" onerror="this.src='https://fakeimg.pl/200x60/3c3c3b/07aed9?text=ЮНИКАР'">
-            <div class="logo-text">Честные авто с пробегом в Ярославле</div>
-        </div>
+            <div class="logo-text">Честные авто с пробегом в Ярославле.</div>
+        </a>
         <button class="burger-menu" id="burgerBtn"><i class="fas fa-bars"></i></button>
         <nav class="nav-menu">
             <ul>
-                <li><a href="index.html" data-text="Авто в наличии">Авто в наличии</a></li>
-                <li><a href="buyout.html" data-text="Выкупим">Выкупим</a></li>
-                <li><a href="guarantee.html" data-text="У нас не откажут">У нас не откажут</a></li>
-                <li><a href="contacts.html" data-text="Контакты">Контакты</a></li>
-                <li><a href="privacy.html" class="active" data-text="Политика">Политика</a></li>
+                <li><a href="/">Авто в наличии</a></li>
+                <li><a href="buyout.html">Выкупим</a></li>
+                <li><a href="guarantee.html">У нас не откажут</a></li>
+                <li><a href="contacts.html">Контакты</a></li>
+                <li><a href="privacy.html" class="active">Политика</a></li>
             </ul>
         </nav>
     </div>
     <div class="mobile-nav" id="mobileNav">
-        <a href="index.html">Авто в наличии</a>
+        <a href="/">Авто в наличии</a>
         <a href="buyout.html">Выкупим</a>
         <a href="guarantee.html">У нас не откажут</a>
         <a href="contacts.html">Контакты</a>
@@ -177,62 +284,75 @@
 </header>
 
 <div class="container">
-    <h1>Политика конфиденциальности</h1>
-    <p><strong>Дата последнего обновления:</strong> 25 мая 2026 г.</p>
-    <p>Компания «ЮНИКАР» (далее — «Мы») уважает ваше право на конфиденциальность и обязуется защищать персональные данные, которые вы предоставляете при использовании нашего сайта.</p>
-    
-    <h2>1. Какие данные мы собираем</h2>
-    <p>При оформлении заявки на автомобиль вы добровольно предоставляете:</p>
-    <ul>
-        <li>Имя</li>
-        <li>Номер телефона</li>
-        <li>Данные об интересующем автомобиле</li>
-        <li>Любую дополнительную информацию, которую вы укажете в комментарии</li>
-    </ul>
-    
-    <h2>2. Цели обработки данных</h2>
-    <p>Ваши данные используются исключительно для:</p>
-    <ul>
-        <li>Связи с вами для уточнения деталей заказа</li>
-        <li>Предоставления информации о статусе заявки</li>
-        <li>Улучшения качества обслуживания</li>
-    </ul>
-    
-    <h2>3. Передача данных третьим лицам</h2>
-    <p>Мы не передаём ваши персональные данные третьим лицам, за исключением случаев, предусмотренных законодательством РФ. Для отправки заявок на электронную почту мы используем сервис FormSubmit, который не хранит данные и выступает только в роли технического посредника.</p>
-    
-    <h2>4. Хранение и защита данных</h2>
-    <p>Ваши данные хранятся только в виде писем на нашей корпоративной почте. Доступ к ним имеют только уполномоченные сотрудники. Мы принимаем разумные меры для защиты от несанкционированного доступа.</p>
-    
-    <h2>5. Ваши права</h2>
-    <p>Вы имеете право запросить удаление или изменение ваших данных, написав нам на <a href="mailto:unikal@yandex.ru">unikal@yandex.ru</a>.</p>
-    
-    <h2>6. Ссылка на полную версию политики (PDF)</h2>
-    <p>Вы можете скачать полный текст политики конфиденциальности в формате PDF:</p>
-    <a href="privacy_policy.pdf" class="pdf-link" download><i class="fas fa-file-pdf"></i> Скачать PDF-файл</a>
+    <div class="policy-hero">
+        <h2>Политика конфиденциальности</h2>
+        <p>Защита ваших персональных данных — наш приоритет. Прозрачность и безопасность.</p>
+    </div>
+    <div class="policy-card">
+        <div class="policy-date"><i class="far fa-calendar-alt"></i> Дата последнего обновления: 25 мая 2026 г.</div>
+        <div class="policy-section">
+            <h2><i class="fas fa-database"></i> 1. Какие данные мы собираем</h2>
+            <p>При оформлении заявки на автомобиль вы добровольно предоставляете:</p>
+            <ul><li>Имя</li><li>Номер телефона</li><li>Данные об интересующем автомобиле</li><li>Любую дополнительную информацию, которую вы укажете в комментарии</li></ul>
+            <p>Мы не обрабатываем специальные категории персональных данных без вашего явного согласия.</p>
+        </div>
+        <div class="policy-section">
+            <h2><i class="fas fa-bullseye"></i> 2. Цели обработки данных</h2>
+            <p>Ваши данные используются исключительно для:</p>
+            <ul><li>Связи с вами для уточнения деталей заказа</li><li>Предоставления информации о статусе заявки</li><li>Улучшения качества обслуживания</li><li>Информирования о специальных акциях (только при отдельном согласии)</li></ul>
+        </div>
+        <div class="policy-section">
+            <h2><i class="fas fa-shield-alt"></i> 3. Передача данных третьим лицам</h2>
+            <p>Мы <strong>не передаём</strong> ваши персональные данные третьим лицам, за исключением случаев, предусмотренных законодательством РФ (например, по запросу уполномоченных государственных органов). Все заявки отправляются на нашу корпоративную электронную почту и не хранятся на сторонних серверах.</p>
+            <p>Мы не продаем, не обмениваем и не распространяем ваши данные в коммерческих целях.</p>
+        </div>
+        <div class="policy-section">
+            <h2><i class="fas fa-lock"></i> 4. Хранение и защита данных</h2>
+            <p>Ваши данные хранятся только в виде писем на нашей корпоративной почте. Доступ к ним имеют только уполномоченные сотрудники, прошедшие обучение по работе с конфиденциальной информацией. Мы принимаем разумные меры для защиты от несанкционированного доступа: используем антивирусное ПО, шифрование каналов связи и регулярно обновляем системы безопасности.</p>
+        </div>
+        <div class="policy-section">
+            <h2><i class="fas fa-user-check"></i> 5. Ваши права</h2>
+            <p>Вы имеете право запросить удаление или изменение ваших данных, написав нам на <strong>avto.marketolog1@yandex.ru</strong>. Также вы можете:</p>
+            <ul><li>Получить информацию о том, какие данные о вас хранятся</li><li>Потребовать исправления неточных данных</li><li>Отозвать согласие на обработку персональных данных</li><li>Подать жалобу в уполномоченный орган (Роскомнадзор)</li></ul>
+            <div class="contact-note"><i class="fas fa-envelope"></i> <strong>Электронная почта для обращений:</strong> avto.marketolog1@yandex.ru<br><i class="fas fa-clock"></i> Ответ на запрос предоставляется в течение 15 рабочих дней.</div>
+        </div>
+        <div class="policy-section">
+            <h2><i class="fas fa-file-pdf"></i> 6. Ссылка на полную версию политики (PDF)</h2>
+            <p>Вы можете скачать полный текст политики конфиденциальности в формате PDF для ознакомления или печати. Документ содержит все юридические аспекты, включая порядок обжалования и контактные данные ответственного за обработку данных.</p>
+            <div class="pdf-download">
+                <a href="privacy.pdf" class="btn-pdf" download><i class="fas fa-download"></i> Скачать PDF-файл</a>
+                <p style="margin-top: 12px; font-size: 0.8rem; color: #5a6e7a;">*PDF-документ содержит основные данные раздела Политика конфиденциальности.</p>
+            </div>
+        </div>
+        <div style="margin-top: 1.2rem; font-size: 0.85rem; color: #6c7a89; border-top: 1px solid #e2e8f0; padding-top: 1.2rem; text-align: center; word-break: break-word;">
+            <i class="fas fa-balance-scale"></i> Настоящая политика применяется исключительно к сайту unicar-yar.ru (включая поддомены).
+        </div>
+    </div>
 </div>
 
 <footer>
-    <p>© ЮНИКАР — Честные авто с пробегом в Ярославле</p>
+    <p>© ЮНИКАР — Честные авто с пробегом в Ярославле.</p>
     <p>г.Ярославль, ул. Полушкина Роща, 16Г</p>
-    <p><a href="privacy.html" style="color: #ccc;">Политика конфиденциальности</a></p>
+    <p><a href="privacy.html">Политика конфиденциальности</a></p>
 </footer>
 
 <script>
-    const burgerBtn = document.getElementById("burgerBtn");
-    const mobileNav = document.getElementById("mobileNav");
-    if (burgerBtn && mobileNav) {
-        burgerBtn.addEventListener("click", () => {
-            if (mobileNav.style.display === "flex") mobileNav.style.display = "none";
-            else mobileNav.style.display = "flex";
-        });
-        document.addEventListener("click", (e) => {
-            if (!burgerBtn.contains(e.target) && !mobileNav.contains(e.target)) mobileNav.style.display = "none";
-        });
-        document.querySelectorAll('.mobile-nav a').forEach(link => {
-            link.addEventListener('click', () => { mobileNav.style.display = "none"; });
-        });
-    }
+    // Мобильное меню с закрытием при скролле (как в index.html)
+    (function() {
+        const burgerBtn = document.getElementById("burgerBtn");
+        const mobileNav = document.getElementById("mobileNav");
+        if (!burgerBtn || !mobileNav) return;
+        function closeMenu() { mobileNav.classList.remove("open"); mobileNav.style.display = "none"; }
+        function toggleMenu() {
+            const isOpen = mobileNav.style.display === "flex";
+            if (isOpen) closeMenu();
+            else { mobileNav.style.display = "flex"; mobileNav.classList.add("open"); }
+        }
+        burgerBtn.addEventListener("click", (e) => { e.stopPropagation(); toggleMenu(); });
+        window.addEventListener("scroll", () => { if (mobileNav.style.display === "flex") closeMenu(); });
+        document.addEventListener("click", (e) => { if (!burgerBtn.contains(e.target) && !mobileNav.contains(e.target)) closeMenu(); });
+        document.querySelectorAll('.mobile-nav a').forEach(link => { link.addEventListener('click', closeMenu); });
+    })();
 </script>
 </body>
 </html>
