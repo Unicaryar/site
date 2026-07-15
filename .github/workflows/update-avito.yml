@@ -1,6 +1,8 @@
-name: Обновление Avito и публикация на Timeweb
+name: Avito и публикация сайта на Timeweb
 
 on:
+  push:
+    branches: [main]
   workflow_dispatch:
   schedule:
     - cron: "17 */3 * * *"
@@ -9,28 +11,23 @@ permissions:
   contents: write
 
 concurrency:
-  group: avito-timeweb-sync
+  group: unicar-site-deploy
   cancel-in-progress: true
 
 jobs:
-  sync-and-deploy:
+  update-avito:
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 10
 
     steps:
-      - name: Скачать репозиторий
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Установить Python
-        uses: actions/setup-python@v5
+      - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
 
-      - name: Установить зависимости
-        run: |
-          python -m pip install --upgrade requests
-          sudo apt-get update
-          sudo apt-get install -y lftp
+      - run: python -m pip install --upgrade requests
 
       - name: Получить автомобили из Avito API
         env:
@@ -38,29 +35,44 @@ jobs:
           AVITO_CLIENT_SECRET: ${{ secrets.AVITO_CLIENT_SECRET }}
         run: python update_avito.py
 
-      - name: Проверить изменения каталога
-        id: changes
+      - name: Сохранить каталог в GitHub
         shell: bash
         run: |
           if git diff --quiet -- cars-data.js; then
-            echo "changed=false" >> "$GITHUB_OUTPUT"
             echo "Каталог не изменился"
-          else
-            echo "changed=true" >> "$GITHUB_OUTPUT"
-            echo "Каталог изменился"
+            exit 0
           fi
-
-      - name: Сохранить каталог в GitHub
-        if: steps.changes.outputs.changed == 'true'
-        shell: bash
-        run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add cars-data.js
           git commit -m "Автоматическое обновление каталога из Avito"
           git push
 
-      - name: Опубликовать cars-data.js на Timeweb
+  deploy:
+    needs: [update-avito]
+    if: |
+      always() &&
+      (needs.update-avito.result == 'success' || needs.update-avito.result == 'skipped')
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Скачать последнюю версию сайта
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Установить FTP-клиент
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y lftp
+
+      - name: Проверить файлы сайта
+        run: |
+          test -f index.php
+          test -f cars-data.js
+
+      - name: Опубликовать сайт на Timeweb
         env:
           FTP_SERVER: ${{ secrets.FTP_SERVER }}
           FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
@@ -68,21 +80,15 @@ jobs:
           FTP_TARGET_DIR: ${{ secrets.FTP_TARGET_DIR }}
         shell: bash
         run: |
-          if [ -z "$FTP_SERVER" ] || [ -z "$FTP_USERNAME" ] || [ -z "$FTP_PASSWORD" ]; then
-            echo "Не заданы FTP_SERVER, FTP_USERNAME или FTP_PASSWORD"
-            exit 1
-          fi
-
           TARGET_DIR="${FTP_TARGET_DIR:-/unicar-yar.ru/public_html}"
 
           lftp -u "$FTP_USERNAME","$FTP_PASSWORD" "$FTP_SERVER" <<EOF
           set ftp:passive-mode true
           set net:max-retries 3
-          set net:timeout 20
+          set net:timeout 30
           set ssl:verify-certificate no
-          cd "$TARGET_DIR"
-          put cars-data.js -o cars-data.js
+
+          mirror -R --verbose --parallel=4             --exclude-glob ".git/**"             --exclude-glob ".github/**"             --exclude-glob "__pycache__/**"             --exclude-glob "*.pyc"             --exclude-glob "*.zip"             --exclude-glob "update_avito.py"             --exclude-glob "pars.py"             --exclude-glob "pars1.py"             --exclude-glob "update_cars.py"             ./ "$TARGET_DIR"
+
           bye
           EOF
-
-          echo "cars-data.js опубликован в $TARGET_DIR"
