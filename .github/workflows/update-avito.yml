@@ -2,7 +2,8 @@ name: Avito и публикация сайта на Timeweb
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
   workflow_dispatch:
   schedule:
     - cron: "17 */3 * * *"
@@ -18,7 +19,7 @@ jobs:
   update-avito:
     if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
 
     steps:
       - uses: actions/checkout@v4
@@ -50,11 +51,9 @@ jobs:
 
   deploy:
     needs: [update-avito]
-    if: |
-      always() &&
-      (needs.update-avito.result == 'success' || needs.update-avito.result == 'skipped')
+    if: always() && (needs.update-avito.result == 'success' || needs.update-avito.result == 'skipped')
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 30
 
     steps:
       - name: Скачать последнюю версию сайта
@@ -67,10 +66,34 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y lftp
 
-      - name: Проверить файлы сайта
+      - name: Создать папки фотографий на Timeweb
+        env:
+          FTP_SERVER: ${{ secrets.FTP_SERVER }}
+          FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
+          FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
+          FTP_TARGET_DIR: ${{ secrets.FTP_TARGET_DIR }}
+        shell: bash
         run: |
-          test -f index.php
-          test -f cars-data.js
+          TARGET_DIR="${FTP_TARGET_DIR:-/unicar-yar.ru/public_html}"
+
+          {
+            echo 'set ftp:passive-mode true'
+            echo 'set net:max-retries 3'
+            echo 'set net:timeout 30'
+            echo 'set ssl:verify-certificate no'
+            echo "cd \"$TARGET_DIR\""
+
+            if [ -d car-images ]; then
+              find car-images -type d -print0 |
+              while IFS= read -r -d '' directory; do
+                printf 'mkdir -p "%s"\n' "$directory"
+              done
+            fi
+
+            echo 'bye'
+          } > /tmp/create-folders.lftp
+
+          lftp -u "$FTP_USERNAME","$FTP_PASSWORD" "$FTP_SERVER" -f /tmp/create-folders.lftp
 
       - name: Опубликовать сайт на Timeweb
         env:
@@ -87,8 +110,19 @@ jobs:
           set net:max-retries 3
           set net:timeout 30
           set ssl:verify-certificate no
+          cd "$TARGET_DIR"
 
-          mirror -R --verbose --parallel=4             --exclude-glob ".git/**"             --exclude-glob ".github/**"             --exclude-glob "__pycache__/**"             --exclude-glob "*.pyc"             --exclude-glob "*.zip"             --exclude-glob "update_avito.py"             --exclude-glob "pars.py"             --exclude-glob "pars1.py"             --exclude-glob "update_cars.py"             ./ "$TARGET_DIR"
+          mirror -R --verbose --parallel=4 --no-perms \
+            --exclude-glob ".git/**" \
+            --exclude-glob ".github/**" \
+            --exclude-glob "__pycache__/**" \
+            --exclude-glob "*.pyc" \
+            --exclude-glob "*.zip" \
+            --exclude-glob "update_avito.py" \
+            --exclude-glob "pars.py" \
+            --exclude-glob "pars1.py" \
+            --exclude-glob "update_cars.py" \
+            ./ ./
 
           bye
           EOF
