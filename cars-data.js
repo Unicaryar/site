@@ -348,6 +348,28 @@ const cars = [
         "avitoUrl": "https://www.avito.ru/yaroslavl/avtomobili/ford_mondeo_2.0_mt_2008_191_936_km_8079513629"
     },
     {
+        "id": 8239257391,
+        "title": "Toyota Yaris 1.3 AT, 2006, 160 238 км",
+        "brand": "Toyota",
+        "model": "Yaris",
+        "year": 2006,
+        "price": 520000,
+        "mileage": 160238,
+        "engine": "1.3",
+        "transmission": "автомат",
+        "drive": "",
+        "owners": "",
+        "bodyType": "",
+        "color": "",
+        "fuel": "",
+        "power": "",
+        "vin": "",
+        "description": "",
+        "images": [],
+        "video": "",
+        "avitoUrl": "https://www.avito.ru/yaroslavl/avtomobili/toyota_yaris_1.3_at_2006_160_238_km_8239257391"
+    },
+    {
         "id": 7983045957,
         "title": "Skoda Fabia 1.4 MT, 2005, 297 821 км",
         "brand": "Skoda",
