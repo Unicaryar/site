@@ -273,7 +273,7 @@ const cars = [
         "brand": "Volkswagen",
         "model": "Golf Plus",
         "year": 2011,
-        "price": 725000,
+        "price": 655000,
         "mileage": 172604,
         "engine": "1.6",
         "transmission": "механика",
