@@ -103,6 +103,28 @@ const cars = [
         "avitoUrl": "https://www.avito.ru/yaroslavl/avtomobili/hyundai_i40_2.0_at_2017_195_918_km_8238972324"
     },
     {
+        "id": 8239554123,
+        "title": "Skoda Rapid 1.6 MT, 2015, 145 573 км",
+        "brand": "Skoda",
+        "model": "Rapid",
+        "year": 2015,
+        "price": 875000,
+        "mileage": 145573,
+        "engine": "1.6",
+        "transmission": "механика",
+        "drive": "",
+        "owners": "",
+        "bodyType": "",
+        "color": "",
+        "fuel": "",
+        "power": "",
+        "vin": "",
+        "description": "",
+        "images": [],
+        "video": "",
+        "avitoUrl": "https://www.avito.ru/yaroslavl/avtomobili/skoda_rapid_1.6_mt_2015_145_573_km_8239554123"
+    },
+    {
         "id": 8207402792,
         "title": "Renault Duster 2.0 MT, 2014, 115 396 км",
         "brand": "Renault",
