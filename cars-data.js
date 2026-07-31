@@ -336,7 +336,7 @@ const cars = [
         "brand": "Ford",
         "model": "Mondeo",
         "year": 2008,
-        "price": 680000,
+        "price": 600000,
         "mileage": 191936,
         "engine": "2.0",
         "transmission": "механика",
