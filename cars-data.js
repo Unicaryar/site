@@ -125,6 +125,28 @@ const cars = [
         "avitoUrl": "https://www.avito.ru/yaroslavl/avtomobili/skoda_rapid_1.6_mt_2015_145_573_km_8239554123"
     },
     {
+        "id": 8271400480,
+        "title": "Nissan X-Trail 2.0 MT, 2013, 188 246 км",
+        "brand": "Nissan",
+        "model": "X-Trail",
+        "year": 2013,
+        "price": 1250000,
+        "mileage": 188246,
+        "engine": "2.0",
+        "transmission": "механика",
+        "drive": "",
+        "owners": "",
+        "bodyType": "",
+        "color": "",
+        "fuel": "",
+        "power": "",
+        "vin": "",
+        "description": "",
+        "images": [],
+        "video": "",
+        "avitoUrl": "https://www.avito.ru/yaroslavl/avtomobili/nissan_x-trail_2.0_mt_2013_188_246_km_8271400480"
+    },
+    {
         "id": 8206898795,
         "title": "Renault Duster 1.6 MT, 2013, 143 185 км",
         "brand": "Renault",
