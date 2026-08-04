@@ -188,7 +188,7 @@ const cars = [
         "brand": "Kia",
         "model": "Rio",
         "year": 2012,
-        "price": 699000,
+        "price": 729000,
         "mileage": 150018,
         "engine": "1.4",
         "transmission": "автомат",
