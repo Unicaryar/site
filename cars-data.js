@@ -204,7 +204,7 @@ const cars = [
         "brand": "Toyota",
         "model": "Yaris",
         "year": 2006,
-        "price": 475000,
+        "price": 472000,
         "mileage": 160238,
         "engine": "1.3",
         "transmission": "автомат",
