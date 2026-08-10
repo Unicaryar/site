@@ -48,7 +48,7 @@ const cars = [
         "brand": "Skoda",
         "model": "Rapid",
         "year": 2015,
-        "price": 845000,
+        "price": 855000,
         "mileage": 145573,
         "engine": "1.6",
         "transmission": "механика",
