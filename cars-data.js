@@ -192,28 +192,6 @@ const cars = [
         "avitoUrl": "https://www.avito.ru/yaroslavl/avtomobili/infiniti_ex25_2.5_at_2012_306_794_km_8207281115"
     },
     {
-        "id": 8239560247,
-        "title": "Kia Rio 1.4 AT, 2012, 150 018 км",
-        "brand": "Kia",
-        "model": "Rio",
-        "year": 2012,
-        "price": 749000,
-        "mileage": 150018,
-        "engine": "1.4",
-        "transmission": "автомат",
-        "drive": "",
-        "owners": "",
-        "bodyType": "",
-        "color": "",
-        "fuel": "",
-        "power": "",
-        "vin": "",
-        "description": "",
-        "images": [],
-        "video": "",
-        "avitoUrl": "https://www.avito.ru/yaroslavl/avtomobili/kia_rio_1.4_at_2012_150_018_km_8239560247"
-    },
-    {
         "id": 8239257391,
         "title": "Toyota Yaris 1.3 AT, 2006, 160 238 км",
         "brand": "Toyota",
