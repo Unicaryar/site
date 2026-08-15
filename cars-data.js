@@ -190,7 +190,7 @@ const cars = [
         "brand": "Infiniti",
         "model": "EX25",
         "year": 2012,
-        "price": 1450000,
+        "price": 1280000,
         "mileage": 306794,
         "engine": "2.5",
         "transmission": "автомат",
