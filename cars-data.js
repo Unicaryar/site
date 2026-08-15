@@ -236,6 +236,28 @@ const cars = [
         "avitoUrl": "https://www.avito.ru/yaroslavl/avtomobili/infiniti_ex25_2.5_at_2012_306_794_km_8207281115"
     },
     {
+        "id": 8303572468,
+        "title": "Mitsubishi Outlander 2.4 CVT, 2008, 340 060 км",
+        "brand": "Mitsubishi",
+        "model": "Outlander",
+        "year": 2008,
+        "price": 680000,
+        "mileage": 340060,
+        "engine": "2.4",
+        "transmission": "вариатор",
+        "drive": "",
+        "owners": "",
+        "bodyType": "",
+        "color": "",
+        "fuel": "",
+        "power": "",
+        "vin": "",
+        "description": "",
+        "images": [],
+        "video": "",
+        "avitoUrl": "https://www.avito.ru/yaroslavl/avtomobili/mitsubishi_outlander_2.4_cvt_2008_340_060_km_8303572468"
+    },
+    {
         "id": 8239257391,
         "title": "Toyota Yaris 1.3 AT, 2006, 160 238 км",
         "brand": "Toyota",
