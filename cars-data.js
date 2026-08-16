@@ -43,28 +43,6 @@ const cars = [
         "avitoUrl": "https://www.avito.ru/yaroslavl/avtomobili/hyundai_solaris_1.6_mt_2018_119_000_km_8111136541"
     },
     {
-        "id": 8271512989,
-        "title": "ВАЗ (LADA) Granta 1.6 MT, 2017, 87 381 км",
-        "brand": "ВАЗ",
-        "model": "(LADA) Granta",
-        "year": 2017,
-        "price": 395200,
-        "mileage": 87381,
-        "engine": "1.6",
-        "transmission": "механика",
-        "drive": "",
-        "owners": "",
-        "bodyType": "",
-        "color": "",
-        "fuel": "",
-        "power": "",
-        "vin": "",
-        "description": "",
-        "images": [],
-        "video": "",
-        "avitoUrl": "https://www.avito.ru/yaroslavl/avtomobili/vaz_lada_granta_1.6_mt_2017_87_381_km_8271512989"
-    },
-    {
         "id": 8239554123,
         "title": "Skoda Rapid 1.6 MT, 2015, 145 573 км",
         "brand": "Skoda",
@@ -256,27 +234,5 @@ const cars = [
         "images": [],
         "video": "",
         "avitoUrl": "https://www.avito.ru/yaroslavl/avtomobili/mitsubishi_outlander_2.4_cvt_2008_340_060_km_8303572468"
-    },
-    {
-        "id": 8239257391,
-        "title": "Toyota Yaris 1.3 AT, 2006, 160 238 км",
-        "brand": "Toyota",
-        "model": "Yaris",
-        "year": 2006,
-        "price": 455000,
-        "mileage": 160238,
-        "engine": "1.3",
-        "transmission": "автомат",
-        "drive": "",
-        "owners": "",
-        "bodyType": "",
-        "color": "",
-        "fuel": "",
-        "power": "",
-        "vin": "",
-        "description": "",
-        "images": [],
-        "video": "",
-        "avitoUrl": "https://www.avito.ru/yaroslavl/avtomobili/toyota_yaris_1.3_at_2006_160_238_km_8239257391"
     }
 ];
