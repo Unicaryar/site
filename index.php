@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
+    <meta name="zen-verification" content="2unp3dwtwtirygtzxM0K9iydhSXkEtzj4s0HSqux3TMeGukRyzWmaulNlphxrA6M" />
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <meta name="description" content="Автомобили с пробегом в Ярославле. Автосалон Юникар на Полушкина Роща, 16Г. Большой выбор авто, выкуп, кредит, рассрочка.">
