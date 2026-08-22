@@ -196,28 +196,6 @@ const cars = [
         "avitoUrl": "https://www.avito.ru/yaroslavl/avtomobili/infiniti_ex25_2.5_at_2012_306_794_km_8207281115"
     },
     {
-        "id": 8303574566,
-        "title": "Mitsubishi Outlander 2.0 CVT, 2012, 153 274 км",
-        "brand": "Mitsubishi",
-        "model": "Outlander",
-        "year": 2012,
-        "price": 1153000,
-        "mileage": 153274,
-        "engine": "2.0",
-        "transmission": "вариатор",
-        "drive": "",
-        "owners": "",
-        "bodyType": "",
-        "color": "",
-        "fuel": "",
-        "power": "",
-        "vin": "",
-        "description": "",
-        "images": [],
-        "video": "",
-        "avitoUrl": "https://www.avito.ru/yaroslavl/avtomobili/mitsubishi_outlander_2.0_cvt_2012_153_274_km_8303574566"
-    },
-    {
         "id": 4271626867,
         "title": "Chevrolet Aveo 1.2 MT, 2010, 150 209 км",
         "brand": "Chevrolet",
