@@ -218,6 +218,28 @@ const cars = [
         "avitoUrl": "https://www.avito.ru/yaroslavl/avtomobili/mitsubishi_outlander_2.0_cvt_2012_153_274_km_8303574566"
     },
     {
+        "id": 4271626867,
+        "title": "Chevrolet Aveo 1.2 MT, 2010, 150 209 км",
+        "brand": "Chevrolet",
+        "model": "Aveo",
+        "year": 2010,
+        "price": 398200,
+        "mileage": 150209,
+        "engine": "1.2",
+        "transmission": "механика",
+        "drive": "",
+        "owners": "",
+        "bodyType": "",
+        "color": "",
+        "fuel": "",
+        "power": "",
+        "vin": "",
+        "description": "",
+        "images": [],
+        "video": "",
+        "avitoUrl": "https://www.avito.ru/yaroslavl/avtomobili/chevrolet_aveo_1.2_mt_2010_150_209_km_4271626867"
+    },
+    {
         "id": 8079513629,
         "title": "Ford Mondeo 2.0 MT, 2008, 191 936 км",
         "brand": "Ford",
