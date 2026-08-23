@@ -201,7 +201,7 @@ const cars = [
         "brand": "Chevrolet",
         "model": "Aveo",
         "year": 2010,
-        "price": 398200,
+        "price": 394000,
         "mileage": 150209,
         "engine": "1.2",
         "transmission": "механика",
