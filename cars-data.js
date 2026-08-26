@@ -52,6 +52,28 @@ const cars = [
         "avitoUrl": "https://www.avito.ru/yaroslavl/avtomobili/kia_rio_1.6_at_2016_145_600_km_8303770488"
     },
     {
+        "id": 8302887192,
+        "title": "Kia Rio 1.6 MT, 2016, 166 619 км",
+        "brand": "Kia",
+        "model": "Rio",
+        "year": 2016,
+        "price": 950000,
+        "mileage": 166619,
+        "engine": "1.6",
+        "transmission": "механика",
+        "drive": "",
+        "owners": "",
+        "bodyType": "",
+        "color": "",
+        "fuel": "",
+        "power": "",
+        "vin": "",
+        "description": "",
+        "images": [],
+        "video": "",
+        "avitoUrl": "https://www.avito.ru/yaroslavl/avtomobili/kia_rio_1.6_mt_2016_166_619_km_8302887192"
+    },
+    {
         "id": 8271181368,
         "title": "Hyundai Solaris 1.6 MT, 2015, 206 481 км",
         "brand": "Hyundai",
