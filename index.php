@@ -38,6 +38,19 @@ _tmr.push({id: "3771573", type: "pageView", start: (new Date()).getTime()});
     </script>
     <noscript><div><img src="https://mc.yandex.ru/watch/109683756" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
     <style>
+        <!-- Yandex.Metrika counter -->
+<script type="text/javascript">
+    (function(m,e,t,r,i,k,a){
+        m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+        m[i].l=1*new Date();
+        for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+        k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
+    })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=111964720', 'ym');
+
+    ym(111964720, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", referrer: document.referrer, url: location.href, accurateTrackBounce:true, trackLinks:true});
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/111964720" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html { overflow-y: scroll; scroll-behavior: smooth; }
         body {
