@@ -35,6 +35,7 @@ BASE_URL = "https://api.avito.ru"
 TOKEN_URL = f"{BASE_URL}/token"
 ITEMS_URL = f"{BASE_URL}/core/v1/items"
 ACCOUNT_URL = f"{BASE_URL}/core/v1/accounts/self"
+ITEM_DETAILS_URL = f"{BASE_URL}/core/v1/accounts/{{user_id}}/items/{{item_id}}/"
 
 XML_FILE = Path("12981.xml")
 MEDIA_FILE = Path("cars-media.json")
@@ -119,6 +120,12 @@ def bearer(token: str) -> dict[str, str]:
 
 def get_account(token: str) -> dict[str, Any]:
     return request_json("GET", ACCOUNT_URL, headers=bearer(token))
+
+
+def get_item_details(token: str, user_id: int, item_id: int) -> dict[str, Any]:
+    """Получает детальную карточку объявления Avito, включая изображения."""
+    url = ITEM_DETAILS_URL.format(user_id=user_id, item_id=item_id)
+    return request_json("GET", url, headers=bearer(token))
 
 
 def extract_list(payload: dict[str, Any]) -> list[dict[str, Any]]:
@@ -331,6 +338,87 @@ def normalize_drive(value: str) -> str:
     return str(value).strip()
 
 
+
+def _collect_http_urls(value: Any) -> list[str]:
+    """Собирает HTTP(S)-ссылки из узла JSON, сохраняя порядок."""
+    result: list[str] = []
+    seen: set[str] = set()
+
+    def walk(node: Any) -> None:
+        if isinstance(node, str):
+            url = node.strip()
+            if url.startswith(("http://", "https://")) and url not in seen:
+                seen.add(url)
+                result.append(url)
+            return
+
+        if isinstance(node, list):
+            for child in node:
+                walk(child)
+            return
+
+        if isinstance(node, dict):
+            # В объектах Avito у фото размеры могут быть ключами:
+            # 640x480, 1280x960, original и т.п.
+            preferred_keys = (
+                "original",
+                "1280x960",
+                "1024x768",
+                "640x480",
+                "url",
+                "src",
+                "href",
+            )
+
+            used: set[str] = set()
+            for key in preferred_keys:
+                if key in node:
+                    used.add(key)
+                    walk(node[key])
+
+            for key, child in node.items():
+                if key not in used:
+                    walk(child)
+
+    walk(value)
+    return result
+
+
+def extract_api_images(item: dict[str, Any]) -> list[str]:
+    """
+    Извлекает фотографии из детального ответа Avito API.
+    Поддерживает разные варианты структуры ответа.
+    """
+    candidates: list[Any] = []
+
+    for path in (
+        "images",
+        "photos",
+        "pictures",
+        "image_urls",
+        "photo_urls",
+        "resources.images",
+        "item.images",
+        "item.photos",
+        "data.images",
+        "data.photos",
+    ):
+        value = first_value(item, path, default=None)
+        if value not in (None, "", []):
+            candidates.append(value)
+
+    urls: list[str] = []
+    seen: set[str] = set()
+
+    for candidate in candidates:
+        for url in _collect_http_urls(candidate):
+            if url not in seen:
+                seen.add(url)
+                urls.append(url)
+
+    return urls
+
+
 def normalize_api_item(item: dict[str, Any]) -> dict[str, Any]:
     item_id = to_int(first_value(item, "id", "item_id", "avito_id"))
     title = str(first_value(item, "title", "name", default="")).strip()
@@ -396,7 +484,7 @@ def normalize_api_item(item: dict[str, Any]) -> dict[str, Any]:
         "power": "",
         "vin": "",
         "description": "",
-        "images": [],
+        "images": extract_api_images(item),
         "video": "",
         "avitoUrl": str(
             first_value(item, "url", "item_url", "link", default="")
@@ -1236,8 +1324,67 @@ def main() -> int:
         )
 
         raw_items = get_active_items(token)
-        api_cars = [normalize_api_item(item) for item in raw_items]
-        api_cars = [car for car in api_cars if is_car(car)]
+
+        # Сначала определяем автомобили по краткому списку объявлений.
+        summary_pairs: list[tuple[dict[str, Any], dict[str, Any]]] = []
+        for raw_item in raw_items:
+            summary_car = normalize_api_item(raw_item)
+            if is_car(summary_car):
+                summary_pairs.append((raw_item, summary_car))
+
+        user_id = to_int(first_value(account, "id", "user_id", default=0))
+        if not user_id:
+            raise AvitoError("Не удалось определить ID аккаунта Avito")
+
+        # Для каждого автомобиля получаем детальную карточку.
+        # Именно детальный метод Avito содержит массив изображений.
+        api_cars: list[dict[str, Any]] = []
+        detailed_count = 0
+
+        for raw_item, summary_car in summary_pairs:
+            item_id = int(summary_car["id"])
+
+            try:
+                details = get_item_details(token, user_id, item_id)
+
+                combined = dict(raw_item)
+
+                # Некоторые версии API оборачивают карточку в item/data/resource.
+                for wrapper in ("item", "data", "resource"):
+                    nested = details.get(wrapper)
+                    if isinstance(nested, dict):
+                        combined.update(nested)
+
+                combined.update(details)
+
+                # Сохраняем ссылку из списка, если детальный ответ её не вернул.
+                if not first_value(combined, "url", "item_url", "link", default=""):
+                    combined["url"] = summary_car.get("avitoUrl", "")
+
+                detailed_car = normalize_api_item(combined)
+
+                # На случай нестандартной структуры ответа извлекаем фото
+                # непосредственно из полного JSON детальной карточки.
+                detail_images = extract_api_images(details)
+                if detail_images:
+                    detailed_car["images"] = detail_images
+
+                api_cars.append(detailed_car)
+                detailed_count += 1
+
+                print(
+                    f"Avito detail: {item_id} — "
+                    f"фото {len(detailed_car.get('images', []))} шт."
+                )
+
+            except (AvitoError, requests.RequestException) as exc:
+                print(
+                    f"Предупреждение: детальная карточка Avito {item_id} "
+                    f"не получена — {exc}"
+                )
+                api_cars.append(summary_car)
+
+            time.sleep(0.15)
 
         xml_cars = parse_xml_catalog(XML_FILE)
         manual_media = load_manual_media(MEDIA_FILE)
@@ -1307,6 +1454,7 @@ def main() -> int:
 
         print(f"Активных объявлений Avito получено: {len(raw_items)}")
         print(f"Автомобилей после фильтра: {len(api_cars)}")
+        print(f"Детальных карточек Avito получено: {detailed_count}")
         print(f"Карточек дополнено из XML: {matched_count}")
         print(f"Карточек дополнено вручную: {manual_count}")
         print(f"Результат записан в {OUTPUT_FILE}")
