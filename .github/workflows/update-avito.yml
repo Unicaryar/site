@@ -43,8 +43,10 @@ jobs:
             echo "Каталог не изменился"
             exit 0
           fi
+
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
           git add cars-data.js
           git commit -m "Автоматическое обновление каталога из Avito"
           git push
@@ -66,35 +68,6 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y lftp
 
-      - name: Создать папки фотографий на Timeweb
-        env:
-          FTP_SERVER: ${{ secrets.FTP_SERVER }}
-          FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
-          FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
-          FTP_TARGET_DIR: ${{ secrets.FTP_TARGET_DIR }}
-        shell: bash
-        run: |
-          TARGET_DIR="${FTP_TARGET_DIR:-/unicar-yar.ru/public_html}"
-
-          {
-            echo 'set ftp:passive-mode true'
-            echo 'set net:max-retries 3'
-            echo 'set net:timeout 30'
-            echo 'set ssl:verify-certificate no'
-            echo "cd \"$TARGET_DIR\""
-
-            if [ -d car-images ]; then
-              find car-images -type d -print0 |
-              while IFS= read -r -d '' directory; do
-                printf 'mkdir -p "%s"\n' "$directory"
-              done
-            fi
-
-            echo 'bye'
-          } > /tmp/create-folders.lftp
-
-          lftp -u "$FTP_USERNAME","$FTP_PASSWORD" "$FTP_SERVER" -f /tmp/create-folders.lftp
-
       - name: Опубликовать сайт на Timeweb
         env:
           FTP_SERVER: ${{ secrets.FTP_SERVER }}
@@ -105,11 +78,14 @@ jobs:
         run: |
           TARGET_DIR="${FTP_TARGET_DIR:-/unicar-yar.ru/public_html}"
 
+          echo "Публикация сайта в: $TARGET_DIR"
+
           lftp -u "$FTP_USERNAME","$FTP_PASSWORD" "$FTP_SERVER" <<EOF
           set ftp:passive-mode true
           set net:max-retries 3
           set net:timeout 30
           set ssl:verify-certificate no
+
           cd "$TARGET_DIR"
 
           mirror -R --verbose --parallel=4 --no-perms \
