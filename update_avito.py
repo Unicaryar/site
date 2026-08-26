@@ -1101,6 +1101,96 @@ def find_local_images(item_id: int) -> list[str]:
     ]
 
 
+
+def image_extension(url: str, content_type: str = "") -> str:
+    """Определяет расширение изображения по URL или Content-Type."""
+    path_part = url.split("?", 1)[0].lower()
+    for ext in (".jpg", ".jpeg", ".png", ".webp", ".avif"):
+        if path_part.endswith(ext):
+            return ".jpg" if ext == ".jpeg" else ext
+
+    content_type = (content_type or "").lower()
+    if "png" in content_type:
+        return ".png"
+    if "webp" in content_type:
+        return ".webp"
+    if "avif" in content_type:
+        return ".avif"
+    return ".jpg"
+
+
+def download_external_images(car: dict[str, Any]) -> dict[str, Any]:
+    """
+    Автоматически скачивает внешние фотографии автомобиля в
+    car-images/<Avito ID>/.
+
+    Уже существующие локальные фото не трогает.
+    """
+    item_id = int(car.get("id", 0))
+    if not item_id:
+        return car
+
+    if find_local_images(item_id):
+        return car
+
+    raw_images = car.get("images", [])
+    if not isinstance(raw_images, list):
+        return car
+
+    urls = [
+        str(url).strip()
+        for url in raw_images
+        if str(url).strip().startswith(("http://", "https://"))
+    ]
+    if not urls:
+        return car
+
+    folder = IMAGE_DIR / str(item_id)
+    folder.mkdir(parents=True, exist_ok=True)
+
+    session = requests.Session()
+    session.headers.update({
+        "User-Agent": "Mozilla/5.0 (compatible; UnicarWebsiteSync/2.0)",
+        "Accept": "image/avif,image/webp,image/apng,image/*,*/*;q=0.8",
+        "Referer": "https://www.avito.ru/",
+    })
+
+    downloaded = 0
+
+    for index, url in enumerate(urls, start=1):
+        try:
+            response = session.get(url, timeout=TIMEOUT, allow_redirects=True)
+            response.raise_for_status()
+
+            content_type = response.headers.get("Content-Type", "")
+            if content_type and not content_type.lower().startswith("image/"):
+                print(f"Фото пропущено {item_id}: {content_type} — {url}")
+                continue
+
+            if not response.content:
+                print(f"Фото пропущено {item_id}: пустой ответ — {url}")
+                continue
+
+            ext = image_extension(url, content_type)
+            target = folder / f"{index:03d}{ext}"
+            target.write_bytes(response.content)
+            downloaded += 1
+
+        except requests.RequestException as exc:
+            print(f"Не удалось скачать фото {item_id}: {url} — {exc}")
+
+    if downloaded:
+        print(f"Фото скачаны автоматически: {item_id} — {downloaded} шт.")
+    else:
+        try:
+            if folder.exists() and not any(folder.iterdir()):
+                folder.rmdir()
+        except OSError:
+            pass
+
+    return car
+
+
 def apply_local_images(car: dict[str, Any]) -> dict[str, Any]:
     """
     Локальные фотографии из GitHub имеют высший приоритет.
@@ -1194,6 +1284,10 @@ def main() -> int:
                 previous_cars,
                 manual_media,
             )
+
+            # Если локальных фото ещё нет, автоматически скачиваем
+            # внешние фотографии из XML/ручных данных в car-images/<Avito ID>.
+            merged = download_external_images(merged)
 
             # Локальные фотографии из car-images/<Avito ID> имеют
             # высший приоритет и не требуют перечисления файлов вручную.
