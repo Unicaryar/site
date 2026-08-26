@@ -88,7 +88,7 @@ jobs:
 
           cd "$TARGET_DIR"
 
-          mirror -R --verbose --parallel=4 --no-perms \
+          mirror -R --verbose --no-perms --no-empty-dirs \
             --exclude-glob ".git/**" \
             --exclude-glob ".github/**" \
             --exclude-glob "__pycache__/**" \
