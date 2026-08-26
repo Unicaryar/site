@@ -25,28 +25,6 @@ const cars = [
         "avitoUrl": "https://www.avito.ru/yaroslavl/avtomobili/kia_rio_1.6_at_2016_145_600_km_8303770488"
     },
     {
-        "id": 8239554123,
-        "title": "Skoda Rapid 1.6 MT, 2015, 145 573 км",
-        "brand": "Skoda",
-        "model": "Rapid",
-        "year": 2015,
-        "price": 795200,
-        "mileage": 145573,
-        "engine": "1.6",
-        "transmission": "механика",
-        "drive": "",
-        "owners": "",
-        "bodyType": "",
-        "color": "",
-        "fuel": "",
-        "power": "",
-        "vin": "",
-        "description": "",
-        "images": [],
-        "video": "",
-        "avitoUrl": "https://www.avito.ru/yaroslavl/avtomobili/skoda_rapid_1.6_mt_2015_145_573_km_8239554123"
-    },
-    {
         "id": 8271181368,
         "title": "Hyundai Solaris 1.6 MT, 2015, 206 481 км",
         "brand": "Hyundai",
