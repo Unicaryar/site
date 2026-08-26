@@ -4,7 +4,9 @@ on:
   push:
     branches:
       - main
+
   workflow_dispatch:
+
   schedule:
     - cron: "17 */3 * * *"
 
@@ -16,31 +18,45 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+
   update-avito:
     if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     timeout-minutes: 15
 
     steps:
-      - uses: actions/checkout@v4
 
-      - uses: actions/setup-python@v5
+      - name: Скачать сайт
+        uses: actions/checkout@v4
+
+      - name: Установить Python
+        uses: actions/setup-python@v5
         with:
           python-version: "3.12"
 
-      - run: python -m pip install --upgrade requests beautifulsoup4
+      - name: Установить зависимости
+        run: |
+          python -m pip install --upgrade requests beautifulsoup4
 
       - name: Получить автомобили из Avito API
         env:
           AVITO_CLIENT_ID: ${{ secrets.AVITO_CLIENT_ID }}
           AVITO_CLIENT_SECRET: ${{ secrets.AVITO_CLIENT_SECRET }}
-        run: python update_avito.py
+        run: |
+          python update_avito.py
 
-      - name: Сохранить каталог в GitHub
+      - name: Проверить изменения
         shell: bash
         run: |
-          if git diff --quiet -- cars-data.js; then
-            echo "Каталог не изменился"
+          echo "Изменения после обновления Avito:"
+          git status --short -- cars-data.js car-images
+
+      - name: Сохранить каталог и фотографии в GitHub
+        shell: bash
+        run: |
+
+          if [ -z "$(git status --porcelain -- cars-data.js car-images)" ]; then
+            echo "Каталог и фотографии не изменились"
             exit 0
           fi
 
@@ -48,16 +64,29 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
           git add cars-data.js
-          git commit -m "Автоматическое обновление каталога из Avito"
+
+          if [ -d "car-images" ]; then
+            git add car-images
+          fi
+
+          git commit -m "Автоматическое обновление каталога и фото из Avito [skip ci]"
+
           git push
+
 
   deploy:
     needs: [update-avito]
-    if: always() && (needs.update-avito.result == 'success' || needs.update-avito.result == 'skipped')
+
+    if: always() && (
+      needs.update-avito.result == 'success' ||
+      needs.update-avito.result == 'skipped'
+      )
+
     runs-on: ubuntu-latest
     timeout-minutes: 30
 
     steps:
+
       - name: Скачать последнюю версию сайта
         uses: actions/checkout@v4
         with:
@@ -74,13 +103,17 @@ jobs:
           FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
           FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
           FTP_TARGET_DIR: ${{ secrets.FTP_TARGET_DIR }}
+
         shell: bash
+
         run: |
+
           TARGET_DIR="${FTP_TARGET_DIR:-/unicar-yar.ru/public_html}"
 
           echo "Публикация сайта в: $TARGET_DIR"
 
           lftp -u "$FTP_USERNAME","$FTP_PASSWORD" "$FTP_SERVER" <<EOF
+
           set ftp:passive-mode true
           set net:max-retries 3
           set net:timeout 30
@@ -101,4 +134,5 @@ jobs:
             ./ ./
 
           bye
+
           EOF
