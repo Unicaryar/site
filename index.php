@@ -542,6 +542,7 @@ _tmr.push({id: "3771573", type: "pageView", start: (new Date()).getTime()});
         try {
             const result = await sendOrderToGoogleScript(formDataObj);
             if (result.result === "success") {
+                _tmr.push({ type: 'reachGoal', id: 3771573, goal: 'lead' });
                 statusDiv.className = "form-status success";
                 statusDiv.innerHTML = '✅ Заявка успешно отправлена! Мы свяжемся с вами в ближайшее время.';
                 document.getElementById("orderName").value = "";
