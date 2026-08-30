@@ -360,7 +360,7 @@ const cars = [
         "brand": "Peugeot",
         "model": "308",
         "year": 2008,
-        "price": 355000,
+        "price": 319500,
         "mileage": 191792,
         "engine": "1.6",
         "transmission": "механика",
