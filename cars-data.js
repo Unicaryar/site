@@ -375,5 +375,27 @@ const cars = [
         "images": [],
         "video": "",
         "avitoUrl": "https://www.avito.ru/yaroslavl/avtomobili/peugeot_308_1.6_mt_2008_191_792_km_8335792261"
+    },
+    {
+        "id": 8335674426,
+        "title": "Hyundai Tucson 2.0 MT, 2007, 189 000 км",
+        "brand": "Hyundai",
+        "model": "Tucson",
+        "year": 2007,
+        "price": 645500,
+        "mileage": 189000,
+        "engine": "2.0",
+        "transmission": "механика",
+        "drive": "",
+        "owners": "",
+        "bodyType": "",
+        "color": "",
+        "fuel": "",
+        "power": "",
+        "vin": "",
+        "description": "",
+        "images": [],
+        "video": "",
+        "avitoUrl": "https://www.avito.ru/yaroslavl/avtomobili/hyundai_tucson_2.0_mt_2007_189_000_km_8335674426"
     }
 ];
