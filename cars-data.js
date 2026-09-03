@@ -223,6 +223,28 @@ const cars = [
         "avitoUrl": "https://www.avito.ru/yaroslavl/avtomobili/nissan_x-trail_2.0_mt_2013_188_246_km_8271400480"
     },
     {
+        "id": 8334903011,
+        "title": "Kia Rio 1.4 MT, 2012, 256 100 км",
+        "brand": "Kia",
+        "model": "Rio",
+        "year": 2012,
+        "price": 620000,
+        "mileage": 256100,
+        "engine": "1.4",
+        "transmission": "механика",
+        "drive": "",
+        "owners": "",
+        "bodyType": "",
+        "color": "",
+        "fuel": "",
+        "power": "",
+        "vin": "",
+        "description": "",
+        "images": [],
+        "video": "",
+        "avitoUrl": "https://www.avito.ru/yaroslavl/avtomobili/kia_rio_1.4_mt_2012_256_100_km_8334903011"
+    },
+    {
         "id": 8303143584,
         "title": "ВАЗ (LADA) Granta 1.6 MT, 2012, 159 966 км",
         "brand": "ВАЗ",
@@ -397,5 +419,27 @@ const cars = [
         "images": [],
         "video": "",
         "avitoUrl": "https://www.avito.ru/yaroslavl/avtomobili/hyundai_tucson_2.0_mt_2007_189_000_km_8335674426"
+    },
+    {
+        "id": 8335072065,
+        "title": "Renault Laguna 1.6 MT, 2007, 305 885 км",
+        "brand": "Renault",
+        "model": "Laguna",
+        "year": 2007,
+        "price": 310000,
+        "mileage": 305885,
+        "engine": "1.6",
+        "transmission": "механика",
+        "drive": "",
+        "owners": "",
+        "bodyType": "",
+        "color": "",
+        "fuel": "",
+        "power": "",
+        "vin": "",
+        "description": "",
+        "images": [],
+        "video": "",
+        "avitoUrl": "https://www.avito.ru/yaroslavl/avtomobili/renault_laguna_1.6_mt_2007_305_885_km_8335072065"
     }
 ];
