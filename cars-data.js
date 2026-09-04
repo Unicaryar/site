@@ -179,7 +179,7 @@ const cars = [
         "brand": "Nissan",
         "model": "X-Trail",
         "year": 2013,
-        "price": 1065000,
+        "price": 1143200,
         "mileage": 188246,
         "engine": "2.0",
         "transmission": "механика",
