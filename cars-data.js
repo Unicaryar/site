@@ -169,28 +169,6 @@ const cars = [
         "avitoUrl": "https://www.avito.ru/yaroslavl/avtomobili/nissan_x-trail_2.0_mt_2013_188_246_km_8271400480"
     },
     {
-        "id": 8272940538,
-        "title": "Hyundai Solaris 1.6 MT, 2012, 175 282 км",
-        "brand": "Hyundai",
-        "model": "Solaris",
-        "year": 2012,
-        "price": 692500,
-        "mileage": 175282,
-        "engine": "1.6",
-        "transmission": "механика",
-        "drive": "",
-        "owners": "",
-        "bodyType": "",
-        "color": "",
-        "fuel": "",
-        "power": "",
-        "vin": "",
-        "description": "",
-        "images": [],
-        "video": "",
-        "avitoUrl": "https://www.avito.ru/yaroslavl/avtomobili/hyundai_solaris_1.6_mt_2012_175_282_km_8272940538"
-    },
-    {
         "id": 8334903011,
         "title": "Kia Rio 1.4 MT, 2012, 256 100 км",
         "brand": "Kia",
