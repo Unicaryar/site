@@ -344,5 +344,27 @@ const cars = [
         "images": [],
         "video": "",
         "avitoUrl": "https://www.avito.ru/yaroslavl/avtomobili/renault_laguna_1.6_mt_2007_305_885_km_8335072065"
+    },
+    {
+        "id": 8355443889,
+        "title": "Skoda Fabia 1.2 MT, 2005, 267 395 км",
+        "brand": "Skoda",
+        "model": "Fabia",
+        "year": 2005,
+        "price": 250000,
+        "mileage": 267395,
+        "engine": "1.2",
+        "transmission": "механика",
+        "drive": "",
+        "owners": "",
+        "bodyType": "",
+        "color": "",
+        "fuel": "",
+        "power": "",
+        "vin": "",
+        "description": "",
+        "images": [],
+        "video": "",
+        "avitoUrl": "https://www.avito.ru/yaroslavl/avtomobili/skoda_fabia_1.2_mt_2005_267_395_km_8355443889"
     }
 ];
