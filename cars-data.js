@@ -280,28 +280,6 @@ const cars = [
         "avitoUrl": "https://www.avito.ru/yaroslavl/avtomobili/ford_mondeo_2.0_mt_2008_191_936_km_8079513629"
     },
     {
-        "id": 8335792261,
-        "title": "Peugeot 308 1.6 MT, 2008, 191 792 км",
-        "brand": "Peugeot",
-        "model": "308",
-        "year": 2008,
-        "price": 269200,
-        "mileage": 191792,
-        "engine": "1.6",
-        "transmission": "механика",
-        "drive": "",
-        "owners": "",
-        "bodyType": "",
-        "color": "",
-        "fuel": "",
-        "power": "",
-        "vin": "",
-        "description": "",
-        "images": [],
-        "video": "",
-        "avitoUrl": "https://www.avito.ru/yaroslavl/avtomobili/peugeot_308_1.6_mt_2008_191_792_km_8335792261"
-    },
-    {
         "id": 8335674426,
         "title": "Hyundai Tucson 2.0 MT, 2007, 189 361 км",
         "brand": "Hyundai",
