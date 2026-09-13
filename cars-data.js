@@ -74,28 +74,6 @@ const cars = [
         "avitoUrl": "https://www.avito.ru/yaroslavl/avtomobili/skoda_rapid_1.6_mt_2015_145_573_km_8239554123"
     },
     {
-        "id": 8232382412,
-        "title": "Skoda Octavia 1.6 MT, 2012, 225 336 км",
-        "brand": "Skoda",
-        "model": "Octavia",
-        "year": 2012,
-        "price": 660000,
-        "mileage": 225336,
-        "engine": "1.6",
-        "transmission": "механика",
-        "drive": "",
-        "owners": "",
-        "bodyType": "",
-        "color": "",
-        "fuel": "",
-        "power": "",
-        "vin": "",
-        "description": "",
-        "images": [],
-        "video": "",
-        "avitoUrl": "https://www.avito.ru/yaroslavl/avtomobili/skoda_octavia_1.6_mt_2012_225_336_km_8232382412"
-    },
-    {
         "id": 8334903011,
         "title": "Kia Rio 1.4 MT, 2012, 256 100 км",
         "brand": "Kia",
