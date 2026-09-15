@@ -74,6 +74,28 @@ const cars = [
         "avitoUrl": "https://www.avito.ru/yaroslavl/avtomobili/skoda_rapid_1.6_mt_2015_145_573_km_8239554123"
     },
     {
+        "id": 8314801226,
+        "title": "Hyundai ix35 2.0 MT, 2014, 136 139 км",
+        "brand": "Hyundai",
+        "model": "ix35",
+        "year": 2014,
+        "price": 1175100,
+        "mileage": 136139,
+        "engine": "2.0",
+        "transmission": "механика",
+        "drive": "",
+        "owners": "",
+        "bodyType": "",
+        "color": "",
+        "fuel": "",
+        "power": "",
+        "vin": "",
+        "description": "",
+        "images": [],
+        "video": "",
+        "avitoUrl": "https://www.avito.ru/yaroslavl/avtomobili/hyundai_ix35_2.0_mt_2014_136_139_km_8314801226"
+    },
+    {
         "id": 8334903011,
         "title": "Kia Rio 1.4 MT, 2012, 256 100 км",
         "brand": "Kia",
