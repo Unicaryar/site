@@ -118,6 +118,28 @@ const cars = [
         "avitoUrl": "https://www.avito.ru/yaroslavl/avtomobili/hyundai_ix35_2.0_mt_2014_136_139_km_8314801226"
     },
     {
+        "id": 8377098622,
+        "title": "Mitsubishi Outlander 2.0 CVT, 2012, 173 338 км",
+        "brand": "Mitsubishi",
+        "model": "Outlander",
+        "year": 2012,
+        "price": 1243000,
+        "mileage": 173338,
+        "engine": "2.0",
+        "transmission": "вариатор",
+        "drive": "",
+        "owners": "",
+        "bodyType": "",
+        "color": "",
+        "fuel": "",
+        "power": "",
+        "vin": "",
+        "description": "",
+        "images": [],
+        "video": "",
+        "avitoUrl": "https://www.avito.ru/yaroslavl/avtomobili/mitsubishi_outlander_2.0_cvt_2012_173_338_km_8377098622"
+    },
+    {
         "id": 8334903011,
         "title": "Kia Rio 1.4 MT, 2012, 256 100 км",
         "brand": "Kia",
