@@ -101,7 +101,7 @@ const cars = [
         "brand": "Mitsubishi",
         "model": "Outlander",
         "year": 2012,
-        "price": 1223000,
+        "price": 1213000,
         "mileage": 173338,
         "engine": "2.0",
         "transmission": "вариатор",
