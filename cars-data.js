@@ -118,6 +118,28 @@ const cars = [
         "avitoUrl": "https://www.avito.ru/yaroslavl/avtomobili/mitsubishi_outlander_2.0_cvt_2012_173_338_km_8377098622"
     },
     {
+        "id": 8417858076,
+        "title": "Opel Antara 3.0 AT, 2012, 185 262 км",
+        "brand": "Opel",
+        "model": "Antara",
+        "year": 2012,
+        "price": 900000,
+        "mileage": 185262,
+        "engine": "3.0",
+        "transmission": "автомат",
+        "drive": "",
+        "owners": "",
+        "bodyType": "",
+        "color": "",
+        "fuel": "",
+        "power": "",
+        "vin": "",
+        "description": "",
+        "images": [],
+        "video": "",
+        "avitoUrl": "https://www.avito.ru/yaroslavl/avtomobili/opel_antara_3.0_at_2012_185_262_km_8417858076"
+    },
+    {
         "id": 8334903011,
         "title": "Kia Rio 1.4 MT, 2012, 256 100 км",
         "brand": "Kia",
