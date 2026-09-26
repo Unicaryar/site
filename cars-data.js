@@ -201,28 +201,6 @@ const cars = [
         "avitoUrl": "https://www.avito.ru/yaroslavl/avtomobili/ford_mondeo_2.0_mt_2008_191_936_km_8079513629"
     },
     {
-        "id": 8308691220,
-        "title": "Kia Ceed 1.6 MT, 2008, 346 428 км",
-        "brand": "Kia",
-        "model": "Ceed",
-        "year": 2008,
-        "price": 395000,
-        "mileage": 346428,
-        "engine": "1.6",
-        "transmission": "механика",
-        "drive": "",
-        "owners": "",
-        "bodyType": "",
-        "color": "",
-        "fuel": "",
-        "power": "",
-        "vin": "",
-        "description": "",
-        "images": [],
-        "video": "",
-        "avitoUrl": "https://www.avito.ru/yaroslavl/avtomobili/kia_ceed_1.6_mt_2008_346_428_km_8308691220"
-    },
-    {
         "id": 8335674426,
         "title": "Hyundai Tucson 2.0 MT, 2007, 189 361 км",
         "brand": "Hyundai",
