@@ -223,28 +223,6 @@ const cars = [
         "avitoUrl": "https://www.avito.ru/yaroslavl/avtomobili/kia_ceed_1.6_mt_2008_346_428_km_8308691220"
     },
     {
-        "id": 8335674426,
-        "title": "Hyundai Tucson 2.0 MT, 2007, 189 361 км",
-        "brand": "Hyundai",
-        "model": "Tucson",
-        "year": 2007,
-        "price": 580100,
-        "mileage": 189361,
-        "engine": "2.0",
-        "transmission": "механика",
-        "drive": "",
-        "owners": "",
-        "bodyType": "",
-        "color": "",
-        "fuel": "",
-        "power": "",
-        "vin": "",
-        "description": "",
-        "images": [],
-        "video": "",
-        "avitoUrl": "https://www.avito.ru/yaroslavl/avtomobili/hyundai_tucson_2.0_mt_2007_189_361_km_8335674426"
-    },
-    {
         "id": 8335072065,
         "title": "Renault Laguna 1.6 MT, 2007, 305 885 км",
         "brand": "Renault",
