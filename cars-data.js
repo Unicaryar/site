@@ -25,6 +25,28 @@ const cars = [
         "avitoUrl": "https://www.avito.ru/yaroslavl/avtomobili/chery_tiggo_7_pro_max_1.5_cvt_2022_43_257_km_8344758336"
     },
     {
+        "id": 8359116674,
+        "title": "Renault Kaptur 1.6 MT, 2018, 125 455 км",
+        "brand": "Renault",
+        "model": "Kaptur",
+        "year": 2018,
+        "price": 1210000,
+        "mileage": 125455,
+        "engine": "1.6",
+        "transmission": "механика",
+        "drive": "",
+        "owners": "",
+        "bodyType": "",
+        "color": "",
+        "fuel": "",
+        "power": "",
+        "vin": "",
+        "description": "",
+        "images": [],
+        "video": "",
+        "avitoUrl": "https://www.avito.ru/yaroslavl/avtomobili/renault_kaptur_1.6_mt_2018_125_455_km_8359116674"
+    },
+    {
         "id": 8373113197,
         "title": "Datsun on-DO 1.6 MT, 2018, 90 628 км",
         "brand": "Datsun",
