@@ -157,6 +157,28 @@ const cars = [
         "avitoUrl": "https://www.avito.ru/yaroslavl/avtomobili/renault_duster_2.0_mt_2012_125_349_km_8300797447"
     },
     {
+        "id": 8334903011,
+        "title": "Kia Rio 1.4 MT, 2012, 256 100 км",
+        "brand": "Kia",
+        "model": "Rio",
+        "year": 2012,
+        "price": 570000,
+        "mileage": 256100,
+        "engine": "1.4",
+        "transmission": "механика",
+        "drive": "",
+        "owners": "",
+        "bodyType": "",
+        "color": "",
+        "fuel": "",
+        "power": "",
+        "vin": "",
+        "description": "",
+        "images": [],
+        "video": "",
+        "avitoUrl": "https://www.avito.ru/yaroslavl/avtomobili/kia_rio_1.4_mt_2012_256_100_km_8334903011"
+    },
+    {
         "id": 8079513629,
         "title": "Ford Mondeo 2.0 MT, 2008, 191 936 км",
         "brand": "Ford",
