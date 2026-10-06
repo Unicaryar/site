@@ -91,6 +91,28 @@ const cars = [
         "avitoUrl": "https://www.avito.ru/yaroslavl/avtomobili/kia_rio_1.6_at_2016_162_775_km_8480139387"
     },
     {
+        "id": 8315375230,
+        "title": "Kia Rio 1.6 MT, 2015, 192 300 км",
+        "brand": "Kia",
+        "model": "Rio",
+        "year": 2015,
+        "price": 790400,
+        "mileage": 192300,
+        "engine": "1.6",
+        "transmission": "механика",
+        "drive": "",
+        "owners": "",
+        "bodyType": "",
+        "color": "",
+        "fuel": "",
+        "power": "",
+        "vin": "",
+        "description": "",
+        "images": [],
+        "video": "",
+        "avitoUrl": "https://www.avito.ru/yaroslavl/avtomobili/kia_rio_1.6_mt_2015_192_300_km_8315375230"
+    },
+    {
         "id": 8377098622,
         "title": "Mitsubishi Outlander 2.0 CVT, 2012, 173 338 км",
         "brand": "Mitsubishi",
