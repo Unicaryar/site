@@ -113,6 +113,28 @@ const cars = [
         "avitoUrl": "https://www.avito.ru/yaroslavl/avtomobili/kia_rio_1.6_mt_2015_192_300_km_8315375230"
     },
     {
+        "id": 8315004082,
+        "title": "Renault Logan 1.6 MT, 2013, 122 964 км",
+        "brand": "Renault",
+        "model": "Logan",
+        "year": 2013,
+        "price": 520000,
+        "mileage": 122964,
+        "engine": "1.6",
+        "transmission": "механика",
+        "drive": "",
+        "owners": "",
+        "bodyType": "",
+        "color": "",
+        "fuel": "",
+        "power": "",
+        "vin": "",
+        "description": "",
+        "images": [],
+        "video": "",
+        "avitoUrl": "https://www.avito.ru/yaroslavl/avtomobili/renault_logan_1.6_mt_2013_122_964_km_8315004082"
+    },
+    {
         "id": 8377098622,
         "title": "Mitsubishi Outlander 2.0 CVT, 2012, 173 338 км",
         "brand": "Mitsubishi",
