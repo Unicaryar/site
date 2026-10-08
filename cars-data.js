@@ -69,28 +69,6 @@ const cars = [
         "avitoUrl": "https://www.avito.ru/yaroslavl/avtomobili/chery_tiggo_5_2.0_mt_2017_107_255_km_8453739826"
     },
     {
-        "id": 8480139387,
-        "title": "Kia Rio 1.6 AT, 2016, 162 775 км",
-        "brand": "Kia",
-        "model": "Rio",
-        "year": 2016,
-        "price": 1020000,
-        "mileage": 162775,
-        "engine": "1.6",
-        "transmission": "автомат",
-        "drive": "",
-        "owners": "",
-        "bodyType": "",
-        "color": "",
-        "fuel": "",
-        "power": "",
-        "vin": "",
-        "description": "",
-        "images": [],
-        "video": "",
-        "avitoUrl": "https://www.avito.ru/yaroslavl/avtomobili/kia_rio_1.6_at_2016_162_775_km_8480139387"
-    },
-    {
         "id": 8315375230,
         "title": "Kia Rio 1.6 MT, 2015, 192 300 км",
         "brand": "Kia",
