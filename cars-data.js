@@ -30,7 +30,7 @@ const cars = [
         "brand": "Hyundai",
         "model": "Solaris",
         "year": 2018,
-        "price": 850000,
+        "price": 895000,
         "mileage": 115212,
         "engine": "1.6",
         "transmission": "механика",
