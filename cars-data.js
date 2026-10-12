@@ -206,7 +206,7 @@ const cars = [
         "brand": "Chevrolet",
         "model": "Spark",
         "year": 2011,
-        "price": 485000,
+        "price": 448100,
         "mileage": 103845,
         "engine": "1.0",
         "transmission": "механика",
