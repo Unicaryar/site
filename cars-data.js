@@ -157,28 +157,6 @@ const cars = [
         "avitoUrl": "https://www.avito.ru/yaroslavl/avtomobili/opel_antara_3.0_at_2012_185_262_km_8417858076"
     },
     {
-        "id": 8300797447,
-        "title": "Renault Duster 2.0 MT, 2012, 125 349 км",
-        "brand": "Renault",
-        "model": "Duster",
-        "year": 2012,
-        "price": 795000,
-        "mileage": 125349,
-        "engine": "2.0",
-        "transmission": "механика",
-        "drive": "",
-        "owners": "",
-        "bodyType": "",
-        "color": "",
-        "fuel": "",
-        "power": "",
-        "vin": "",
-        "description": "",
-        "images": [],
-        "video": "",
-        "avitoUrl": "https://www.avito.ru/yaroslavl/avtomobili/renault_duster_2.0_mt_2012_125_349_km_8300797447"
-    },
-    {
         "id": 8334903011,
         "title": "Kia Rio 1.4 MT, 2012, 256 100 км",
         "brand": "Kia",
