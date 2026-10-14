@@ -260,5 +260,27 @@ const cars = [
         ],
         "video": "https://rutube.ru/video/882df92a59c33bb674668e849a5e92fa/",
         "avitoUrl": "https://www.avito.ru/yaroslavl/avtomobili/ford_mondeo_2.0_mt_2008_191_936_km_8079513629"
+    },
+    {
+        "id": 8335072065,
+        "title": "Renault Laguna 1.6 MT, 2007, 305 885 км",
+        "brand": "Renault",
+        "model": "Laguna",
+        "year": 2007,
+        "price": 279000,
+        "mileage": 305885,
+        "engine": "1.6",
+        "transmission": "механика",
+        "drive": "",
+        "owners": "",
+        "bodyType": "",
+        "color": "",
+        "fuel": "",
+        "power": "",
+        "vin": "",
+        "description": "",
+        "images": [],
+        "video": "",
+        "avitoUrl": "https://www.avito.ru/yaroslavl/avtomobili/renault_laguna_1.6_mt_2007_305_885_km_8335072065"
     }
 ];
