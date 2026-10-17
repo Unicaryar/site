@@ -91,28 +91,6 @@ const cars = [
         "avitoUrl": "https://www.avito.ru/yaroslavl/avtomobili/renault_logan_1.6_mt_2013_122_964_km_8315004082"
     },
     {
-        "id": 8377098622,
-        "title": "Mitsubishi Outlander 2.0 CVT, 2012, 173 338 км",
-        "brand": "Mitsubishi",
-        "model": "Outlander",
-        "year": 2012,
-        "price": 1115000,
-        "mileage": 173338,
-        "engine": "2.0",
-        "transmission": "вариатор",
-        "drive": "",
-        "owners": "",
-        "bodyType": "",
-        "color": "",
-        "fuel": "",
-        "power": "",
-        "vin": "",
-        "description": "",
-        "images": [],
-        "video": "",
-        "avitoUrl": "https://www.avito.ru/yaroslavl/avtomobili/mitsubishi_outlander_2.0_cvt_2012_173_338_km_8377098622"
-    },
-    {
         "id": 8417858076,
         "title": "Opel Antara 3.0 AT, 2012, 185 262 км",
         "brand": "Opel",
