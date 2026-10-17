@@ -25,28 +25,6 @@ const cars = [
         "avitoUrl": "https://www.avito.ru/yaroslavl/avtomobili/chery_tiggo_7_pro_max_1.5_cvt_2022_43_257_km_8344758336"
     },
     {
-        "id": 8373113197,
-        "title": "Datsun on-DO 1.6 MT, 2018, 90 628 км",
-        "brand": "Datsun",
-        "model": "on-DO",
-        "year": 2018,
-        "price": 475400,
-        "mileage": 90628,
-        "engine": "1.6",
-        "transmission": "механика",
-        "drive": "",
-        "owners": "",
-        "bodyType": "",
-        "color": "",
-        "fuel": "",
-        "power": "",
-        "vin": "",
-        "description": "",
-        "images": [],
-        "video": "",
-        "avitoUrl": "https://www.avito.ru/yaroslavl/avtomobili/datsun_on-do_1.6_mt_2018_90_628_km_8373113197"
-    },
-    {
         "id": 8315375230,
         "title": "Kia Rio 1.6 MT, 2015, 192 300 км",
         "brand": "Kia",
