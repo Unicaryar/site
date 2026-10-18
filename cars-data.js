@@ -30,7 +30,7 @@ const cars = [
         "brand": "Skoda",
         "model": "Yeti",
         "year": 2016,
-        "price": 1445000,
+        "price": 1236100,
         "mileage": 160670,
         "engine": "1.6",
         "transmission": "автомат",
