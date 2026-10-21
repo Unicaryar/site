@@ -138,6 +138,28 @@ const cars = [
         "avitoUrl": "https://www.avito.ru/yaroslavl/avtomobili/kia_rio_1.6_mt_2015_192_300_km_8315375230"
     },
     {
+        "id": 8347898346,
+        "title": "Hyundai ix35 2.0 AT, 2014, 156 336 км",
+        "brand": "Hyundai",
+        "model": "ix35",
+        "year": 2014,
+        "price": 1245000,
+        "mileage": 156336,
+        "engine": "2.0",
+        "transmission": "автомат",
+        "drive": "",
+        "owners": "",
+        "bodyType": "",
+        "color": "",
+        "fuel": "",
+        "power": "",
+        "vin": "",
+        "description": "",
+        "images": [],
+        "video": "",
+        "avitoUrl": "https://www.avito.ru/yaroslavl/avtomobili/hyundai_ix35_2.0_at_2014_156_336_km_8347898346"
+    },
+    {
         "id": 8545332651,
         "title": "Toyota Corolla 1.6 CVT, 2013, 256 489 км",
         "brand": "Toyota",
