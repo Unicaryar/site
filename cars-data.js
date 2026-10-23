@@ -62,6 +62,28 @@ const cars = [
         "avitoUrl": "https://www.avito.ru/yaroslavl/avtomobili/datsun_on-do_1.6_mt_2020_92_050_km_8111884569"
     },
     {
+        "id": 8557668262,
+        "title": "HAVAL F7 1.5 AMT, 2019, 176 170 км",
+        "brand": "HAVAL",
+        "model": "F7",
+        "year": 2019,
+        "price": 1285000,
+        "mileage": 176170,
+        "engine": "1.5",
+        "transmission": "робот",
+        "drive": "",
+        "owners": "",
+        "bodyType": "",
+        "color": "",
+        "fuel": "",
+        "power": "",
+        "vin": "",
+        "description": "",
+        "images": [],
+        "video": "",
+        "avitoUrl": "https://www.avito.ru/yaroslavl/avtomobili/haval_f7_1.5_amt_2019_176_170_km_8557668262"
+    },
+    {
         "id": 7951288990,
         "title": "Hyundai Solaris 1.6 AT, 2015, 241 442 км",
         "brand": "Hyundai",
