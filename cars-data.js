@@ -270,28 +270,6 @@ const cars = [
         "avitoUrl": "https://www.avito.ru/yaroslavl/avtomobili/kia_rio_1.4_mt_2012_256_100_km_8334903011"
     },
     {
-        "id": 8337845534,
-        "title": "Jaguar XF 3.0 AT, 2010, 146 965 км",
-        "brand": "Jaguar",
-        "model": "XF",
-        "year": 2010,
-        "price": 872000,
-        "mileage": 146965,
-        "engine": "3.0",
-        "transmission": "автомат",
-        "drive": "",
-        "owners": "",
-        "bodyType": "",
-        "color": "",
-        "fuel": "",
-        "power": "",
-        "vin": "",
-        "description": "",
-        "images": [],
-        "video": "",
-        "avitoUrl": "https://www.avito.ru/yaroslavl/avtomobili/jaguar_xf_3.0_at_2010_146_965_km_8337845534"
-    },
-    {
         "id": 8142999568,
         "title": "Skoda Octavia 1.4 MT, 2007, 284 102 км",
         "brand": "Skoda",
