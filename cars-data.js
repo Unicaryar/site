@@ -187,7 +187,7 @@ const cars = [
         "brand": "Toyota",
         "model": "Corolla",
         "year": 2013,
-        "price": 843500,
+        "price": 825000,
         "mileage": 256489,
         "engine": "1.6",
         "transmission": "вариатор",
