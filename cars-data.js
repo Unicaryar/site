@@ -138,28 +138,6 @@ const cars = [
         "avitoUrl": "https://www.avito.ru/yaroslavl/avtomobili/hyundai_solaris_1.6_at_2015_241_442_km_7951288990"
     },
     {
-        "id": 8315375230,
-        "title": "Kia Rio 1.6 MT, 2015, 192 300 км",
-        "brand": "Kia",
-        "model": "Rio",
-        "year": 2015,
-        "price": 789500,
-        "mileage": 192300,
-        "engine": "1.6",
-        "transmission": "механика",
-        "drive": "",
-        "owners": "",
-        "bodyType": "",
-        "color": "",
-        "fuel": "",
-        "power": "",
-        "vin": "",
-        "description": "",
-        "images": [],
-        "video": "",
-        "avitoUrl": "https://www.avito.ru/yaroslavl/avtomobili/kia_rio_1.6_mt_2015_192_300_km_8315375230"
-    },
-    {
         "id": 8347898346,
         "title": "Hyundai ix35 2.0 AT, 2014, 156 336 км",
         "brand": "Hyundai",
