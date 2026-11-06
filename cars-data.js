@@ -25,28 +25,6 @@ const cars = [
         "avitoUrl": "https://www.avito.ru/yaroslavl/avtomobili/vaz_lada_niva_legend_1.7_mt_2024_24_005_km_8403902345"
     },
     {
-        "id": 8344758336,
-        "title": "Chery Tiggo 7 Pro Max 1.5 CVT, 2022, 43 257 км",
-        "brand": "Chery",
-        "model": "Tiggo 7 Pro Max",
-        "year": 2022,
-        "price": 1630000,
-        "mileage": 43257,
-        "engine": "1.5",
-        "transmission": "вариатор",
-        "drive": "",
-        "owners": "",
-        "bodyType": "",
-        "color": "",
-        "fuel": "",
-        "power": "",
-        "vin": "",
-        "description": "",
-        "images": [],
-        "video": "",
-        "avitoUrl": "https://www.avito.ru/yaroslavl/avtomobili/chery_tiggo_7_pro_max_1.5_cvt_2022_43_257_km_8344758336"
-    },
-    {
         "id": 8111884569,
         "title": "Datsun on-DO 1.6 MT, 2020, 92 050 км",
         "brand": "Datsun",
