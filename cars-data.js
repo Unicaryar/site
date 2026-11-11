@@ -341,7 +341,7 @@ const cars = [
         "brand": "Renault",
         "model": "Laguna",
         "year": 2007,
-        "price": 269000,
+        "price": 259000,
         "mileage": 305885,
         "engine": "1.6",
         "transmission": "механика",
