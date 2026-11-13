@@ -334,27 +334,5 @@ const cars = [
         "images": [],
         "video": "",
         "avitoUrl": "https://www.avito.ru/yaroslavl/avtomobili/skoda_octavia_1.4_mt_2007_284_102_km_8142999568"
-    },
-    {
-        "id": 8335072065,
-        "title": "Renault Laguna 1.6 MT, 2007, 305 885 км",
-        "brand": "Renault",
-        "model": "Laguna",
-        "year": 2007,
-        "price": 259000,
-        "mileage": 305885,
-        "engine": "1.6",
-        "transmission": "механика",
-        "drive": "",
-        "owners": "",
-        "bodyType": "",
-        "color": "",
-        "fuel": "",
-        "power": "",
-        "vin": "",
-        "description": "",
-        "images": [],
-        "video": "",
-        "avitoUrl": "https://www.avito.ru/yaroslavl/avtomobili/renault_laguna_1.6_mt_2007_305_885_km_8335072065"
     }
 ];
