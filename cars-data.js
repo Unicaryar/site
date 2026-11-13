@@ -160,6 +160,28 @@ const cars = [
         "avitoUrl": "https://www.avito.ru/yaroslavl/avtomobili/hyundai_ix35_2.0_at_2014_156_336_km_8347898346"
     },
     {
+        "id": 8472182036,
+        "title": "ВАЗ (LADA) Granta 1.6 MT, 2014, 115 270 км",
+        "brand": "ВАЗ",
+        "model": "(LADA) Granta",
+        "year": 2014,
+        "price": 359000,
+        "mileage": 115270,
+        "engine": "1.6",
+        "transmission": "механика",
+        "drive": "",
+        "owners": "",
+        "bodyType": "",
+        "color": "",
+        "fuel": "",
+        "power": "",
+        "vin": "",
+        "description": "",
+        "images": [],
+        "video": "",
+        "avitoUrl": "https://www.avito.ru/yaroslavl/avtomobili/vaz_lada_granta_1.6_mt_2014_115_270_km_8472182036"
+    },
+    {
         "id": 8545332651,
         "title": "Toyota Corolla 1.6 CVT, 2013, 256 489 км",
         "brand": "Toyota",
