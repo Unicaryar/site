@@ -3,6 +3,28 @@
 
 const cars = [
     {
+        "id": 8344758336,
+        "title": "Chery Tiggo 7 Pro Max 1.5 CVT, 2022, 43 257 км",
+        "brand": "Chery",
+        "model": "Tiggo 7 Pro Max",
+        "year": 2022,
+        "price": 1730000,
+        "mileage": 43257,
+        "engine": "1.5",
+        "transmission": "вариатор",
+        "drive": "",
+        "owners": "",
+        "bodyType": "",
+        "color": "",
+        "fuel": "",
+        "power": "",
+        "vin": "",
+        "description": "",
+        "images": [],
+        "video": "",
+        "avitoUrl": "https://www.avito.ru/yaroslavl/avtomobili/chery_tiggo_7_pro_max_1.5_cvt_2022_43_257_km_8344758336"
+    },
+    {
         "id": 8111884569,
         "title": "Datsun on-DO 1.6 MT, 2020, 92 050 км",
         "brand": "Datsun",
@@ -334,5 +356,27 @@ const cars = [
         "images": [],
         "video": "",
         "avitoUrl": "https://www.avito.ru/yaroslavl/avtomobili/mitsubishi_asx_1.6_mt_2010_168_354_km_8589074460"
+    },
+    {
+        "id": 8142999568,
+        "title": "Skoda Octavia 1.4 MT, 2007, 284 102 км",
+        "brand": "Skoda",
+        "model": "Octavia",
+        "year": 2007,
+        "price": 320000,
+        "mileage": 284102,
+        "engine": "1.4",
+        "transmission": "механика",
+        "drive": "",
+        "owners": "",
+        "bodyType": "",
+        "color": "",
+        "fuel": "",
+        "power": "",
+        "vin": "",
+        "description": "",
+        "images": [],
+        "video": "",
+        "avitoUrl": "https://www.avito.ru/yaroslavl/avtomobili/skoda_octavia_1.4_mt_2007_284_102_km_8142999568"
     }
 ];
