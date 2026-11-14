@@ -182,6 +182,28 @@ const cars = [
         "avitoUrl": "https://www.avito.ru/yaroslavl/avtomobili/vaz_lada_granta_1.6_mt_2014_115_270_km_8472182036"
     },
     {
+        "id": 8545332651,
+        "title": "Toyota Corolla 1.6 CVT, 2013, 256 489 км",
+        "brand": "Toyota",
+        "model": "Corolla",
+        "year": 2013,
+        "price": 865100,
+        "mileage": 256489,
+        "engine": "1.6",
+        "transmission": "вариатор",
+        "drive": "",
+        "owners": "",
+        "bodyType": "",
+        "color": "",
+        "fuel": "",
+        "power": "",
+        "vin": "",
+        "description": "",
+        "images": [],
+        "video": "",
+        "avitoUrl": "https://www.avito.ru/yaroslavl/avtomobili/toyota_corolla_1.6_cvt_2013_256_489_km_8545332651"
+    },
+    {
         "id": 8315004082,
         "title": "Renault Logan 1.6 MT, 2013, 122 964 км",
         "brand": "Renault",
