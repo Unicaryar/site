@@ -106,28 +106,6 @@ const cars = [
         "avitoUrl": "https://www.avito.ru/yaroslavl/avtomobili/skoda_rapid_1.6_at_2015_166_090_km_8547446916"
     },
     {
-        "id": 8347898346,
-        "title": "Hyundai ix35 2.0 AT, 2014, 156 336 км",
-        "brand": "Hyundai",
-        "model": "ix35",
-        "year": 2014,
-        "price": 1145000,
-        "mileage": 156336,
-        "engine": "2.0",
-        "transmission": "автомат",
-        "drive": "",
-        "owners": "",
-        "bodyType": "",
-        "color": "",
-        "fuel": "",
-        "power": "",
-        "vin": "",
-        "description": "",
-        "images": [],
-        "video": "",
-        "avitoUrl": "https://www.avito.ru/yaroslavl/avtomobili/hyundai_ix35_2.0_at_2014_156_336_km_8347898346"
-    },
-    {
         "id": 8472182036,
         "title": "ВАЗ (LADA) Granta 1.6 MT, 2014, 115 270 км",
         "brand": "ВАЗ",
