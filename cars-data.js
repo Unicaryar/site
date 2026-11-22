@@ -238,28 +238,6 @@ const cars = [
         "avitoUrl": "https://www.avito.ru/yaroslavl/avtomobili/opel_antara_3.0_at_2012_185_262_km_8417858076"
     },
     {
-        "id": 8501989703,
-        "title": "Ford Focus 1.6 MT, 2011, 125 336 км",
-        "brand": "Ford",
-        "model": "Focus",
-        "year": 2011,
-        "price": 645200,
-        "mileage": 125336,
-        "engine": "1.6",
-        "transmission": "механика",
-        "drive": "",
-        "owners": "",
-        "bodyType": "",
-        "color": "",
-        "fuel": "",
-        "power": "",
-        "vin": "",
-        "description": "",
-        "images": [],
-        "video": "",
-        "avitoUrl": "https://www.avito.ru/yaroslavl/avtomobili/ford_focus_1.6_mt_2011_125_336_km_8501989703"
-    },
-    {
         "id": 8589074460,
         "title": "Mitsubishi ASX 1.6 MT, 2010, 168 354 км",
         "brand": "Mitsubishi",
