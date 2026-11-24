@@ -84,6 +84,28 @@ const cars = [
         "avitoUrl": "https://www.avito.ru/yaroslavl/avtomobili/skoda_rapid_1.6_mt_2017_168_820_km_8531024236"
     },
     {
+        "id": 8501065322,
+        "title": "Skoda Yeti 1.6 MT, 2015, 200 100 км",
+        "brand": "Skoda",
+        "model": "Yeti",
+        "year": 2015,
+        "price": 953200,
+        "mileage": 200100,
+        "engine": "1.6",
+        "transmission": "механика",
+        "drive": "",
+        "owners": "",
+        "bodyType": "",
+        "color": "",
+        "fuel": "",
+        "power": "",
+        "vin": "",
+        "description": "",
+        "images": [],
+        "video": "",
+        "avitoUrl": "https://www.avito.ru/yaroslavl/avtomobili/skoda_yeti_1.6_mt_2015_200_100_km_8501065322"
+    },
+    {
         "id": 8547446916,
         "title": "Skoda Rapid 1.6 AT, 2015, 166 090 км",
         "brand": "Skoda",
