@@ -172,28 +172,6 @@ const cars = [
         "avitoUrl": "https://www.avito.ru/yaroslavl/avtomobili/toyota_corolla_1.6_cvt_2013_256_489_km_8545332651"
     },
     {
-        "id": 8396462053,
-        "title": "Ford Explorer 3.5 AT, 2012, 173 423 км",
-        "brand": "Ford",
-        "model": "Explorer",
-        "year": 2012,
-        "price": 1395000,
-        "mileage": 173423,
-        "engine": "3.5",
-        "transmission": "автомат",
-        "drive": "",
-        "owners": "",
-        "bodyType": "",
-        "color": "",
-        "fuel": "",
-        "power": "",
-        "vin": "",
-        "description": "",
-        "images": [],
-        "video": "",
-        "avitoUrl": "https://www.avito.ru/yaroslavl/avtomobili/ford_explorer_3.5_at_2012_173_423_km_8396462053"
-    },
-    {
         "id": 8377098622,
         "title": "Mitsubishi Outlander 2.0 CVT, 2012, 173 338 км",
         "brand": "Mitsubishi",
